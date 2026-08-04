@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acha Região — Deploy</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0C0C0E;color:#F5F5F7;font-family:Inter,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;flex-direction:column;gap:24px;padding:20px}
+  h1{font-size:28px;font-weight:900}
+  h1 span{color:#F5C518}
+  .cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .card{background:#19191C;border:1px solid #333338;border-radius:16px;padding:24px;width:300px;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center}
+  .card h2{font-size:18px;font-weight:700}
+  .card p{font-size:13px;color:#6E6E76;line-height:1.5}
+  .btn{display:inline-block;padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s;width:100%;text-align:center}
+  .btn-yellow{background:#F5C518;color:#1A1800;box-shadow:0 4px 16px rgba(245,197,24,.25)}
+  .btn-yellow:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,197,24,.35)}
+  .btn-dark{background:#222226;color:#F5F5F7;border:1px solid #333338}
+  .status{color:#4ADE80;font-size:12px;margin-top:8px}
+  .repo{color:#6E6E76;font-size:11px;margin-top:16px;font-family:mono}
+</style>
+</head>
+<body>
+<h1>🟡 <span>Acha Região</span> — Deploy</h1>
+
+<div class="cards">
+  <div class="card">
+    <h2>📱 Vercel</h2>
+    <p>Landing page amarela com preview do app. O vercel.json já está configurado.</p>
+    <a class="btn btn-yellow" href="https://vercel.com/new/git/external?repository-url=https://github.com/ViniciusOdorizziHoppe/acha-regiao" target="_blank">
+      Deploy no Vercel →
+    </a>
+    <span class="status">vercel.json ✅ pronto</span>
+  </div>
+
+  <div class="card">
+    <h2>⚙️ Render</h2>
+    <p>Backend Express + TypeScript. API de produtos, categorias e health check.</p>
+    <a class="btn btn-yellow" href="https://dashboard.render.com/blueprint/new?repo=https://github.com/ViniciusOdorizziHoppe/acha-regiao" target="_blank">
+      Deploy no Render →
+    </a>
+    <span class="status">render.yaml ✅ pronto</span>
+  </div>
+</div>
+
+<div class="repo">github.com/ViniciusOdorizziHoppe/acha-regiao</div>
+</body>
+</html>

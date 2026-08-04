@@ -233,39 +233,54 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 
 <script>
 // ═══════ DATA ═══════
+const API_BASE='https://acha-regiao-api.onrender.com/api';
 const CITIES={'Presidente Getúlio':[-27.0282,-49.6247],'Rio do Sul':[-27.2144,-49.6422],'Ibirama':[-27.0569,-49.5189],'Laurentino':[-27.2172,-49.7333],'Lontras':[-27.1661,-49.5419],'Aurora':[-27.3158,-49.6356]};
-let user=null,products=[],photos=[],favorites=JSON.parse(localStorage.getItem('acha_favs')||'[]'),currentPage='splash',activeCat='Todos',sortNew=true,radiusKm=100,slideIdx=0,lastCheck=Date.now();
+let user=null,token=localStorage.getItem('acha_token'),products=[],photos=[],favorites=[],currentPage='splash',activeCat='Todos',sortNew=true,radiusKm=100,slideIdx=0,lastCheck=Date.now();
+
+// ═══════ API HELPERS ═══════
+async function api(url,options={}){
+  const headers={'Content-Type':'application/json'};
+  if(token)headers['Authorization']=`Bearer ${token}`;
+  const res=await fetch(API_BASE+url,{headers,...options});
+  return res.json();
+}
 
 // ═══════ INIT ═══════
 window.addEventListener('beforeinstallprompt',e=>{window._pwa=e;document.getElementById('installBar').classList.add('show')});
 if(window.matchMedia('(display-mode: standalone)').matches)document.getElementById('installBar').classList.remove('show');
 
-(function init(){
-  const u=localStorage.getItem('acha_user');if(u)user=JSON.parse(u);
+(async function init(){
+  if(token){
+    try{const d=await api('/auth/me');if(d.user){user=d.user;localStorage.setItem('acha_user',JSON.stringify(user))}}catch(e){token=null;localStorage.removeItem('acha_token')}
+  }
   loadProducts();
   setTimeout(()=>{document.getElementById('splash').classList.add('hide');if(user)goTab('feed');else goTab('auth')},2200);
   setInterval(checkNewListings,60000);
   if('Notification' in window && Notification.permission==='default') setTimeout(()=>Notification.requestPermission(),5000);
 })();
 
-function loadProducts(){
-  const local=JSON.parse(localStorage.getItem('acha_products')||'[]');
-  const def=[
-    {id:'d1',title:'iPhone 13 Pro 128GB Grafite',desc:'📱 Como novo, nota fiscal e caixa\n🔋 Saúde da bateria: 89%\n🎁 Brinde: capa + película\n💳 Parcelamento em até 12x no cartão\n🪙 À vista com desconto',price:3200,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1592286927505-038fc5c40e5e?w=600&h=450&fit=crop'],seller:'Marcos Silva',stars:4.8,whatsapp:'47999990001',createdAt:Date.now()-86400000},
-    {id:'d2',title:'Sofá 3 Lugares Retrátil Bege',desc:'🛋️ Confortável, pouco uso\n📏 2.10m de comprimento\n✨ Retrátil nos 3 lugares\n🚚 Entrego na região',price:850,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=450&fit=crop'],seller:'Ana Oliveira',stars:4.5,whatsapp:'47999990002',createdAt:Date.now()-172800000},
-    {id:'d3',title:'Honda CG 160 Titan 2023',desc:'🏍️ 8.000km rodados\n🔧 Todas revisões na concessionária\n🛞 Pneus novos\n📄 IPVA 2026 pago\n💳 Aceito troca',price:14500,city:'Ibirama',category:'Veículos',images:['https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=450&fit=crop'],seller:'João Santos',stars:4.9,whatsapp:'47999990003',createdAt:Date.now()-259200000},
-    {id:'d4',title:'Geladeira Brastemp 375L',desc:'❄️ Frost Free\n📏 375 litros\n⏱️ 2 anos de uso\n✅ Perfeito estado\n📦 Motivo: mudança',price:1800,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=450&fit=crop'],seller:'Carla Mendes',stars:4.6,whatsapp:'47999990004',createdAt:Date.now()-432000000},
-    {id:'d5',title:'Mesa de Jantar 6 Lugares',desc:'🪵 Madeira maciça\n🪑 6 cadeiras estofadas\n📏 1.60m x 0.90m\n⏱️ 3 anos de uso',price:650,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1556909114-f6e7ad7d6ab6?w=600&h=450&fit=crop'],seller:'Pedro Costa',stars:4.3,whatsapp:'47999990005',createdAt:Date.now()-345600000},
-    {id:'d6',title:'Kit Halteres 20kg + Barra',desc:'💪 Halteres montáveis\n🏋️ Barra de 1.2m\n⚖️ 40kg de anilhas\n🆕 Pouquíssimo uso',price:280,city:'Laurentino',category:'Esportes',images:['https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=450&fit=crop'],seller:'Lucas Alves',stars:4.7,whatsapp:'47999990006',createdAt:Date.now()-518400000},
-  ];
-  products=[...local,...def];
-  try{fetch('https://acha-regiao-api.onrender.com/api/products').then(r=>r.json()).then(d=>{const apiP=d.map(x=>({...x,seller:x.sellerName||'Vendedor',stars:x.sellerStars||4.5,images:x.images||[x.imageUrl],whatsapp:x.whatsapp||'',createdAt:Date.now()-Math.random()*86400000*10}));products=[...local,...apiP];if(currentPage==='feed')renderFeed()}).catch(()=>{})}catch(e){}
+async function loadProducts(){
+  try{const d=await api('/products');if(Array.isArray(d))products=d}catch(e){}
+  // Merge with local fallback
+  if(!products.length)products=[...getFallbackProducts()];
   renderCategories();
+  if(currentPage==='feed')renderFeed();
+}
+
+function getFallbackProducts(){
+  return [
+    {id:'d1',title:'iPhone 13 Pro 128GB Grafite',desc:'📱 Como novo, nota fiscal e caixa\n🔋 Saúde da bateria: 89%\n🎁 Brinde: capa + película',price:3200,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=600&h=450&fit=crop'],seller_name:'Marcos Silva',seller_stars:4.8,whatsapp:'47999990001'},
+    {id:'d2',title:'Sofá 3 Lugares Retrátil Bege',desc:'🛋️ Confortável, pouco uso\n📏 2.10m\n✨ Retrátil nos 3 lugares',price:850,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=450&fit=crop'],seller_name:'Ana Oliveira',seller_stars:4.5,whatsapp:'47999990002'},
+    {id:'d3',title:'Honda CG 160 Titan 2023',desc:'🏍️ 8.000km\n🔧 Revisões em dia\n📄 IPVA 2026 pago',price:14500,city:'Ibirama',category:'Veículos',images:['https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=450&fit=crop'],seller_name:'João Santos',seller_stars:4.9,whatsapp:'47999990003'},
+    {id:'d4',title:'Geladeira Brastemp 375L',desc:'❄️ Frost Free\n📏 375 litros\n✅ Perfeito estado',price:1800,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=450&fit=crop'],seller_name:'Carla Mendes',seller_stars:4.6,whatsapp:'47999990004'},
+    {id:'d5',title:'Mesa de Jantar 6 Lugares',desc:'🪵 Madeira maciça\n🪑 6 cadeiras\n📏 1.60m x 0.90m',price:650,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1556909114-f6e7ad7d6ab6?w=600&h=450&fit=crop'],seller_name:'Pedro Costa',seller_stars:4.3,whatsapp:'47999990005'},
+    {id:'d6',title:'Kit Halteres 20kg + Barra',desc:'💪 Halteres montáveis\n🏋️ Barra de 1.2m\n⚖️ 40kg de anilhas',price:280,city:'Laurentino',category:'Esportes',images:['https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=450&fit=crop'],seller_name:'Lucas Alves',seller_stars:4.7,whatsapp:'47999990006'},
+  ];
 }
 
 // ═══════ HAVERSINE ═══════
 function haversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180,a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
-function userCoords(){if(user&&CITIES[user.city])return CITIES[user.city];return CITIES['Presidente Getúlio']}
+function userCoords(){const city=user?.cidade||user?.city;if(city&&CITIES[city])return CITIES[city];return CITIES['Presidente Getúlio']}
 function distanceTo(city){if(!CITIES[city])return 999;const[u1,u2]=userCoords();const[c1,c2]=CITIES[city];return haversine(u1,u2,c1,c2)}
 
 // ═══════ NAVIGATION (FIXED) ═══════
@@ -306,24 +321,22 @@ function goTab(page){
 
 // ═══════ AUTH ═══════
 function toggleAuth(){const r=document.getElementById('regForm'),l=document.getElementById('loginForm');r.style.display=r.style.display==='none'?'block':'none';l.style.display=l.style.display==='none'?'block':'none';document.getElementById('rErr').textContent='';document.getElementById('lErr').textContent=''}
-function doRegister(){
+async function doRegister(){
   const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value;
   if(!n||!e||!p){document.getElementById('rErr').textContent='Preencha todos os campos';return}
   if(p.length<6){document.getElementById('rErr').textContent='Senha: mínimo 6 caracteres';return}
   if(!e.includes('@')){document.getElementById('rErr').textContent='Email inválido';return}
-  const users=JSON.parse(localStorage.getItem('acha_users')||'[]');
-  if(users.find(u=>u.email===e)){document.getElementById('rErr').textContent='Email já cadastrado';return}
-  user={id:'u_'+Date.now(),name:n,email:e,password:p,city:'Presidente Getúlio',stars:0,createdAt:new Date().toISOString()};
-  users.push(user);localStorage.setItem('acha_users',JSON.stringify(users));localStorage.setItem('acha_user',JSON.stringify(user));
-  showTutorial();
+  const res=await fetch(API_BASE+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:n,email:e,senha:p})});
+  const d=await res.json();
+  if(res.ok){user=d.user;token=d.token;localStorage.setItem('acha_token',token);localStorage.setItem('acha_user',JSON.stringify(user));showTutorial()}
+  else{document.getElementById('rErr').textContent=d.error||'Erro ao cadastrar'}
 }
-function doLogin(){
+async function doLogin(){
   const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;
-  const users=JSON.parse(localStorage.getItem('acha_users')||'[]');
-  const f=users.find(u=>u.email===e&&u.password===p);
-  if(!f){document.getElementById('lErr').textContent='Email ou senha incorretos';return}
-  user=f;localStorage.setItem('acha_user',JSON.stringify(user));
-  goTab('feed');toast('👋 Bem-vindo, '+user.name.split(' ')[0]+'!');
+  const res=await fetch(API_BASE+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,senha:p})});
+  const d=await res.json();
+  if(res.ok){user=d.user;token=d.token;localStorage.setItem('acha_token',token);localStorage.setItem('acha_user',JSON.stringify(user));goTab('feed');toast('👋 Bem-vindo, '+user.nome.split(' ')[0]+'!')}
+  else{document.getElementById('lErr').textContent=d.error||'Email ou senha incorretos'}
 }
 
 // ═══════ TUTORIAL ═══════
@@ -356,13 +369,13 @@ function openDetail(id){
   if(carouselCleanup)carouselCleanup();
   const imgs=p.images&&p.images.length?p.images:['https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop'];
   const rel=products.filter(x=>x.id!==id&&(x.category===p.category||x.city===p.city)).slice(0,4);
-  const dist=distanceTo(p.city),isFav=favorites.includes(p.id);
+  const dist=distanceTo(p.city),isFav=favorites.includes(p.id),sname=p.seller_name||p.seller||'Vendedor',sstars=p.seller_stars||p.stars||4.5;
   slideIdx=0;
 
   document.getElementById('dContent').innerHTML=`
     <div class="carousel" id="carousel"><div class="slides" id="carouselSlides" style="transform:translateX(0)">${imgs.map((img,i)=>`<img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop'" data-idx="${i}">`).join('')}</div>${imgs.length>1?`<button class="c-nav c-prev" onclick="slideCarousel(-1)">‹</button><button class="c-nav c-next" onclick="slideCarousel(1)">›</button><div class="c-dots">${imgs.map((_,i)=>`<span class="c-dot${i===0?' on':''}"></span>`).join('')}</div><span class="c-counter">1/${imgs.length}</span>`:''}</div>
     <div class="d-info"><div class="d-price">R$ ${p.price.toLocaleString('pt-BR')}</div><div class="d-title">${p.title}</div><div class="d-desc">${(p.desc||'Sem descrição.').replace(/\n/g,'<br>')}</div><div class="d-tags"><span>📦 ${p.category}</span><span>📍 ${p.city}</span>${dist<100?`<span>📏 ${Math.round(dist)} km</span>`:''}</div></div>
-    <div class="d-seller"><div class="ds-av">${(p.seller||'V')[0]}</div><div><div class="ds-name">${p.seller||'Vendedor'}</div><div class="ds-sub">⭐ ${p.stars||'4.5'} · Membro desde 2026</div></div></div>
+    <div class="d-seller"><div class="ds-av">${(sname||'V')[0]}</div><div><div class="ds-name">${sname}</div><div class="ds-sub">⭐ ${sstars} · Membro desde 2026</div></div></div>
     ${rel.length?`<div class="d-related"><h4>Produtos relacionados</h4><div class="rel-grid">${rel.map(r=>`<div class="card" onclick="openDetail('${r.id}')"><div class="img-wrap"><img src="${(r.images&&r.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}"><div class="c-grad"></div></div><div class="c-body"><span class="c-title">${r.title}</span><span class="c-price">R$ ${r.price.toLocaleString('pt-BR')}</span></div></div>`).join('')}</div></div>`:''}
     <div class="d-actions"><button class="wa-btn" onclick="openWhatsApp('${p.id}')">💬 Chamar no WhatsApp</button><button class="fav-lg${isFav?' on':''}" onclick="toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button><button class="sh-btn" onclick="shareProduct('${p.id}')">📤</button></div>`;
 
@@ -397,6 +410,7 @@ function slideCarousel(dir){
 function openWhatsApp(id){
   const p=products.find(x=>x.id===id);if(!p)return;
   const phone=p.whatsapp||'';if(!phone){toast('⚠️ WhatsApp não informado');return}
+  const sname=p.seller_name||p.seller||'vendedor';
   window.open(`https://wa.me/55${phone.replace(/\D/g,'')}?text=${encodeURIComponent('Olá! Vi o anúncio "'+p.title+'" no Acha Região e tenho interesse.')}`,'_blank');
 }
 function shareProduct(id){
@@ -405,36 +419,44 @@ function shareProduct(id){
 }
 
 // ═══════ FAVORITES ═══════
-function toggleFav(id,el){
+async function toggleFav(id,el){
+  if(!user){toast('Faça login para favoritar');return}
   const idx=favorites.indexOf(id);
-  if(idx>-1){favorites.splice(idx,1);if(el){el.classList.remove('on');el.textContent='🤍'}}
-  else{favorites.push(id);if(el){el.classList.add('on');el.textContent='❤️'};toast('❤️ Adicionado aos favoritos!')}
-  localStorage.setItem('acha_favs',JSON.stringify(favorites));
-  // Refresh favs in profile if visible
-  if(currentPage==='profile'){const activeProfTab=document.querySelector('.prof-tab.on');if(activeProfTab&&activeProfTab.textContent.includes('Favoritos'))renderProfGrid('favs')}
+  if(idx>-1){
+    favorites.splice(idx,1);
+    if(el){el.classList.remove('on');el.textContent='🤍'}
+    await api('/favorites/'+id,{method:'DELETE'});
+  }else{
+    favorites.push(id);
+    if(el){el.classList.add('on');el.textContent='❤️'}
+    await api('/favorites/'+id,{method:'POST'});
+    toast('❤️ Adicionado aos favoritos!');
+  }
+  if(currentPage==='profile')renderProfile();
 }
 
 // ═══════ CREATE ═══════
 function addPhotos(e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{photos.push(ev.target.result);renderPhotos()};r.readAsDataURL(f)})}
 function renderPhotos(){const c=document.querySelector('.photo-row');if(c)c.innerHTML=photos.map((url,i)=>`<div class="photo-slot"><img src="${url}"><span class="del" onclick="removePhoto(${i})">✕</span></div>`).join('')+`<div class="photo-slot" onclick="document.getElementById('pInput').click()">+</div>`}
 function removePhoto(i){photos.splice(i,1);renderPhotos()}
-function publish(){
+async function publish(){
   if(!user){goTab('auth');return}
   const t=document.getElementById('cTitle').value.trim(),d=document.getElementById('cDesc').value.trim(),p=document.getElementById('cPrice').value,w=document.getElementById('cWhats').value.trim();
   if(!t){toast('⚠️ Título obrigatório');return}if(!d){toast('⚠️ Descrição obrigatória');return}if(!p){toast('⚠️ Preço obrigatório');return}if(!w){toast('⚠️ WhatsApp obrigatório');return}
-  const prod={id:'local_'+Date.now(),title:t,desc:d,price:parseInt(p),whatsapp:w,category:document.getElementById('cCat').value,city:document.getElementById('cCity').value,images:photos.length?photos:['https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'],sellerId:user.id,seller:user.name,stars:user.stars||4.5,createdAt:Date.now()};
-  products.unshift(prod);
-  const local=JSON.parse(localStorage.getItem('acha_products')||'[]');local.push(prod);localStorage.setItem('acha_products',JSON.stringify(local));
+  const body={titulo:t,descricao:d,preco:parseInt(p),whatsapp:w,categoria:document.getElementById('cCat').value,cidade:document.getElementById('cCity').value,imagens:photos.length?photos:[]};
+  const res=await fetch(API_BASE+'/products',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(body)});
+  if(res.ok){const prod=await res.json();products.unshift({...prod,seller_name:user.nome,seller_stars:user.estrelas});toast('✅ Anúncio publicado!')}
+  else{const err=await res.json();toast('❌ '+err.error)}
   document.getElementById('cTitle').value='';document.getElementById('cDesc').value='';document.getElementById('cPrice').value='';document.getElementById('cWhats').value='';photos=[];renderPhotos();
-  notifyNewListing(prod);goTab('feed');toast('✅ Anúncio publicado!');
+  loadProducts();goTab('feed');
 }
 
 // ═══════ PROFILE ═══════
 function renderProfile(){
   if(!user)return;
-  document.getElementById('profName').textContent=user.name;
-  document.getElementById('profLoc').textContent='📍 '+(user.city||'Alto Vale');
-  const stars=user.stars||4.5;
+  document.getElementById('profName').textContent=user.nome||user.name;
+  document.getElementById('profLoc').textContent='📍 '+(user.cidade||user.city||'Alto Vale');
+  const stars=user.estrelas||user.stars||4.5;
   document.getElementById('profStars').innerHTML=Array.from({length:5},(_,i)=>`<span>${i<Math.floor(stars)?'⭐':(i<stars?'⭐':'☆')}</span>`).join('');
   renderProfGrid('posts');
 }
