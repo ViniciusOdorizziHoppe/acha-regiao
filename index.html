@@ -2,425 +2,604 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Acha Região</title>
-<meta name="description" content="Marketplace local do Alto Vale do Itajaí">
 <meta name="theme-color" content="#F5C518">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Acha Região">
-<link rel="icon" type="image/png" href="assets/logo-icon.png">
+<link rel="icon" href="assets/logo-icon.png">
 <link rel="apple-touch-icon" href="assets/logo-icon.png">
-<link rel="manifest" href="data:application/json,{name:'Acha Região',short_name:'Acha',start_url:'.',display:'standalone',background_color:'%2309090B',theme_color:'%23F5C518',icons:[{src:'assets/logo-icon.png',sizes:'192x192',type:'image/png'},{src:'assets/logo-icon.png',sizes:'512x512',type:'image/png'}]}">
+<link rel="manifest" href="data:application/json,{name:'Acha Região',short_name:'Acha',start_url:'.',display:'standalone',background_color:'%2309090B',theme_color:'%23F5C518',icons:[{src:'assets/logo-icon.png',sizes:'192x192'},{src:'assets/logo-icon.png',sizes:'512x512'}]}">
 <style>
-:root {
-  --y: #F5C518; --yg: rgba(245,197,24,.15); --bg: #09090B;
-  --s: #131315; --c: #1A1A1E; --b: #27272C;
-  --t: #F5F5F7; --t2: #A1A1AA; --t3: #6B6B70;
-  --g: #25D366; --r: 14px; --safe: env(safe-area-inset-bottom,8px);
-}
+:root{--y:#F5C518;--yd:#D4A800;--yg:rgba(245,197,24,.12);--bg:#09090B;--s:#131315;--c:#1A1A1E;--b:#27272C;--t:#F5F5F7;--t2:#A1A1AA;--t3:#6B6B70;--g:#25D366;--r:14px;--safe:env(safe-area-inset-bottom,8px)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-serif;min-height:100vh;min-height:100dvh;overflow-x:hidden}
-#app{max-width:500px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative}
+body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-serif;overflow:hidden;height:100dvh}
+#app{max-width:500px;margin:0 auto;height:100dvh;position:relative;overflow:hidden}
 
-/* PWA Install Banner */
-#installBanner{display:none;background:linear-gradient(135deg,var(--y),#FFD42A);padding:12px 16px;align-items:center;gap:12px;position:fixed;bottom:0;left:0;right:0;z-index:100;animation:slideUp .3s ease}
-#installBanner.show{display:flex}
-#installBanner .txt{flex:1;font-size:13px;font-weight:700;color:#1A1800}
-#installBanner button{background:#1A1800;color:var(--y);border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap}
-#installBanner .close{background:none;border:none;color:#1A1800;font-size:18px;cursor:pointer;padding:4px}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+/* SCREENS */
+.screen{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;background:var(--bg);transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;overflow-y:auto;overflow-x:hidden}
+.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
+.screen.hidden-left{transform:translateX(-100%);opacity:0;pointer-events:none}
+.screen.fade{transition:opacity .5s}
+.screen.fade.hidden{transform:none;opacity:0}
 
-/* Header */
+/* SPLASH */
+#splash{background:var(--bg);justify-content:center;align-items:center;z-index:100}
+#splash .logo-wrap{animation:splashIn .6s cubic-bezier(.34,1.56,.64,1)}
+#splash img{height:80px;margin-bottom:8px}
+#splash .tag{font-size:12px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;margin-top:4px}
+#splash .ring{width:60px;height:60px;border:3px solid var(--y);border-radius:50%;border-top-color:transparent;animation:spin 1s linear infinite;margin-top:32px}
+@keyframes splashIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* AUTH SCREEN */
+.auth-container{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px}
+.auth-container img{height:50px;align-self:center;margin-bottom:32px}
+.auth-container h1{font-size:24px;font-weight:900;text-align:center;margin-bottom:4px}
+.auth-container h1 span{color:var(--y)}
+.auth-container .sub{font-size:13px;color:var(--t3);text-align:center;margin-bottom:28px}
+.input-group{margin-bottom:14px}
+.input-group label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:4px}
+.input-group input{width:100%;padding:12px 14px;background:var(--c);border:1px solid var(--b);border-radius:var(--r);color:var(--t);font-size:14px;outline:none;font-family:inherit}
+.input-group input:focus{border-color:var(--y)}
+.btn{width:100%;padding:14px;background:var(--y);color:#1A1800;border:none;border-radius:var(--r);font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;transition:opacity .15s}
+.btn:active{opacity:.8}
+.btn-outline{background:transparent;color:var(--y);border:2px solid var(--y);margin-top:12px}
+.link{text-align:center;margin-top:16px;font-size:12px;color:var(--t2);cursor:pointer}
+.link span{color:var(--y);font-weight:600}
+.error{color:#F87171;font-size:12px;text-align:center;margin-top:8px;min-height:18px}
+
+/* TUTORIAL */
+.tutorial-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.tutorial-card{background:var(--s);border:1px solid var(--b);border-radius:20px;padding:28px 24px;max-width:340px;text-align:center;animation:tuIn .4s ease}
+.tutorial-card .tu-icon{font-size:56px;margin-bottom:16px}
+.tutorial-card h2{font-size:20px;font-weight:800;margin-bottom:8px}
+.tutorial-card h2 span{color:var(--y)}
+.tutorial-card p{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:20px}
+.tutorial-card .tu-dots{display:flex;gap:6px;justify-content:center;margin-bottom:20px}
+.tutorial-card .tu-dot{width:8px;height:8px;border-radius:50%;background:var(--b);transition:background .2s}
+.tutorial-card .tu-dot.on{background:var(--y);width:20px;border-radius:4px}
+.tutorial-card button{width:100%;padding:12px;background:var(--y);color:#1A1800;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer}
+@keyframes tuIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* FEED */
 .header{background:linear-gradient(135deg,var(--y),#FFD42A,var(--y));padding:12px 16px 14px;position:relative;overflow:hidden}
-.header::after{content:'';position:absolute;top:-10px;right:-10px;width:80px;height:80px;background:radial-gradient(circle,rgba(0,0,0,.05) 1px,transparent 1px);background-size:7px 7px;opacity:.35}
-.h-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:10px}
-.h-top img{height:26px}
-.h-loc{background:rgba(0,0,0,.07);padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;color:#1A1800;cursor:pointer}
-.search-box{display:flex;align-items:center;background:#1E1E22;border:2px solid rgba(245,197,24,.35);border-radius:11px;height:42px;padding:0 12px;gap:6px;position:relative;z-index:1;box-shadow:0 0 18px rgba(245,197,24,.08)}
-.search-box:focus-within{border-color:var(--y)}
-.search-box input{flex:1;background:none;border:none;outline:none;color:var(--t);font-size:13px;min-width:0}
-.search-box input::placeholder{color:var(--t3)}
+.header::after{content:'';position:absolute;top:-10px;right:-10px;width:80px;height:80px;background:radial-gradient(circle,rgba(0,0,0,.04) 1px,transparent 1px);background-size:7px 7px;opacity:.3}
+.h-row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:10px}
+.h-row img{height:24px}
+.search-wrap{display:flex;align-items:center;background:#1E1E22;border:2px solid rgba(245,197,24,.35);border-radius:11px;height:42px;padding:0 14px;gap:6px;position:relative;z-index:1}
+.search-wrap:focus-within{border-color:var(--y)}
+.search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--t);font-size:13px}
+.search-wrap input::placeholder{color:var(--t3)}
+.loc-row{padding:10px 12px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.loc-row::-webkit-scrollbar{display:none}
+.loc-chip{height:30px;padding:0 12px;border-radius:15px;font-size:11px;font-weight:700;border:1px solid var(--b);color:var(--t2);background:var(--c);cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px}
+.loc-chip.on{background:var(--y);color:#1A1800;border-color:var(--y)}
+.sec-row{padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+.sec-row h3{font-size:15px;font-weight:700}
+.sec-row span{font-size:12px;font-weight:700;color:var(--y)}
+.feed-grid{padding:0 10px 80px;display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;overflow-y:auto}
+.card-item{background:var(--c);border-radius:var(--r);overflow:hidden;border:1px solid var(--b);cursor:pointer;transition:transform .12s;animation:ci .3s ease both}
+.card-item:active{transform:scale(.97)}
+.card-item:nth-child(1){animation-delay:0s}.card-item:nth-child(2){animation-delay:.04s}.card-item:nth-child(3){animation-delay:.08s}.card-item:nth-child(4){animation-delay:.12s}
+@keyframes ci{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card-item .ciw{position:relative}
+.card-item img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.card-item .badge{position:absolute;top:6px;left:6px;background:var(--y);padding:2px 6px;border-radius:4px;font-size:8px;font-weight:800;color:#1A1800;text-transform:uppercase}
+.card-item .grad{position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,rgba(26,26,30,.8))}
+.card-item .cib{padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.card-item .cit{font-size:11px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-item .cip{font-size:16px;font-weight:800;color:var(--y)}
+.card-item .cic{font-size:9px;color:var(--t3);display:flex;align-items:center;gap:3px}
+.card-item .cidot{width:4px;height:4px;border-radius:50%;background:rgba(245,197,24,.35)}
 
-/* Content */
-.content{flex:1;overflow-y:auto;padding-bottom:70px}
-.cats{padding:10px 12px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
-.cats::-webkit-scrollbar{display:none}
-.cat{height:30px;padding:0 13px;border-radius:15px;font-size:11px;font-weight:700;border:1px solid var(--b);color:var(--t2);background:var(--c);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;display:flex;align-items:center}
-.cat.on{background:var(--y);color:#1A1800;border-color:var(--y);box-shadow:0 3px 12px rgba(245,197,24,.2)}
-.sec{padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
-.sec h2{font-size:15px;font-weight:700}
-.sec span{font-size:12px;font-weight:700;color:var(--y)}
-.grid{padding:0 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.prod{background:var(--c);border-radius:var(--r);overflow:hidden;border:1px solid var(--b);cursor:pointer;transition:transform .12s,box-shadow .12s;animation:in .3s ease both}
-.prod:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--yg)}
-.prod:nth-child(1){animation-delay:0s}.prod:nth-child(2){animation-delay:.04s}.prod:nth-child(3){animation-delay:.08s}.prod:nth-child(4){animation-delay:.12s}.prod:nth-child(5){animation-delay:.16s}.prod:nth-child(6){animation-delay:.2s}
-@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.prod .pw{position:relative}
-.prod img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.prod .badge{position:absolute;top:6px;left:6px;background:var(--y);padding:2px 6px;border-radius:4px;font-size:8px;font-weight:800;color:#1A1800;text-transform:uppercase}
-.prod .po{position:absolute;bottom:0;left:0;right:0;height:25px;background:linear-gradient(transparent,rgba(26,26,30,.8))}
-.prod .pb{padding:8px 10px;display:flex;flex-direction:column;gap:3px}
-.prod .pt{font-size:11px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.prod .pp{font-size:16px;font-weight:800;color:var(--y)}
-.prod .pc{font-size:9px;color:var(--t3);display:flex;align-items:center;gap:3px}
-.prod .pd{width:4px;height:4px;border-radius:50%;background:rgba(245,197,24,.35)}
+/* DETAIL SCREEN */
+.detail-scroll{flex:1;overflow-y:auto;padding-bottom:100px}
+.detail-gallery{position:relative}
+.detail-gallery img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.detail-gallery .dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+.detail-gallery .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3)}
+.detail-gallery .dot.on{background:var(--y)}
+.detail-info{padding:16px}
+.detail-info .dp{font-size:28px;font-weight:900;color:var(--y);margin-bottom:4px}
+.detail-info .dt{font-size:18px;font-weight:700;margin-bottom:8px}
+.detail-info .dd{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:12px}
+.detail-info .dm{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.detail-info .dm span{background:var(--c);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--t2)}
+.seller-card{background:var(--c);border:1px solid var(--b);border-radius:var(--r);padding:14px;display:flex;align-items:center;gap:12px;margin:0 16px 16px}
+.seller-card .sa{width:48px;height:48px;border-radius:50%;background:var(--y);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#1A1800}
+.seller-card .sn{font-size:14px;font-weight:700}
+.seller-card .ss{font-size:11px;color:var(--t3)}
+.related{padding:0 16px 24px}
+.related h3{font-size:15px;font-weight:700;margin-bottom:10px}
+.related-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-/* Tabs */
-.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;height:56px;background:#0F0F11;border-top:2px solid var(--y);display:flex;justify-content:space-around;align-items:center;padding-bottom:var(--safe);z-index:50;box-shadow:0 -4px 14px rgba(245,197,24,.05)}
-.tab{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;font-weight:700;color:var(--t3);cursor:pointer;transition:color .15s;border:none;background:none;padding:4px 0}
-.tab.on{color:var(--y)}
-.tab .ti{font-size:18px}
+/* CREATE SCREEN */
+.create-form{padding:16px;flex:1;overflow-y:auto}
+.create-form h2{font-size:20px;font-weight:800;margin-bottom:16px}
+.create-form h2 span{color:var(--y)}
+.create-form .photo-upload{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.create-form .photo-slot{width:80px;height:80px;border:2px dashed var(--b);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--t3);cursor:pointer;overflow:hidden;position:relative}
+.create-form .photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute}
+.create-form .photo-slot .remove{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.7);color:#fff;width:20px;height:20px;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.create-form label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:4px;margin-top:12px}
+.create-form input,.create-form textarea,.create-form select{width:100%;padding:11px 14px;background:var(--c);border:1px solid var(--b);border-radius:var(--r);color:var(--t);font-size:13px;outline:none;font-family:inherit}
+.create-form input:focus,.create-form textarea:focus{border-color:var(--y)}
+.create-form textarea{height:90px;resize:none}
 
-/* Fab */
-.fab{position:fixed;bottom:72px;right:calc(50% - 230px);width:48px;height:48px;background:var(--y);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#1A1800;box-shadow:0 4px 20px rgba(245,197,24,.35);cursor:pointer;z-index:40;border:none;transition:transform .15s}
-.fab:active{transform:scale(.9)}
-@media(max-width:500px){.fab{right:12px}}
+/* PROFILE SCREEN */
+.profile-cover{height:140px;background:linear-gradient(135deg,var(--y),#FFD42A);position:relative}
+.profile-cover .pc-edit{position:absolute;bottom:8px;right:12px;background:rgba(0,0,0,.2);padding:4px 10px;border-radius:8px;font-size:10px;color:#1A1800;font-weight:600;cursor:pointer}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--c);border:3px solid var(--bg);margin-top:-40px;margin-left:20px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative;z-index:2}
+.profile-info{padding:0 20px;margin-bottom:16px}
+.profile-info h2{font-size:20px;font-weight:800;margin-bottom:2px}
+.profile-info .pcity{font-size:12px;color:var(--t3);margin-bottom:6px}
+.profile-info .stars{display:flex;gap:2px;margin-bottom:8px}
+.profile-info .stars span{font-size:16px}
+.profile-tabs{display:flex;border-bottom:1px solid var(--b);margin:0 16px}
+.profile-tab{flex:1;text-align:center;padding:12px 0;font-size:12px;font-weight:700;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent}
+.profile-tab.on{color:var(--y);border-bottom-color:var(--y)}
+.profile-posts{padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-/* Modal */
-.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;align-items:flex-end;justify-content:center}
-.modal.show{display:flex}
-.modal .backdrop{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7)}
-.modal .sheet{position:relative;background:var(--s);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;padding:20px 16px;animation:su .25s ease}
-@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.sheet h3{font-size:17px;font-weight:800;margin-bottom:16px}
-.sheet h3 span{color:var(--y)}
-.sheet label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:4px;margin-top:12px}
-.sheet input,.sheet textarea,.sheet select{width:100%;padding:10px 12px;background:var(--c);border:1px solid var(--b);border-radius:10px;color:var(--t);font-size:13px;outline:none;font-family:inherit}
-.sheet input:focus,.sheet textarea:focus{border-color:var(--y)}
-.sheet textarea{height:80px;resize:none}
-.sheet .btn{width:100%;padding:12px;background:var(--y);color:#1A1800;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px}
-.sheet .btn:disabled{opacity:.5}
-.sheet .close-btn{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer}
+/* TABS */
+.tabs-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;height:58px;background:#0F0F11;border-top:2px solid var(--y);display:flex;justify-content:space-around;align-items:center;padding-bottom:var(--safe);z-index:50}
+.tab-btn{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;font-weight:700;color:var(--t3);cursor:pointer;border:none;background:none;padding:4px 0}
+.tab-btn.on{color:var(--y)}
+.tab-btn .tb-icon{font-size:18px}
 
-/* Detail modal */
-.detail-img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;margin-bottom:14px}
-.detail-price{font-size:24px;font-weight:900;color:var(--y);margin-bottom:4px}
-.detail-title{font-size:18px;font-weight:700;margin-bottom:6px}
-.detail-desc{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px}
-.detail-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.detail-meta span{background:var(--c);padding:5px 10px;border-radius:6px;font-size:11px;color:var(--t2)}
-.wp-btn{width:100%;padding:14px;background:var(--g);color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+/* BACK BUTTON */
+.back-btn{position:absolute;top:12px;left:12px;z-index:10;background:rgba(0,0,0,.5);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;border:none}
 
-/* Toast */
-.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--c);border:1px solid var(--b);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:td .3s ease;pointer-events:none}
+/* TOAST */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--c);border:1px solid var(--b);padding:12px 24px;border-radius:12px;font-size:13px;font-weight:600;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:td .3s ease;pointer-events:none;white-space:nowrap}
 @keyframes td{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-.toast.ok{border-color:#4ADE80;color:#4ADE80}
 
-/* Auth */
-.auth-btns{display:flex;gap:8px;position:relative;z-index:1}
-.auth-btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(0,0,0,.15);background:rgba(0,0,0,.06);color:#1A1800}
-
-/* Empty */
-.empty{text-align:center;padding:40px 20px}
-.empty .ei{font-size:48px;margin-bottom:12px}
-.empty h3{font-size:16px;font-weight:700;margin-bottom:4px}
-.empty p{font-size:12px;color:var(--t3)}
+/* Install banner */
+#installBar{display:none;position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--y);color:#1A1800;padding:12px 20px;border-radius:14px;font-weight:700;font-size:12px;z-index:60;cursor:pointer;box-shadow:0 4px 20px rgba(245,197,24,.3);white-space:nowrap;max-width:90vw}
+#installBar.show{display:block}
 </style>
 </head>
 <body>
 <div id="app">
-  <!-- INSTALL BANNER -->
-  <div id="installBanner">
-    <span class="txt">📲 Adicione à tela inicial</span>
-    <button onclick="installPWA()">Instalar</button>
-    <button class="close" onclick="this.parentElement.classList.remove('show')">✕</button>
+  <!-- ═══ SPLASH ═══ -->
+  <div class="screen" id="splash">
+    <div class="logo-wrap">
+      <img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<div style=font-size:28px;font-weight:900;color:var(--y)>acha<span style=font-size:9px;color:var(--t3)>REGIÃO</span></div>'">
+      <div class="tag">Alto Vale do Itajaí</div>
+    </div>
+    <div class="ring"></div>
   </div>
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="h-top">
-      <img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<b style=font-size:20px;color:#1A1800>acha <small style=font-size:9px>REGIÃO</small></b>'">
-      <div style="display:flex;gap:6px">
-        <span class="h-loc">📍 Alto Vale</span>
-        <div class="auth-btns" id="authBtns">
-          <button class="auth-btn" onclick="openModal('login')">Entrar</button>
-        </div>
+  <!-- ═══ AUTH ═══ -->
+  <div class="screen hidden" id="auth">
+    <div class="auth-container">
+      <img src="assets/logo-text.png" alt="Acha Região" onerror="this.style.display='none'">
+      <h1>Bem-vindo ao <span>Acha</span></h1>
+      <p class="sub">O marketplace da nossa região</p>
+      <div id="authForm">
+        <div class="input-group"><label>Nome completo</label><input type="text" id="regName" placeholder="Seu nome"></div>
+        <div class="input-group"><label>Email</label><input type="email" id="regEmail" placeholder="seu@email.com"></div>
+        <div class="input-group"><label>Senha</label><input type="password" id="regPass" placeholder="Mínimo 6 caracteres"></div>
+        <div class="error" id="authError"></div>
+        <button class="btn" onclick="register()">Criar conta</button>
+        <p class="link" onclick="toggleAuth()">Já tem conta? <span>Entrar</span></p>
+      </div>
+      <div id="loginForm" style="display:none">
+        <div class="input-group"><label>Email</label><input type="email" id="loginEmail" placeholder="seu@email.com"></div>
+        <div class="input-group"><label>Senha</label><input type="password" id="loginPass" placeholder="Sua senha"></div>
+        <div class="error" id="loginError"></div>
+        <button class="btn" onclick="login()">Entrar</button>
+        <p class="link" onclick="toggleAuth()">Não tem conta? <span>Criar conta</span></p>
       </div>
     </div>
-    <div class="search-box">
-      <span style="font-size:14px">🔍</span>
-      <input type="text" id="searchIpt" placeholder="O que você procura?" oninput="render()">
+  </div>
+
+  <!-- ═══ FEED ═══ -->
+  <div class="screen hidden" id="feed">
+    <div class="header">
+      <div class="h-row">
+        <img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<b style=font-size:18px;color:#1A1800>acha</b>'">
+      </div>
+      <div class="search-wrap"><span style="font-size:14px">🔍</span><input type="text" id="feedSearch" placeholder="Buscar produtos..." oninput="renderFeed()"></div>
+    </div>
+    <div class="loc-row" id="locRow"></div>
+    <div class="sec-row"><h3 id="feedTitle">Todos os produtos</h3><span id="feedCount"></span></div>
+    <div class="feed-grid" id="feedGrid"></div>
+    <div class="tabs-bar">
+      <button class="tab-btn on" onclick="navTab('feed',this)"><span class="tb-icon">🏷️</span>Explorar</button>
+      <button class="tab-btn" onclick="navTab('create',this)"><span class="tb-icon">📦</span>Anunciar</button>
+      <button class="tab-btn" onclick="navTab('profile',this)"><span class="tb-icon">👤</span>Perfil</button>
     </div>
   </div>
 
-  <!-- CATEGORIES -->
-  <div class="cats" id="catRow"></div>
+  <!-- ═══ CREATE ═══ -->
+  <div class="screen hidden" id="create">
+    <div class="header"><div class="h-row"><b style="font-size:18px;color:#1A1800">📦 Novo anúncio</b></div></div>
+    <div class="create-form">
+      <div class="photo-upload">
+        <div class="photo-slot" onclick="document.getElementById('photoInput').click()">+</div>
+        <input type="file" id="photoInput" accept="image/*" multiple hidden onchange="handlePhotos(event)">
+      </div>
+      <label>Título *</label><input type="text" id="cTitle" placeholder="Ex: Sofá 3 lugares retrátil" maxlength="100">
+      <label>Descrição *</label><textarea id="cDesc" placeholder="Descreva o produto em detalhes..."></textarea>
+      <label>Preço (R$) *</label><input type="number" id="cPrice" placeholder="850" min="0">
+      <label>Categoria</label><select id="cCat"><option>Móveis</option><option>Eletrônicos</option><option>Veículos</option><option>Roupas</option><option>Esportes</option><option>Casa</option><option>Ferramentas</option></select>
+      <label>Localização *</label><select id="cCity"><option>Presidente Getúlio</option><option>Rio do Sul</option><option>Ibirama</option><option>Laurentino</option><option>Lontras</option><option>Aurora</option></select>
+      <button class="btn" style="margin-top:20px" onclick="publishProduct()">📢 Publicar anúncio</button>
+    </div>
+    <div class="tabs-bar">
+      <button class="tab-btn" onclick="navTab('feed',this)"><span class="tb-icon">🏷️</span>Explorar</button>
+      <button class="tab-btn on" onclick="navTab('create',this)"><span class="tb-icon">📦</span>Anunciar</button>
+      <button class="tab-btn" onclick="navTab('profile',this)"><span class="tb-icon">👤</span>Perfil</button>
+    </div>
+  </div>
 
-  <!-- SECTION -->
-  <div class="sec"><h2 id="secTitle">Em destaque</h2><span id="secCount"></span></div>
+  <!-- ═══ PROFILE ═══ -->
+  <div class="screen hidden" id="profile">
+    <div class="profile-cover"><div class="pc-edit">✏️ Editar capa</div></div>
+    <div class="profile-avatar">👤</div>
+    <div class="profile-info">
+      <h2 id="profName"></h2>
+      <p class="pcity" id="profCity"></p>
+      <div class="stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div>
+    </div>
+    <div class="profile-tabs">
+      <div class="profile-tab on" onclick="profileTab('posts',this)">Meus anúncios</div>
+      <div class="profile-tab" onclick="profileTab('about',this)">Sobre</div>
+    </div>
+    <div class="profile-posts" id="profPosts"></div>
+    <div class="tabs-bar">
+      <button class="tab-btn" onclick="navTab('feed',this)"><span class="tb-icon">🏷️</span>Explorar</button>
+      <button class="tab-btn" onclick="navTab('create',this)"><span class="tb-icon">📦</span>Anunciar</button>
+      <button class="tab-btn on" onclick="navTab('profile',this)"><span class="tb-icon">👤</span>Perfil</button>
+    </div>
+  </div>
 
-  <!-- PRODUCT GRID -->
-  <div class="content"><div class="grid" id="grid"></div></div>
-
-  <!-- FAB -->
-  <button class="fab" onclick="openModal('create')" title="Anunciar">+</button>
-
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab on" onclick="switchTab('home',this)"><span class="ti">🏷️</span>Produtos</button>
-    <button class="tab" onclick="switchTab('services',this)"><span class="ti">👤</span>Serviços</button>
-    <button class="tab" onclick="switchTab('rent',this)"><span class="ti">🏠</span>Aluguéis</button>
-    <button class="tab" onclick="switchTab('profile',this)"><span class="ti">☰</span>Perfil</button>
+  <!-- ═══ DETAIL ═══ -->
+  <div class="screen hidden" id="detail">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="detail-scroll" id="detailScroll"></div>
+    <div class="tabs-bar">
+      <button class="tab-btn on" onclick="navTab('feed',this)"><span class="tb-icon">🏷️</span>Explorar</button>
+      <button class="tab-btn" onclick="navTab('create',this)"><span class="tb-icon">📦</span>Anunciar</button>
+      <button class="tab-btn" onclick="navTab('profile',this)"><span class="tb-icon">👤</span>Perfil</button>
+    </div>
   </div>
 </div>
 
-<!-- CREATE LISTING MODAL -->
-<div class="modal" id="modalCreate">
-  <div class="backdrop" onclick="closeModal('create')"></div>
-  <div class="sheet">
-    <button class="close-btn" onclick="closeModal('create')">✕</button>
-    <h3>📦 <span>Anunciar produto</span></h3>
-    <label>Título *</label>
-    <input type="text" id="newTitle" placeholder="Ex: Sofá 3 lugares retrátil" maxlength="100">
-    <label>Categoria</label>
-    <select id="newCat"><option>Móveis</option><option>Eletrônicos</option><option>Veículos</option><option>Roupas</option><option>Esportes</option><option>Casa</option><option>Ferramentas</option></select>
-    <label>Preço (R$) *</label>
-    <input type="number" id="newPrice" placeholder="Ex: 850" min="0">
-    <label>Cidade</label>
-    <select id="newCity"><option>Presidente Getúlio</option><option>Rio do Sul</option><option>Ibirama</option><option>Laurentino</option><option>Lontras</option><option>Aurora</option></select>
-    <label>URL da imagem</label>
-    <input type="url" id="newImg" placeholder="https://... (cole o link da foto)">
-    <label>WhatsApp para contato *</label>
-    <input type="tel" id="newWhats" placeholder="(47) 99999-9999">
-    <button class="btn" onclick="createListing()">📢 Publicar anúncio</button>
-  </div>
+<!-- TUTORIAL OVERLAY -->
+<div id="tutorial" style="display:none" class="tutorial-overlay">
+  <div class="tutorial-card" id="tuCard"></div>
 </div>
 
-<!-- LOGIN MODAL -->
-<div class="modal" id="modalLogin">
-  <div class="backdrop" onclick="closeModal('login')"></div>
-  <div class="sheet">
-    <button class="close-btn" onclick="closeModal('login')">✕</button>
-    <h3>👤 <span>Entrar</span></h3>
-    <label>Seu nome *</label>
-    <input type="text" id="loginName" placeholder="Seu nome completo">
-    <label>WhatsApp *</label>
-    <input type="tel" id="loginWhats" placeholder="(47) 99999-9999">
-    <label>Cidade</label>
-    <select id="loginCity"><option>Presidente Getúlio</option><option>Rio do Sul</option><option>Ibirama</option><option>Laurentino</option><option>Lontras</option><option>Aurora</option></select>
-    <button class="btn" onclick="doLogin()">Entrar</button>
-  </div>
-</div>
+<!-- TOAST CONTAINER -->
+<div id="toastContainer" style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:400"></div>
 
-<!-- DETAIL MODAL -->
-<div class="modal" id="modalDetail">
-  <div class="backdrop" onclick="closeModal('detail')"></div>
-  <div class="sheet">
-    <button class="close-btn" onclick="closeModal('detail')">✕</button>
-    <div id="detailContent"></div>
-  </div>
-</div>
+<div id="installBar" onclick="installPWA()">📲 Toque para instalar o app</div>
 
 <script>
-// ─── STATE ───
-const CATS = ['Todos','Eletrônicos','Móveis','Veículos','Roupas','Esportes','Casa','Ferramentas'];
-const API = 'https://acha-regiao-api.onrender.com/api';
-let products = [], activeCat = 'Todos', user = null;
+// ═══════════ STATE ═══════════
+let user = null;
+let products = [];
+let currentScreen = 'splash';
+let screenHistory = [];
+let photoData = [];
 
-// ─── INIT ───
+// ═══════════ INIT ═══════════
 function init() {
   // Load user
-  const saved = localStorage.getItem('acha_user');
-  if (saved) { user = JSON.parse(saved); updateAuthUI(); }
-  
-  // PWA
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    document.getElementById('installBanner').classList.remove('show');
-  }
-  
-  // Categories
-  document.getElementById('catRow').innerHTML = CATS.map((c,i) => 
-    `<span class="cat${i===0?' on':''}" onclick="selCat('${c}',this)">${c}</span>`
-  ).join('');
+  const saved = localStorage.getItem('acha_user_v2');
+  if (saved) user = JSON.parse(saved);
   
   // Load products
   loadProducts();
   
-  // Listen for install
+  // Splash → Auth or Feed
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('fade','hidden');
+    if (user) {
+      showScreen('feed');
+    } else {
+      showScreen('auth');
+    }
+  }, 2000);
+  
+  // PWA
   window.addEventListener('beforeinstallprompt', (e) => {
-    window._pwaEvent = e;
-    document.getElementById('installBanner').classList.add('show');
+    window._pwa = e;
+    document.getElementById('installBar').classList.add('show');
   });
-}
-
-async function loadProducts() {
-  try {
-    const r = await fetch(`${API}/products`);
-    const apiData = await r.json();
-    products = [...apiData, ...getLocalListings()];
-  } catch(e) {
-    products = [...getLocalListings(), ...getMockFallback()];
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    document.getElementById('installBar').classList.remove('show');
   }
-  render();
 }
 
-function getLocalListings() {
-  try { return JSON.parse(localStorage.getItem('acha_listings')||'[]'); } catch(e) { return []; }
+function loadProducts() {
+  // Try API first
+  fetch('https://acha-regiao-api.onrender.com/api/products')
+    .then(r => r.json()).then(d => { products = [...d, ...getLocalProducts()]; renderFeed(); })
+    .catch(() => { products = [...getLocalProducts(), ...getDefaults()]; renderFeed(); });
+  
+  // Also load immediately from local
+  products = [...getLocalProducts(), ...getDefaults()];
+  setTimeout(() => renderFeed(), 100);
 }
-function saveLocalListings(arr) { localStorage.setItem('acha_listings', JSON.stringify(arr)); }
 
-function getMockFallback() {
+function getLocalProducts() {
+  try { return JSON.parse(localStorage.getItem('acha_products_v2')||'[]'); } catch(e) { return []; }
+}
+function saveProducts() {
+  const local = products.filter(p => p.id && p.id.startsWith('local_'));
+  localStorage.setItem('acha_products_v2', JSON.stringify(local));
+}
+
+function getDefaults() {
   return [
-    {id:'m1',title:'iPhone 13 Pro 128GB',price:3200,city:'Rio do Sul',category:'Eletrônicos',destaque:true,imageUrl:'https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=400&h=300&fit=crop'},
-    {id:'m2',title:'Sofá 3 Lugares Retrátil',price:850,city:'Presidente Getúlio',category:'Móveis',destaque:false,imageUrl:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop'},
-    {id:'m3',title:'Honda CG 160 Titan 2023',price:14500,city:'Ibirama',category:'Veículos',destaque:true,imageUrl:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400&h=300&fit=crop'},
-    {id:'m4',title:'Geladeira Frost Free 375L',price:1800,city:'Rio do Sul',category:'Eletrônicos',destaque:false,imageUrl:'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400&h=300&fit=crop'},
+    {id:'d1',title:'iPhone 13 Pro 128GB Grafite',desc:'Como novo, com nota fiscal e caixa. 1 ano de uso.',price:3200,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=600&h=450&fit=crop'],sellerName:'Marcos Silva',sellerStars:4.8},
+    {id:'d2',title:'Sofá 3 Lugares Retrátil Bege',desc:'Sofá confortável, pouco uso. Retrátil nos 3 lugares.',price:850,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=450&fit=crop'],sellerName:'Ana Oliveira',sellerStars:4.5},
+    {id:'d3',title:'Honda CG 160 Titan 2023',desc:'8.000km, revisões em dia, pneus novos.',price:14500,city:'Ibirama',category:'Veículos',images:['https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=450&fit=crop'],sellerName:'João Santos',sellerStars:4.9},
+    {id:'d4',title:'Geladeira Brastemp 375L',desc:'Frost Free, 2 anos de uso, funcionando perfeitamente.',price:1800,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=450&fit=crop'],sellerName:'Carla Mendes',sellerStars:4.6},
+    {id:'d5',title:'Mesa de Jantar 6 Lugares',desc:'Mesa + 6 cadeiras estofadas. Madeira maciça.',price:650,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1556909114-f6e7ad7d6ab6?w=600&h=450&fit=crop'],sellerName:'Pedro Costa',sellerStars:4.3},
+    {id:'d6',title:'Kit Halteres 20kg + Barra',desc:'Halteres, barra e anilhas. Perfeito estado.',price:280,city:'Laurentino',category:'Esportes',images:['https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=450&fit=crop'],sellerName:'Lucas Alves',sellerStars:4.7},
   ];
 }
 
-// ─── RENDER ───
-function selCat(cat, el) {
-  activeCat = cat;
-  document.querySelectorAll('.cat').forEach(c => c.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('secTitle').textContent = cat === 'Todos' ? 'Em destaque' : cat;
-  render();
+// ═══════════ SCREENS ═══════════
+function showScreen(name) {
+  // Hide all
+  document.querySelectorAll('.screen').forEach(s => {
+    if (s.id !== name) s.classList.add('hidden');
+  });
+  document.getElementById(name).classList.remove('hidden','hidden-left','fade');
+  currentScreen = name;
+  
+  if (name === 'feed') renderFeed();
+  if (name === 'profile') renderProfile();
 }
 
-function render() {
-  let f = activeCat === 'Todos' ? products : products.filter(p => p.category === activeCat);
-  const q = document.getElementById('searchIpt').value.toLowerCase();
-  if (q) f = f.filter(p => p.title.toLowerCase().includes(q) || (p.city||'').toLowerCase().includes(q));
+function goBack() { showScreen('feed'); }
+
+function navTab(tab, el) {
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('on'));
+  if (el) el.classList.add('on');
+  showScreen(tab);
+}
+
+// ═══════════ AUTH ═══════════
+function toggleAuth() {
+  const form = document.getElementById('authForm');
+  const login = document.getElementById('loginForm');
+  if (form.style.display === 'none') { form.style.display = 'block'; login.style.display = 'none'; }
+  else { form.style.display = 'none'; login.style.display = 'block'; }
+  document.getElementById('authError').textContent = '';
+  document.getElementById('loginError').textContent = '';
+}
+
+function register() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const errEl = document.getElementById('authError');
   
-  document.getElementById('secCount').textContent = `${f.length} itens`;
-  document.getElementById('grid').innerHTML = f.map(p => `
-    <div class="prod" onclick="openDetail('${p.id}')">
-      <div class="pw">
-        <img src="${p.imageUrl||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop'">
-        ${p.destaque?'<span class="badge">Destaque</span>':''}
-        <div class="po"></div>
+  if (!name || !email || !pass) { errEl.textContent = 'Preencha todos os campos'; return; }
+  if (pass.length < 6) { errEl.textContent = 'Senha deve ter no mínimo 6 caracteres'; return; }
+  if (!email.includes('@')) { errEl.textContent = 'Email inválido'; return; }
+  
+  // Check existing
+  const users = JSON.parse(localStorage.getItem('acha_users')||'[]');
+  if (users.find(u => u.email === email)) { errEl.textContent = 'Este email já está cadastrado'; return; }
+  
+  user = { id:'u_'+Date.now(), name, email, password: pass, city:'Presidente Getúlio', stars:0, createdAt: new Date().toISOString() };
+  users.push(user);
+  localStorage.setItem('acha_users', JSON.stringify(users));
+  localStorage.setItem('acha_user_v2', JSON.stringify(user));
+  
+  showTutorial();
+}
+
+function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  
+  const users = JSON.parse(localStorage.getItem('acha_users')||'[]');
+  const found = users.find(u => u.email === email && u.password === pass);
+  if (!found) { errEl.textContent = 'Email ou senha incorretos'; return; }
+  
+  user = found;
+  localStorage.setItem('acha_user_v2', JSON.stringify(user));
+  showScreen('feed');
+  toast('👋 Bem-vindo de volta, ' + user.name.split(' ')[0] + '!');
+}
+
+// ═══════════ TUTORIAL ═══════════
+const tutorialSteps = [
+  {icon:'👤',title:'Seu <span>Perfil</span>',text:'Aqui é sua identidade no Acha Região. Coloque uma foto para as pessoas te reconhecerem.',btn:'Próximo'},
+  {icon:'⭐',title:'Suas <span>Estrelas</span>',text:'Ao vender produtos ou realizar serviços, os compradores vão te avaliar. Quanto mais estrelas, mais confiança!',btn:'Entendi'},
+  {icon:'📦',title:'Seus <span>Anúncios</span>',text:'Aqui você lista tudo o que quer vender. Fotos, preço, descrição — quanto mais completo, mais rápido vende!',btn:'Começar!'},
+];
+
+function showTutorial() {
+  let step = 0;
+  const overlay = document.getElementById('tutorial');
+  const card = document.getElementById('tuCard');
+  overlay.style.display = 'flex';
+  
+  function renderStep() {
+    const s = tutorialSteps[step];
+    card.innerHTML = `
+      <div class="tu-icon">${s.icon}</div>
+      <h2>${s.title}</h2>
+      <p>${s.text}</p>
+      <div class="tu-dots">${tutorialSteps.map((_,i) => `<div class="tu-dot${i===step?' on':''}"></div>`).join('')}</div>
+      <button onclick="tutorialNext()">${s.btn}</button>
+    `;
+  }
+  
+  window.tutorialNext = function() {
+    step++;
+    if (step >= tutorialSteps.length) {
+      overlay.style.display = 'none';
+      showScreen('profile');
+      toast('🎉 Perfil criado! Agora anuncie seu primeiro produto.');
+    } else {
+      renderStep();
+    }
+  };
+  
+  renderStep();
+}
+
+// ═══════════ FEED ═══════════
+function renderFeed() {
+  const search = (document.getElementById('feedSearch')?.value || '').toLowerCase();
+  let filtered = [...products];
+  if (search) filtered = filtered.filter(p => p.title.toLowerCase().includes(search));
+  
+  document.getElementById('feedCount').textContent = filtered.length + ' itens';
+  document.getElementById('feedGrid').innerHTML = filtered.map(p => `
+    <div class="card-item" onclick="openDetail('${p.id}')">
+      <div class="ciw">
+        <img src="${(p.images&&p.images[0])||p.imageUrl||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'">
+        ${p.id==='d1'||p.id==='d3'?'<span class="badge">Destaque</span>':''}
+        <div class="grad"></div>
       </div>
-      <div class="pb">
-        <span class="pt">${p.title}</span>
-        <span class="pp">R$ ${p.price.toLocaleString('pt-BR')}</span>
-        <span class="pc"><span class="pd"></span>${p.city||'Alto Vale'}</span>
-      </div>
+      <div class="cib"><span class="cit">${p.title}</span><span class="cip">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="cic"><span class="cidot"></span>${p.city}</span></div>
     </div>
   `).join('');
 }
 
-// ─── CREATE LISTING ───
-function createListing() {
-  if (!user) { openModal('login'); return; }
-  
-  const title = document.getElementById('newTitle').value.trim();
-  const price = parseInt(document.getElementById('newPrice').value);
-  const whats = document.getElementById('newWhats').value.trim();
-  
-  if (!title || !price || !whats) { toast('Preencha título, preço e WhatsApp'); return; }
-  
-  const listing = {
-    id: 'local_'+Date.now(),
-    title,
-    price,
-    city: document.getElementById('newCity').value,
-    category: document.getElementById('newCat').value,
-    imageUrl: document.getElementById('newImg').value || 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop',
-    destaque: false,
-    whatsapp: whats,
-    sellerId: user.id,
-    sellerName: user.name,
-    createdAt: new Date().toISOString()
-  };
-  
-  const local = getLocalListings();
-  local.unshift(listing);
-  saveLocalListings(local);
-  products.unshift(listing);
-  
-  // Clear form
-  ['newTitle','newPrice','newImg','newWhats'].forEach(id => document.getElementById(id).value = '');
-  
-  closeModal('create');
-  render();
-  toast('✅ Anúncio publicado!');
-}
-
-// ─── AUTH ───
-function doLogin() {
-  const name = document.getElementById('loginName').value.trim();
-  const whats = document.getElementById('loginWhats').value.trim();
-  if (!name || !whats) { toast('Preencha nome e WhatsApp'); return; }
-  
-  user = {
-    id: 'u_'+Date.now(),
-    name,
-    whatsapp: whats,
-    city: document.getElementById('loginCity').value,
-    createdAt: new Date().toISOString()
-  };
-  localStorage.setItem('acha_user', JSON.stringify(user));
-  updateAuthUI();
-  closeModal('login');
-  toast(`👋 Bem-vindo, ${name.split(' ')[0]}!`);
-}
-
-function updateAuthUI() {
-  if (user) {
-    document.getElementById('authBtns').innerHTML = `<span style="font-size:11px;font-weight:700;color:#1A1800;display:flex;align-items:center">👤 ${user.name.split(' ')[0]}</span>`;
-  }
-}
-
-// ─── DETAIL ───
+// ═══════════ DETAIL ═══════════
 function openDetail(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   
-  document.getElementById('detailContent').innerHTML = `
-    <img src="${p.imageUrl}" class="detail-img" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop'">
-    <div class="detail-price">R$ ${p.price.toLocaleString('pt-BR')}</div>
-    <div class="detail-title">${p.title}</div>
-    <div class="detail-meta">
-      <span>📦 ${p.category||'Produto'}</span><span>📍 ${p.city||'Alto Vale'}</span>
-      ${p.sellerName?`<span>👤 ${p.sellerName}</span>`:''}
+  const images = p.images && p.images.length ? p.images : (p.imageUrl ? [p.imageUrl] : ['https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop']);
+  const related = products.filter(x => x.id !== id && (x.category === p.category || x.city === p.city)).slice(0,4);
+  
+  document.getElementById('detailScroll').innerHTML = `
+    <div class="detail-gallery">
+      <img src="${images[0]}" alt="${p.title}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop'">
+      ${images.length > 1 ? `<div class="dots">${images.map((_,i) => `<div class="dot${i===0?' on':''}"></div>`).join('')}</div>` : ''}
     </div>
-    ${p.whatsapp?`
-    <a href="https://wa.me/55${p.whatsapp.replace(/\D/g,'')}?text=Olá! Vi o anúncio "${p.title}" no Acha Região" target="_blank" style="text-decoration:none">
-      <button class="wp-btn">💬 Chamar no WhatsApp</button>
-    </a>`:''}
+    <div class="detail-info">
+      <div class="dp">R$ ${p.price.toLocaleString('pt-BR')}</div>
+      <div class="dt">${p.title}</div>
+      <div class="dd">${p.desc||'Sem descrição.'}</div>
+      <div class="dm">
+        <span>📦 ${p.category}</span><span>📍 ${p.city}</span>
+      </div>
+    </div>
+    <div class="seller-card">
+      <div class="sa">${(p.sellerName||'?')[0]}</div>
+      <div><div class="sn">${p.sellerName||'Vendedor'}</div><div class="ss">⭐ ${p.sellerStars||'4.5'} • Membro desde 2026</div></div>
+    </div>
+    ${related.length ? `<div class="related"><h3>Produtos relacionados</h3><div class="related-grid">${related.map(r => `
+      <div class="card-item" onclick="openDetail('${r.id}')">
+        <div class="ciw"><img src="${(r.images&&r.images[0])||r.imageUrl||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}"><div class="grad"></div></div>
+        <div class="cib"><span class="cit">${r.title}</span><span class="cip">R$ ${r.price.toLocaleString('pt-BR')}</span></div>
+      </div>
+    `).join('')}</div></div>` : ''}
+    ${p.whatsapp?`<div style="padding:0 16px 24px"><a href="https://wa.me/55${p.whatsapp.replace(/\D/g,'')}?text=Olá! Vi o anúncio '${encodeURIComponent(p.title)}' no Acha Região" target="_blank" style="text-decoration:none"><button style="width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer">💬 Chamar no WhatsApp</button></a></div>`:''}
   `;
-  openModal('detail');
+  
+  showScreen('detail');
 }
 
-// ─── MODAL ───
-function openModal(id) { document.getElementById('modal'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('show'); }
-function closeModal(id) { document.getElementById('modal'+id.charAt(0).toUpperCase()+id.slice(1)).classList.remove('show'); }
+// ═══════════ CREATE ═══════════
+function handlePhotos(e) {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      photoData.push(ev.target.result);
+      renderPhotos();
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
-// ─── TABS ───
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+function renderPhotos() {
+  const container = document.querySelector('.photo-upload');
+  container.innerHTML = photoData.map((url,i) => `
+    <div class="photo-slot"><img src="${url}"><span class="remove" onclick="removePhoto(${i})">✕</span></div>
+  `).join('') + `<div class="photo-slot" onclick="document.getElementById('photoInput').click()">+</div>`;
+}
+
+function removePhoto(i) { photoData.splice(i,1); renderPhotos(); }
+
+function publishProduct() {
+  if (!user) { showScreen('auth'); return; }
+  
+  const title = document.getElementById('cTitle').value.trim();
+  const desc = document.getElementById('cDesc').value.trim();
+  const price = document.getElementById('cPrice').value;
+  
+  if (!title) { toast('⚠️ Título é obrigatório'); return; }
+  if (!desc) { toast('⚠️ Descrição é obrigatória'); return; }
+  if (!price) { toast('⚠️ Preço é obrigatório'); return; }
+  
+  const product = {
+    id: 'local_'+Date.now(),
+    title, desc, price: parseInt(price),
+    category: document.getElementById('cCat').value,
+    city: document.getElementById('cCity').value,
+    images: photoData.length ? photoData : ['https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'],
+    sellerId: user.id,
+    sellerName: user.name,
+    sellerStars: user.stars || 4.5,
+    createdAt: new Date().toISOString()
+  };
+  
+  products.unshift(product);
+  saveProducts();
+  
+  // Clear
+  document.getElementById('cTitle').value = '';
+  document.getElementById('cDesc').value = '';
+  document.getElementById('cPrice').value = '';
+  photoData = [];
+  renderPhotos();
+  
+  showScreen('feed');
+  toast('✅ Anúncio publicado!');
+}
+
+// ═══════════ PROFILE ═══════════
+function renderProfile() {
+  if (!user) { showScreen('auth'); return; }
+  document.getElementById('profName').textContent = user.name;
+  document.getElementById('profCity').textContent = '📍 ' + (user.city||'Alto Vale');
+  
+  const myProducts = products.filter(p => p.sellerId === user.id);
+  document.getElementById('profPosts').innerHTML = myProducts.length ? myProducts.map(p => `
+    <div class="card-item" onclick="openDetail('${p.id}')">
+      <div class="ciw"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}"><div class="grad"></div></div>
+      <div class="cib"><span class="cit">${p.title}</span><span class="cip">R$ ${p.price.toLocaleString('pt-BR')}</span></div>
+    </div>
+  `).join('') : '<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--t3)">📦 Nenhum anúncio ainda<br><span style="font-size:12px">Vá em "Anunciar" para criar seu primeiro!</span></div>';
+}
+
+function profileTab(tab, el) {
+  document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('on'));
   el.classList.add('on');
-  if (tab === 'services') toast('👤 Serviços em breve');
-  if (tab === 'rent') toast('🏠 Aluguéis em breve');
-  if (tab === 'profile') {
-    if (!user) openModal('login');
-    else toast(`👤 ${user.name} • ${user.city}`);
-  }
 }
 
-// ─── PWA ───
+// ═══════════ PWA ═══════════
 function installPWA() {
-  if (window._pwaEvent) {
-    window._pwaEvent.prompt();
-    window._pwaEvent.userChoice.then(() => {
-      document.getElementById('installBanner').classList.remove('show');
-    });
-  } else {
-    toast('📲 No iPhone: Abra no Safari → Compartilhar → Adicionar à Tela');
-  }
+  if (window._pwa) { window._pwa.prompt(); document.getElementById('installBar').classList.remove('show'); }
+  else { toast('📲 iPhone: Abra no Safari → Compartilhar → Adicionar à Tela'); }
 }
 
-// ─── TOAST ───
+// ═══════════ TOAST ═══════════
 function toast(msg) {
   const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
+  t.className = 'toast'; t.textContent = msg;
+  document.getElementById('toastContainer').appendChild(t);
   setTimeout(() => t.remove(), 2500);
 }
 
-// ─── START ───
+// ═══════════ START ═══════════
 init();
 </script>
 </body>
