@@ -1,0 +1,125 @@
+{
+  "gpt_plan": {
+    "app": {
+      "name": "Acha Região",
+      "screens": {
+        "splash": {
+          "duration": "2s",
+          "animation": "logoAnimation",
+          "next": "auth"
+        },
+        "auth": {
+          "components": {
+            "toggle": [
+              "Register",
+              "Login"
+            ],
+            "form": {
+              "register": [
+                "Name",
+                "Email",
+                "Password"
+              ],
+              "login": [
+                "Email",
+                "Password"
+              ]
+            },
+            "submit": "button"
+          },
+          "next": {
+            "register": "tutorial",
+            "login": "feed"
+          }
+        },
+        "tutorial": {
+          "steps": [
+            "Welcome to Acha Região! Discover local products.",
+            "Create and list your own products easily.",
+            "Manage your profile and listings."
+          ],
+          "next": "feed"
+        },
+        "feed": {
+          "components": {
+            "searchBar": "input",
+            "locationFilters": "dropdown",
+            "productGrid": {
+              "columns": 2,
+              "productCard": [
+                "image",
+                "title",
+                "price"
+              ]
+            }
+          },
+          "actions": {
+            "tapProduct": "detail",
+            "tabCreate": "create",
+            "tabProfile": "profile"
+          }
+        },
+        "detail": {
+          "components": {
+            "imageGallery": "carousel",
+            "price": "text",
+            "description": "text",
+            "sellerCard": [
+              "avatar",
+              "name",
+              "contact"
+            ],
+            "relatedProducts": "grid",
+            "whatsappButton": "button"
+          },
+          "actions": {
+            "back": "feed"
+          }
+        },
+        "create": {
+          "components": {
+            "form": {
+              "photos": "fileUpload",
+              "title": "input",
+              "description": "textarea",
+              "price": "input",
+              "location": "dropdown"
+            },
+            "submit": "button"
+          },
+          "next": "feed"
+        },
+        "profile": {
+          "components": {
+            "avatar": "image",
+            "cover": "image",
+            "stars": "rating",
+            "userListings": "grid"
+          },
+          "actions": {
+            "back": "feed"
+          }
+        }
+      },
+      "dataFlow": {
+        "localStorage": {
+          "store": [
+            "userData",
+            "products",
+            "userListings"
+          ],
+          "retrieve": [
+            "userData",
+            "products",
+            "userListings"
+          ]
+        }
+      },
+      "pwa": {
+        "standalone": true,
+        "addToHomeScreen": true
+      }
+    }
+  },
+  "claude_design": "{\n  \"colors\": {\n    \"bg\": \"#09090B\",\n    \"bgElevated\": \"#0F0F12\",\n    \"surface\": \"#141417\",\n    \"card\": \"#18181C\",\n    \"cardHover\": \"#1D1D22\",\n    \"border\": \"#252529\",\n    \"borderSubtle\": \"#1C1C20\",\n    \"textPrimary\": \"#FAFAFA\",\n    \"textSecondary\": \"#A1A1AA\",\n    \"textTertiary\": \"#6B6B70\",\n    \"textDisabled\": \"#3F3F46\",\n    \"accent\": \"#F5C518\",\n    \"accentHover\": \"#FFD84D\",\n    \"accentPressed\": \"#D9AC0E\",\n    \"accentMuted\": \"#F5C51833\",\n    \"accentGlow\": \"#F5C51859\",\n    \"onAccent\": \"#0B0B0C\",\n    \"success\": \"#34D399\",\n    \"warning\": \"#FBBF24\",\n    \"error\": \"#F87171\",\n    \"info\": \"#60A5FA\",\n    \"overlay\": \"#000000B3\",\n    \"glassFill\": \"#FFFFFF0D\",\n    \"glassBorder\": \"#FFFFFF1A\",\n    \"whatsapp\": \"#25D366\"\n  },\n  \"typography\": {\n    \"fontFamily\": \"Inter\",\n    \"h1\": { \"size\": 28, \"weight\": 700, \"lineHeight\": 34, \"letterSpacing\": -0.5 },\n    \"h2\": { \"size\": 22, \"weight\": 700, \"lineHeight\": 28, \"letterSpacing\": -0.3 },\n    \"h3\": { \"size\": 18, \"weight\": 600, \"lineHeight\": 24, \"letterSpacing\": -0.2 },\n    \"body\": { \"size\": 15, \"weight\": 400, \"lineHeight\": 22, \"letterSpacing\": 0 },\n    \"bodyMedium\": { \"size\": 15, \"weight\": 500, \"lineHeight\": 22, \"letterSpacing\": 0 },\n    \"caption\": { \"size\": 13, \"weight\": 400, \"lineHeight\": 18, \"letterSpacing\": 0.1 },\n    \"micro\": { \"size\": 11, \"weight\": 500, \"lineHeight\": 14, \"letterSpacing\": 0.3 },\n    \"price\": { \"size\": 20, \"weight\": 800, \"lineHeight\": 24, \"letterSpacing\": -0.4 },\n    \"priceSmall\": { \"size\": 16, \"weight\": 700, \"lineHeight\": 20, \"letterSpacing\": -0.2 },\n    \"button\": { \"size\": 16, \"weight\": 600, \"lineHeight\": 20, \"letterSpacing\": 0.1 },\n    \"tabLabel\": { \"size\": 11, \"weight\": 600, \"lineHeight\": 14, \"letterSpacing\": 0.2 },\n    \"logo\": { \"size\": 32, \"weight\": 800, \"lineHeight\": 36, \"letterSpacing\": -0.8 }\n  },\n  \"spacing\": {\n    \"screenPadding\": 16,\n    \"cardPadding\": 14,\n    \"sectionGap\": 24,\n    \"inputPadding\": 14,\n    \"gridGap\": 12,\n    \"componentGap\": 8,\n    \"tabBarHeight\": 64,\n    \"headerHeight\": 56\n  },\n  \"radii\": {\n    \"card\": 18,\n    \"button\": 14,\n    \"input\": 12,\n    \"badge\": 100,\n    \"avatar\": 100,\n    \"modal\": 24,\n    \"chip\": 100,\n    \"image\": 16\n  },\n  \"shadows\": {\n    \"card\": \"0 4px 16px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)\",\n    \"cardHover\": \"0 8px 24px rgba(0,0,0,0.5)\",\n    \"button\": \"0 4px 14px rgba(245,197,24,0.35)\",\n    \"buttonPressed\": \"0 2px 6px rgba(245,197,24,0.25)\",\n    \"header\": \"0 2px 12px rgba(0,0,0,0.35)\",\n    \"modal\": \"0 -8px 32px rgba(0,0,0,0.55)\",\n    \"fab\": \"0 6px 20px rgba(245,197,24,0.45)\"\n  },\n  \"animations\": {\n    \"splash\": {\n      \"logoScale\": \"0.8 to 1.0 over 600ms cubic-bezier(0.34,1.56,0.64,1)\",\n      \"logoGlowPulse\": \"opacity 0.4 to 0.8 loop 1000ms ease-in-out\",\n      \"exitFade\": \"fade+scale-up 400ms ease-in at 1600ms\"\n    },\n    \"pageTransition\": {\n      \"forward\": \"slide-in from right 320ms cubic-bezier(0.32,0.72,0,1) + fade\",\n      \"back\": \"slide-out to right 280ms ease-in\",\n      \"tabSwitch\": \"crossfade 200ms ease-out\"\n    },\n    \"cardEntrance\": {\n      \"type\": \"staggered fade+translateY(12px to 0)\",\n      \"duration\": 350,\n      \"stagger\": 40,\n      \"easing\": \"cubic-bezier(0.16,1,0.3,1)\"\n    },\n    \"modal\": {\n      \"enter\": \"slide-up from bottom 320ms cubic-bezier(0.32,0.72,0,1) + backdrop fade 250ms\",\n      \"exit\": \"slide-down 240ms ease-in\"\n    },\n    \"toast\": {\n      \"enter\": \"slide-down+fade 280ms cubic-bezier(0.34,1.56,0.64,1)\",\n      \"exit\": \"fade+translateY(-8px) 200ms ease-in\",\n      \"duration\": 2800\n    },\n    \"buttonPress\": \"scale(0.96) 100ms ease-out\",\n    \"rippleAccent\": \"radial expand 400ms opacity 0.3 to 0\"\n  },\n  \"component_specs\": {\n    \"product_card\": {\n      \"layout\": \"vertical, image top 1:1 ratio, radius 18 top+bottom, padding 10 content\",\n      \"image\": \"aspect-ratio 1/1, radius 16, object-fit cover, subtle skeleton shimmer on load\",\n      \"title\": \"typography.body, 1 line truncate, color textPrimary, marginTop 8\",\n      \"price\": \"typography.priceSmall, color accent, marginTop 4\",\n      \"badge\": \"location pill top-left over image, glassFill bg, 11px text, blur(8px)\",\n      \"favoriteIcon\": \"top-right circular glass button 32x32, heart icon, accent fill on active\",\n      \"background\": \"colors.card\",\n      \"border\": \"1px solid colors.border\",\n      \"shadow\": \"shadows.card\",\n      \"pressState\": \"scale(0.98) + shadow.cardHover\"\n    },\n    \"detail_page\": {\n      \"imageGallery\": \"full-bleed carousel, height 380, dot indicators bottom center over glass pill, swipe gesture\",\n      \"headerOverlay\": \"transparent to bg gradient top, back button glass circle 40x40 top-left, share/favorite top-right\",\n      \"priceBlock\": \"sticky below gallery, price typography.price accent color, bg surface, padding 16\",\n      \"description\": \"typography.body textSecondary, expandable 'read more' after 3 lines\",\n      \"sellerCard\": \"horizontal card, avatar 48 radius avatar, name bodyMedium, rating stars 12px inline, contact button ghost accent border\",\n      \"whatsappButton\": \"fixed bottom bar, full width minus padding, bg whatsapp color, icon+label, radius button, shadow button-like green glow\",\n      \"relatedProducts\": \"horizontal scroll, cards 140px wide, gap 12\"\n    },\n    \"create_form\": {\n      \"photoUpload\": \"grid 3 columns, square tiles radius input, dashed border accentMuted for empty slot with plus icon, thumbnail with remove X for filled\",\n      \"inputs\": \"bg surface, border 1px border, radius input, padding inputPadding, focus border accent + glow shadow accentGlow\",\n      \"textarea\": \"min-height 100, same style as input, resize none\",\n      \"priceInput\": \"prefix 'R$' textTertiary, numeric keyboard\",\n      \"locationDropdown\": \"select style matches input, chevron-down icon accent\",\n      \"submitButton\": \"full width, bg accent, text onAccent, radius button, weight 700, shadow button, sticky bottom with blur backdrop\"\n    },\n    \"profile_header\": {\n      \"cover\": \"height 160, gradient overlay bottom bg fade, object-fit cover\",\n      \"avatar\": \"88x88, radius avatar, border 3px bg color, overlap cover by -44, centered or left aligned 20px\",\n      \"name\": \"typography.h2, marginTop 12\",\n      \"stars\": \"rating row, accent filled stars 14px, count text caption textSecondary inline\",\n      \"statsRow\": \"3 columns (listings, sales, rating) divided by border, centered text, value h3 + label micro\",\n      \"editButton\": \"ghost outline accent, pill radius, positioned top-right of cover\",\n      \"listingsGrid\": \"reuses product_card, 2 columns, gridGap 12, marginTop sectionGap\"\n    },\n    \"auth_form\": {\n      \"toggle\": \"segmented control, bg surface, radius 100, active segment bg accent text onAccent sliding animation 250ms\",\n      \"logo\": \"centered top, 80px mark + wordmark below, marginBottom 32\",\n      \"inputs\": \"same as create_form inputs, stacked gap 14, icon prefix (person/mail/lock) textTertiary\",\n      \"submitButton\": \"full width accent button, radius button, marginTop 24, loading spinner state onAccent color\",\n      \"switchLink\": \"caption centered below button, 'Não tem conta? Cadastre-se' accent underline on word\",\n      \"background\": \"subtle radial glow accentGlow behind logo, blur 80px\"\n    },\n    \"tutorial_card\": {\n      \"layout\": \"full screen centered content, illustration/icon 200x200 top area with accentMuted circular backdrop\",\n      \"title\": \"typography.h2 centered, marginTop 32\",\n      \"description\": \"typography.body textSecondary centered, maxWidth 320, marginTop 12\",\n      \"dots\": \"pagination dots bottom, active dot width 24 pill accent, inactive 8 circle border\",\n      \"skipButton\": \"top-right text button textSecondary\",\n      \"nextButton\": \"circular 56px accent bg, arrow icon onAccent, bottom-right, shadow button\"\n    },\n    \"tab_bar\": {\n      \"height\": \"spacing.tabBarHeight\",\n      \"background\": \"glassFill blur(24px) over bg, top border 1px borderSubtle\",\n      \"items\": [\"Feed\",\"Criar\",\"Perfil\"],\n      \"activeIndicator\": \"icon+label color accent, subtle scale(1.1) icon, small dot or pill glow behind active icon\",\n      \"inactiveColor\": \"textTertiary\",\n      \"createTab\": \"elevated circular accent FAB 52px, centered raised above bar -20px, plus icon onAccent, shadow fab\"\n    },\n    \"search_bar\": {\n      \"height\": 48,\n      \"background\": \"surface\",\n      \"radius\": \"radii.input\",\n      \"border\": \"1px solid border, focus border accent\",\n      \"icon\": \"search icon left textTertiary, 18px\",\n      \"placeholder\": \"typography.body color textTertiary\",\n      \"filterButton\": \"trailing icon button, glass circle, opens location dropdown sheet\"\n    },\n    \"category_chip\": {\n      \"height\": 34,\n      \"padding\": \"8px 16px\",\n      \"radius\": \"radii.chip\",\n      \"background_inactive\": \"surface with border 1px border\",\n      \"background_active\": \"accent\",\n      \"text_inactive\": \"textSecondary caption weight 500\",\n      \"text_active\": \"onAccent weight 700\",\n      \"gap_between_chips\": 8,\n      \"scroll\": \"horizontal, no scrollbar, fade edges\"\n    },\n    \"seller_card\": {\n      \"layout\": \"horizontal flex, avatar left, info center, action right\",\n      \"avatar\": \"48px radius avatar, border 2px accentMuted\",\n      \"name\": \"bodyMedium textPrimary\",\n      \"subtitle\": \"caption textTertiary e.g. 'Membro desde 2023'\",\n      \"rating\": \"inline stars 12px + caption count\",\n      \"contactButton\": \"icon button circle 40px, glassFill bg, chat icon accent\",\n      \"background\": \"card, radius card, padding cardPadding, border border\"\n    }\n  },\n  \"screen_layouts_ascii\": {\n    \"splash\": \"┌─────────────────┐\\n│                 │\\n│                 │\\n│                 │\\n│      [LOGO]     │\\n│   Acha Região   │\\n│    ● glow       │\\n│                 │\\n│                 │\\n│                 │\\n└─────────────────┘\",\n    \"auth\": \"┌─────────────────┐\\n│                 │\\n│     [LOGO]      │\\n│  Acha Região    │\\n│                 │\\n│ [Cadastrar|Entrar]│\\n│                 │\\n│ [👤 Nome_____]  │\\n│ [✉ Email____]   │\\n│ [🔒 Senha____]  │\\n│                 │\\n│ [  ENTRAR btn ] │\\n│  Não tem conta? │\\n└─────────────────┘\",\n    \"tutorial\": \"┌─────────────────┐\\n│           Pular│\\n│                 │\\n│   ( illustr. )  │\\n│                 │\\n│  Welcome Title  │\\n│  description... │\\n│                 │\\n│   ●  ○  ○       │\\n│              (➜)│\\n└─────────────────┘\",\n    \"feed\": \"┌─────────────────┐\\n│ [🔍 Buscar...][▼]│\\n│ [Chip][Chip][Chip]│\\n│ ┌───────┐┌───────┐│\\n│ │ img   ││ img   ││\\n│ │title  ││title  ││\\n│ │R$price││R$price││\\n│ └───────┘└───────┘│\\n│ ┌───────┐┌───────┐│\\n│ │ img   ││ img   ││\\n│ └───────┘└───────┘│\\n│ [Feed][ ⊕ ][Perfil]│\\n└─────────────────┘\",\n    \"detail\": \"┌─────────────────┐\\n│(‹)  gallery  (♡)│\\n│    ● ○ ○ ○      │\\n│ R$ price        │\\n│ Título produto  │\\n│ descrição...    │\\n│ [Read more]     │\\n│ ┌─────────────┐ │\\n│ │(av) Vendedor│ │\\n│ │ ★★★★☆  (💬)│ │\\n│ └─────────────┘ │\\n│ Relacionados     │\\n│ [card][card]    │\\n│ [  WhatsApp btn ]│\\n└─────────────────┘\",\n    \"create\": \"┌─────────────"
+}
