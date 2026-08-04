@@ -11,15 +11,14 @@
 <link rel="apple-touch-icon" href="assets/logo-icon.png">
 <link rel="manifest" href="data:application/json,{name:'Acha Região',short_name:'Acha',start_url:'.',display:'standalone',background_color:'%2309090B',theme_color:'%23F5C518',icons:[{src:'assets/logo-icon.png',sizes:'192x192'},{src:'assets/logo-icon.png',sizes:'512x512'}]}">
 <style>
-:root{--y:#F5C518;--yd:#D4A800;--yg:rgba(245,197,24,.10);--bg:#09090B;--bg2:#0F0F12;--s:#141417;--c:#1A1A1E;--b:#27272C;--t:#F5F5F7;--t2:#A1A1AA;--t3:#6B6B70;--r:14px;--g:#25D366;--red:#EF4444;--safe:env(safe-area-inset-bottom,8px)}
+:root{--y:#F5C518;--yd:#D4A800;--yg:rgba(245,197,24,.10);--bg:#09090B;--s:#141417;--c:#1A1A1E;--b:#27272C;--t:#F5F5F7;--t2:#A1A1AA;--t3:#6B6B70;--r:14px;--g:#25D366;--red:#EF4444;--safe:env(safe-area-inset-bottom,8px)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-serif;overflow:hidden;height:100dvh;-webkit-font-smoothing:antialiased;touch-action:manipulation}
 #root{max-width:500px;margin:0 auto;height:100dvh;position:relative;overflow:hidden;background:var(--bg)}
 .page{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s;overflow-y:auto;overflow-x:hidden;will-change:transform}
 .page.right{transform:translateX(105%);opacity:.5;pointer-events:none}
-.page.left{transform:translateX(-40px);opacity:0;pointer-events:none}
-.page.hide{opacity:0;pointer-events:none;transform:none}
 .page.pop{transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s}
+.page.hide{opacity:0;pointer-events:none;transform:none}
 
 /* ═══ SPLASH ═══ */
 #splash{justify-content:center;align-items:center;z-index:99}
@@ -42,7 +41,6 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 .fld input:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--yg)}
 .btn{width:100%;padding:14px;background:var(--y);color:#1A1800;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s,transform .15s;letter-spacing:-0.2px}
 .btn:active{opacity:.85;transform:scale(.98)}
-.btn-o{background:transparent;color:var(--y);border:2px solid var(--y);margin-top:12px}
 .switch{text-align:center;margin-top:18px;font-size:12px;color:var(--t2)}
 .switch b{color:var(--y);cursor:pointer}
 .err{color:var(--red);font-size:12px;text-align:center;min-height:18px;margin-top:6px}
@@ -75,8 +73,8 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 .cat-chip{height:30px;padding:0 13px;border-radius:15px;font-size:11px;font-weight:700;border:1px solid var(--b);color:var(--t2);background:var(--s);cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;transition:.15s}
 .cat-chip.on{background:var(--y);color:#1A1800;border-color:var(--y);box-shadow:0 2px 10px rgba(245,197,24,.25)}
 
-/* ═══ RADIUS FILTER ═══ */
-.radius-bar{padding:8px 14px;display:flex;align-items:center;gap:10px;background:var(--bg2);border-bottom:1px solid var(--b);flex-shrink:0}
+/* ═══ RADIUS ═══ */
+.radius-bar{padding:8px 14px;display:flex;align-items:center;gap:10px;background:var(--bg);border-bottom:1px solid var(--b);flex-shrink:0}
 .radius-bar span{font-size:11px;color:var(--t2);white-space:nowrap;font-weight:600}
 .radius-bar input[type=range]{flex:1;accent-color:var(--y);height:4px}
 .radius-bar .km-val{font-size:12px;font-weight:700;color:var(--y);min-width:55px;text-align:right}
@@ -86,16 +84,15 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 .sec-bar h3{font-size:15px;font-weight:700}
 .sec-bar .sort-btn{font-size:11px;font-weight:700;color:var(--y);cursor:pointer;display:flex;align-items:center;gap:4px}
 
-/* ═══ PRODUCT GRID ═══ */
+/* ═══ GRID ═══ */
 .grid-scroll{flex:1;overflow-y:auto;padding:0 12px 90px}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .card{background:var(--c);border-radius:var(--r);overflow:hidden;border:1px solid var(--b);cursor:pointer;transition:transform .15s;position:relative;animation:fadeUp .35s ease both}
 .card:active{transform:scale(.97)}
-.card:nth-child(1){animation-delay:0s}.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}.card:nth-child(4){animation-delay:.12s}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .card .img-wrap{position:relative}
 .card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.card .fav-btn{position:absolute;top:8px;right:8px;z-index:5;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;border:none;transition:.15s;backdrop-filter:blur(4px)}
+.card .fav-btn{position:absolute;top:8px;right:8px;z-index:5;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;border:none;transition:.15s;backdrop-filter:blur(4px)}
 .card .fav-btn.on{background:var(--red)}
 .card .c-badge{position:absolute;top:7px;left:7px;background:var(--y);padding:2px 7px;border-radius:5px;font-size:8px;font-weight:800;color:#1A1800;text-transform:uppercase}
 .card .c-grad{position:absolute;bottom:0;left:0;right:0;height:26px;background:linear-gradient(transparent,rgba(26,26,30,.85))}
@@ -105,14 +102,12 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 .card .c-loc{font-size:9px;color:var(--t3);display:flex;align-items:center;gap:4px}
 .card .c-dist{font-size:8px;color:var(--y);margin-left:2px}
 .card .c-dot{width:4px;height:4px;border-radius:50%;background:rgba(245,197,24,.35);flex-shrink:0}
-.card .share-mini{position:absolute;bottom:8px;right:8px;font-size:14px;cursor:pointer;z-index:2}
 
 /* ═══ DETAIL ═══ */
 .d-back{position:absolute;top:14px;left:14px;z-index:15;background:rgba(0,0,0,.55);color:#fff;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;border:none;backdrop-filter:blur(8px)}
 .d-scroll{flex:1;overflow-y:auto;padding-bottom:100px}
-/* CAROUSEL */
-.carousel{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#000}
-.carousel .slides{display:flex;height:100%;transition:transform .3s ease;touch-action:pan-y}
+.carousel{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#000;touch-action:pan-y}
+.carousel .slides{display:flex;height:100%;transition:transform .3s ease}
 .carousel .slides img{width:100%;height:100%;object-fit:cover;flex-shrink:0}
 .carousel .c-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5}
 .carousel .c-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);transition:.2s}
@@ -121,28 +116,16 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 .carousel .c-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(4px)}
 .carousel .c-prev{left:8px}.carousel .c-next{right:8px}
 
-.d-info{padding:18px 16px}
-.d-price{font-size:28px;font-weight:900;color:var(--y);margin-bottom:4px}
-.d-title{font-size:17px;font-weight:700;margin-bottom:6px}
-.d-desc{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:14px}
-.d-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
-.d-tags span{background:var(--s);padding:5px 10px;border-radius:7px;font-size:11px;color:var(--t2);font-weight:600}
+.d-info{padding:18px 16px}.d-price{font-size:28px;font-weight:900;color:var(--y);margin-bottom:4px}.d-title{font-size:17px;font-weight:700;margin-bottom:6px}.d-desc{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:14px}.d-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}.d-tags span{background:var(--s);padding:5px 10px;border-radius:7px;font-size:11px;color:var(--t2);font-weight:600}
 .d-seller{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:14px;display:flex;align-items:center;gap:12px;margin:0 16px 18px}
 .d-seller .ds-av{width:44px;height:44px;border-radius:50%;background:var(--y);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#1A1800;flex-shrink:0}
-.d-seller .ds-name{font-size:13px;font-weight:700}
-.d-seller .ds-sub{font-size:11px;color:var(--t3)}
-.d-related{padding:0 16px 20px}.d-related h4{font-size:14px;font-weight:700;margin-bottom:10px}
-.d-related .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.d-actions{padding:16px;display:flex;gap:10px}
-.d-actions .wa-btn{flex:1;padding:15px;background:var(--g);color:#fff;border:none;border-radius:var(--r);font-weight:700;font-size:14px;cursor:pointer}
-.d-actions .sh-btn{width:50px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px}
-.d-actions .fav-lg{width:50px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px}
-.d-actions .fav-lg.on{background:var(--red);border-color:var(--red);color:#fff}
+.d-seller .ds-name{font-size:13px;font-weight:700}.d-seller .ds-sub{font-size:11px;color:var(--t3)}
+.d-related{padding:0 16px 20px}.d-related h4{font-size:14px;font-weight:700;margin-bottom:10px}.rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.d-actions{padding:16px;display:flex;gap:10px}.wa-btn{flex:1;padding:15px;background:var(--g);color:#fff;border:none;border-radius:var(--r);font-weight:700;font-size:14px;cursor:pointer}.sh-btn,.fav-lg{width:50px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px}.fav-lg.on{background:var(--red);border-color:var(--red);color:#fff}
 
 /* ═══ CREATE ═══ */
 .create-scroll{flex:1;overflow-y:auto;padding:18px 16px}
-.create-scroll h2{font-size:19px;font-weight:800;margin-bottom:20px}
-.create-scroll h2 em{font-style:normal;color:var(--y)}
+.create-scroll h2{font-size:19px;font-weight:800;margin-bottom:20px}.create-scroll h2 em{font-style:normal;color:var(--y)}
 .photo-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .photo-slot{width:82px;height:82px;border:2px dashed var(--b);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--t3);cursor:pointer;overflow:hidden;position:relative}
 .photo-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
@@ -157,31 +140,24 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 .prof-cover{height:130px;background:linear-gradient(135deg,var(--y),#FFD42A);position:relative;flex-shrink:0}
 .prof-av{width:76px;height:76px;border-radius:50%;background:var(--c);border:3px solid var(--bg);margin-top:-38px;margin-left:20px;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative;z-index:2;flex-shrink:0}
 .prof-info{padding:12px 20px;margin-bottom:16px;flex-shrink:0}
-.prof-info h2{font-size:19px;font-weight:800;margin-bottom:2px}
-.prof-info .ploc{font-size:12px;color:var(--t3);margin-bottom:8px}
-.prof-stars{display:flex;gap:1px}
-.prof-stars span{font-size:16px}
+.prof-info h2{font-size:19px;font-weight:800;margin-bottom:2px}.prof-info .ploc{font-size:12px;color:var(--t3);margin-bottom:8px}.prof-stars{display:flex;gap:1px}.prof-stars span{font-size:16px}
 .prof-tab-row{display:flex;border-bottom:1px solid var(--b);margin:0 18px;flex-shrink:0}
-.prof-tab{flex:1;text-align:center;padding:12px 0;font-size:12px;font-weight:700;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent}
-.prof-tab.on{color:var(--y);border-bottom-color:var(--y)}
+.prof-tab{flex:1;text-align:center;padding:12px 0;font-size:12px;font-weight:700;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent}.prof-tab.on{color:var(--y);border-bottom-color:var(--y)}
 .prof-grid{padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;overflow-y:auto}
-.prof-grid .fav-section{grid-column:1/-1;margin-top:20px;padding-top:16px;border-top:1px solid var(--b)}
-.prof-grid .fav-section h4{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--t2)}
 .prof-empty{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--t3)}
 
 /* ═══ TAB BAR ═══ */
 .tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;height:58px;background:#0C0C10;border-top:2px solid var(--y);display:flex;justify-content:space-around;align-items:center;padding-bottom:var(--safe);z-index:50;backdrop-filter:blur(12px)}
-.tab-item{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;font-weight:700;color:var(--t3);cursor:pointer;border:none;background:none;padding:4px 0}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;font-weight:700;color:var(--t3);cursor:pointer;border:none;background:none;padding:4px 0;position:relative}
 .tab-item.on{color:var(--y)}
 .tab-item .ti{font-size:18px}
-.tab-item .badge-dot{position:absolute;top:2px;right:-6px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.tab-item .badge-dot{position:absolute;top:0;right:2px;width:8px;height:8px;border-radius:50%;background:var(--red)}
 
 /* ═══ TOAST ═══ */
 .toast-ctr{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:400}
 .toast{background:var(--s);border:1px solid var(--b);padding:12px 22px;border-radius:12px;font-size:13px;font-weight:600;color:var(--t);box-shadow:0 8px 28px rgba(0,0,0,.5);animation:toastIn .3s ease;white-space:nowrap}
 @keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══ INSTALL ═══ */
 #installBar{display:none;position:fixed;bottom:75px;left:50%;transform:translateX(-50%);z-index:60;background:var(--y);color:#1A1800;padding:12px 22px;border-radius:14px;font-weight:700;font-size:12px;cursor:pointer;box-shadow:0 4px 20px rgba(245,197,24,.35);white-space:nowrap}
 #installBar.show{display:block}
 </style>
@@ -189,98 +165,64 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 <body>
 <div id="root">
 
-<!-- ═══ SPLASH ═══ -->
+<!-- SPLASH -->
 <div class="page" id="splash">
   <div class="splash-logo"><img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<div style=font-size:26px;font-weight:900;color:var(--y);text-align:center>acha<span style=font-size:9px;color:var(--t3)>REGIÃO</span></div>'"><div class="splash-sub">Alto Vale do Itajaí</div></div>
   <div class="splash-ring"></div>
 </div>
 
-<!-- ═══ AUTH ═══ -->
+<!-- AUTH -->
 <div class="page right" id="auth">
   <div class="auth-wrap">
     <img src="assets/logo-text.png" alt="Acha Região" onerror="this.style.display='none'">
     <h1>Bem-vindo ao <em>Acha</em></h1><p class="sub">O marketplace da nossa região</p>
-    <div id="regForm">
-      <div class="fld"><label>Nome completo</label><input type="text" id="rName" placeholder="Seu nome"></div>
-      <div class="fld"><label>Email</label><input type="email" id="rEmail" placeholder="seu@email.com"></div>
-      <div class="fld"><label>Senha</label><input type="password" id="rPass" placeholder="Mínimo 6 caracteres"></div>
-      <div class="err" id="rErr"></div>
-      <button class="btn" onclick="doRegister()">Criar conta</button><p class="switch">Já tem conta? <b onclick="toggleAuth()">Entrar</b></p>
-    </div>
-    <div id="loginForm" style="display:none">
-      <div class="fld"><label>Email</label><input type="email" id="lEmail" placeholder="seu@email.com"></div>
-      <div class="fld"><label>Senha</label><input type="password" id="lPass" placeholder="Sua senha"></div>
-      <div class="err" id="lErr"></div>
-      <button class="btn" onclick="doLogin()">Entrar</button><p class="switch">Não tem conta? <b onclick="toggleAuth()">Criar conta</b></p>
-    </div>
+    <div id="regForm"><div class="fld"><label>Nome completo</label><input type="text" id="rName" placeholder="Seu nome"></div><div class="fld"><label>Email</label><input type="email" id="rEmail" placeholder="seu@email.com"></div><div class="fld"><label>Senha</label><input type="password" id="rPass" placeholder="Mínimo 6 caracteres"></div><div class="err" id="rErr"></div><button class="btn" onclick="doRegister()">Criar conta</button><p class="switch">Já tem conta? <b onclick="toggleAuth()">Entrar</b></p></div>
+    <div id="loginForm" style="display:none"><div class="fld"><label>Email</label><input type="email" id="lEmail" placeholder="seu@email.com"></div><div class="fld"><label>Senha</label><input type="password" id="lPass" placeholder="Sua senha"></div><div class="err" id="lErr"></div><button class="btn" onclick="doLogin()">Entrar</button><p class="switch">Não tem conta? <b onclick="toggleAuth()">Criar conta</b></p></div>
   </div>
 </div>
 
-<!-- ═══ FEED ═══ -->
+<!-- FEED -->
 <div class="page right" id="feed">
-  <div class="yh">
-    <div class="yh-row"><img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<b style=font-size:18px;color:#1A1800>acha</b>'"><span id="notifBadge" style="display:none;background:#EF4444;color:#fff;border-radius:10px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer" onclick="showNewAlert()">🔔 Novos</span></div>
-    <div class="search-bar"><span style="font-size:15px">🔍</span><input type="text" id="fSearch" placeholder="Buscar produtos..." oninput="renderFeed()"></div>
-  </div>
+  <div class="yh"><div class="yh-row"><img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<b style=font-size:18px;color:#1A1800>acha</b>'"><span id="notifBadge" style="display:none;background:#EF4444;color:#fff;border-radius:10px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer" onclick="showNewAlert()">🔔</span></div><div class="search-bar"><span style="font-size:15px">🔍</span><input type="text" id="fSearch" placeholder="Buscar produtos..." oninput="renderFeed()"></div></div>
   <div class="cat-row" id="catBar"></div>
-  <div class="radius-bar"><span>📍 Raio:</span><input type="range" id="radiusSlider" min="5" max="100" value="100" step="5" oninput="updateRadius(this.value)"><span class="km-val" id="kmVal">100 km</span></div>
+  <div class="radius-bar"><span>📍 Raio:</span><input type="range" id="radiusSlider" min="5" max="100" value="100" step="5" oninput="updateRadius(this.value)"><span class="km-val" id="kmVal">Toda região</span></div>
   <div class="sec-bar"><h3 id="fTitle">Todos os produtos</h3><span class="sort-btn" onclick="toggleSort()" id="sortLabel">🕐 Recentes</span></div>
   <div class="grid-scroll"><div class="grid-2" id="fGrid"></div></div>
-  <div class="tab-bar">
-    <button class="tab-item on" onclick="goTab('feed',this)"><span class="ti">🏷️</span>Explorar</button>
-    <button class="tab-item" onclick="goTab('create',this)"><span class="ti">📦</span>Anunciar</button>
-    <button class="tab-item" onclick="goTab('profile',this)"><span class="ti">👤</span>Perfil</button>
-  </div>
+  <div class="tab-bar" id="tabFeed"><button class="tab-item on" onclick="goTab('feed')"><span class="ti">🏷️</span>Explorar</button><button class="tab-item" onclick="goTab('create')"><span class="ti">📦</span>Anunciar</button><button class="tab-item" onclick="goTab('profile')"><span class="ti">👤</span>Perfil</button></div>
 </div>
 
-<!-- ═══ CREATE ═══ -->
+<!-- CREATE -->
 <div class="page right" id="create">
   <div class="yh"><div class="yh-row"><b style="font-size:18px;color:#1A1800">📦 Novo anúncio</b></div></div>
   <div class="create-scroll">
-    <div class="photo-row"><div class="photo-slot" onclick="document.getElementById('pInput').click()">+</div></div>
-    <input type="file" id="pInput" accept="image/*" multiple hidden onchange="addPhotos(event)">
+    <div class="photo-row"><div class="photo-slot" onclick="document.getElementById('pInput').click()">+</div></div><input type="file" id="pInput" accept="image/*" multiple hidden onchange="addPhotos(event)">
     <div class="cf">
-      <label>Título <span class="req">*</span></label><input type="text" id="cTitle" placeholder="Ex: Sofá 3 lugares retrátil" maxlength="100">
-      <label>Descrição <span class="req">*</span></label><textarea id="cDesc" placeholder="Descreva o produto em detalhes..."></textarea>
-      <label>Preço (R$) <span class="req">*</span></label><input type="number" id="cPrice" placeholder="850" min="0">
+      <label>Título <span class="req">*</span></label><input type="text" id="cTitle" placeholder="Ex: iPhone 12 128GB Branco" maxlength="100">
+      <label>Descrição <span class="req">*</span></label><textarea id="cDesc" placeholder="Descreva: estado, tempo de uso, acessórios inclusos, garantia, formas de pagamento..."></textarea>
+      <label>Preço (R$) <span class="req">*</span></label><input type="number" id="cPrice" placeholder="1679" min="0">
       <label>WhatsApp <span class="req">*</span></label><input type="tel" id="cWhats" placeholder="(47) 99999-9999">
-      <label>Categoria</label><select id="cCat"><option>Móveis</option><option>Eletrônicos</option><option>Veículos</option><option>Roupas</option><option>Esportes</option><option>Casa</option><option>Ferramentas</option></select>
+      <label>Categoria</label><select id="cCat"><option>Eletrônicos</option><option>Móveis</option><option>Veículos</option><option>Roupas</option><option>Esportes</option><option>Casa</option><option>Ferramentas</option></select>
       <label>Localização <span class="req">*</span></label><select id="cCity"><option>Presidente Getúlio</option><option>Rio do Sul</option><option>Ibirama</option><option>Laurentino</option><option>Lontras</option><option>Aurora</option></select>
       <button class="btn" style="margin-top:22px" onclick="publish()">📢 Publicar anúncio</button>
     </div>
   </div>
-  <div class="tab-bar">
-    <button class="tab-item" onclick="goTab('feed',this)"><span class="ti">🏷️</span>Explorar</button>
-    <button class="tab-item on" onclick="goTab('create',this)"><span class="ti">📦</span>Anunciar</button>
-    <button class="tab-item" onclick="goTab('profile',this)"><span class="ti">👤</span>Perfil</button>
-  </div>
+  <div class="tab-bar" id="tabCreate"><button class="tab-item" onclick="goTab('feed')"><span class="ti">🏷️</span>Explorar</button><button class="tab-item on" onclick="goTab('create')"><span class="ti">📦</span>Anunciar</button><button class="tab-item" onclick="goTab('profile')"><span class="ti">👤</span>Perfil</button></div>
 </div>
 
-<!-- ═══ PROFILE ═══ -->
+<!-- PROFILE -->
 <div class="page right" id="profile">
   <div class="prof-cover"></div><div class="prof-av">👤</div>
-  <div class="prof-info"><h2 id="profName"></h2><p class="ploc" id="profLoc"></p><div class="prof-stars"><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span></div></div>
-  <div class="prof-tab-row">
-    <div class="prof-tab on" onclick="profSwitch('posts',this)">Meus anúncios</div>
-    <div class="prof-tab" onclick="profSwitch('favs',this)">❤️ Favoritos</div>
-  </div>
+  <div class="prof-info"><h2 id="profName"></h2><p class="ploc" id="profLoc"></p><div class="prof-stars" id="profStars"></div></div>
+  <div class="prof-tab-row"><div class="prof-tab on" onclick="profSwitch('posts',this)">Meus anúncios</div><div class="prof-tab" onclick="profSwitch('favs',this)">❤️ Favoritos</div></div>
   <div class="prof-grid" id="profGrid"></div>
-  <div class="tab-bar">
-    <button class="tab-item" onclick="goTab('feed',this)"><span class="ti">🏷️</span>Explorar</button>
-    <button class="tab-item" onclick="goTab('create',this)"><span class="ti">📦</span>Anunciar</button>
-    <button class="tab-item on" onclick="goTab('profile',this)"><span class="ti">👤</span>Perfil</button>
-  </div>
+  <div class="tab-bar" id="tabProfile"><button class="tab-item" onclick="goTab('feed')"><span class="ti">🏷️</span>Explorar</button><button class="tab-item" onclick="goTab('create')"><span class="ti">📦</span>Anunciar</button><button class="tab-item on" onclick="goTab('profile')"><span class="ti">👤</span>Perfil</button></div>
 </div>
 
-<!-- ═══ DETAIL ═══ -->
+<!-- DETAIL -->
 <div class="page right" id="detail">
   <button class="d-back" onclick="goTab('feed')">←</button>
   <div class="d-scroll" id="dContent"></div>
-  <div class="tab-bar">
-    <button class="tab-item on" onclick="goTab('feed',this)"><span class="ti">🏷️</span>Explorar</button>
-    <button class="tab-item" onclick="goTab('create',this)"><span class="ti">📦</span>Anunciar</button>
-    <button class="tab-item" onclick="goTab('profile',this)"><span class="ti">👤</span>Perfil</button>
-  </div>
+  <div class="tab-bar" id="tabDetail"><button class="tab-item on" onclick="goTab('feed')"><span class="ti">🏷️</span>Explorar</button><button class="tab-item" onclick="goTab('create')"><span class="ti">📦</span>Anunciar</button><button class="tab-item" onclick="goTab('profile')"><span class="ti">👤</span>Perfil</button></div>
 </div>
 
 </div>
@@ -290,80 +232,80 @@ body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-se
 <div class="toast-ctr" id="toasts"></div>
 
 <script>
-// ═══════════ DATA ═══════════
-const CITIES={ 'Presidente Getúlio':[-27.0282,-49.6247], 'Rio do Sul':[-27.2144,-49.6422], 'Ibirama':[-27.0569,-49.5189], 'Laurentino':[-27.2172,-49.7333], 'Lontras':[-27.1661,-49.5419], 'Aurora':[-27.3158,-49.6356] };
-
-let user=null, products=[], photos=[], favorites=JSON.parse(localStorage.getItem('acha_favs')||'[]'), currentPage='splash', activeCat='Todos', sortNew=true, radiusKm=100, slideIdx=0;
+// ═══════ DATA ═══════
+const CITIES={'Presidente Getúlio':[-27.0282,-49.6247],'Rio do Sul':[-27.2144,-49.6422],'Ibirama':[-27.0569,-49.5189],'Laurentino':[-27.2172,-49.7333],'Lontras':[-27.1661,-49.5419],'Aurora':[-27.3158,-49.6356]};
+let user=null,products=[],photos=[],favorites=JSON.parse(localStorage.getItem('acha_favs')||'[]'),currentPage='splash',activeCat='Todos',sortNew=true,radiusKm=100,slideIdx=0,lastCheck=Date.now();
 
 // ═══════ INIT ═══════
 window.addEventListener('beforeinstallprompt',e=>{window._pwa=e;document.getElementById('installBar').classList.add('show')});
 if(window.matchMedia('(display-mode: standalone)').matches)document.getElementById('installBar').classList.remove('show');
 
 (function init(){
-  const u=localStorage.getItem('acha_user'); if(u)user=JSON.parse(u);
+  const u=localStorage.getItem('acha_user');if(u)user=JSON.parse(u);
   loadProducts();
-  setTimeout(()=>{document.getElementById('splash').classList.add('hide');if(user)goTab('feed');else goTab('auth');},2200);
-  // Check for new listings every 60s
+  setTimeout(()=>{document.getElementById('splash').classList.add('hide');if(user)goTab('feed');else goTab('auth')},2200);
   setInterval(checkNewListings,60000);
-  requestNotificationPermission();
+  if('Notification' in window && Notification.permission==='default') setTimeout(()=>Notification.requestPermission(),5000);
 })();
 
 function loadProducts(){
   const local=JSON.parse(localStorage.getItem('acha_products')||'[]');
   const def=[
-    {id:'d1',title:'iPhone 13 Pro 128GB Grafite',desc:'Como novo, nota fiscal e caixa. 1 ano de uso, sem riscos.',price:3200,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1592286927505-038fc5c40e5e?w=600&h=450&fit=crop'],seller:'Marcos Silva',stars:4.8,whatsapp:'47999990001',createdAt:Date.now()-86400000},
-    {id:'d2',title:'Sofá 3 Lugares Retrátil Bege',desc:'Confortável, pouco uso. Retrátil nos 3 lugares.',price:850,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=450&fit=crop'],seller:'Ana Oliveira',stars:4.5,whatsapp:'47999990002',createdAt:Date.now()-172800000},
-    {id:'d3',title:'Honda CG 160 Titan 2023',desc:'8.000km, revisões em dia, IPVA pago.',price:14500,city:'Ibirama',category:'Veículos',images:['https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=450&fit=crop'],seller:'João Santos',stars:4.9,whatsapp:'47999990003',createdAt:Date.now()-259200000},
-    {id:'d4',title:'Geladeira Brastemp 375L',desc:'Frost Free, 2 anos de uso. Excelente estado.',price:1800,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=450&fit=crop'],seller:'Carla Mendes',stars:4.6,whatsapp:'47999990004',createdAt:Date.now()-432000000},
-    {id:'d5',title:'Mesa de Jantar 6 Lugares',desc:'Madeira maciça + 6 cadeiras estofadas.',price:650,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1556909114-f6e7ad7d6ab6?w=600&h=450&fit=crop'],seller:'Pedro Costa',stars:4.3,whatsapp:'47999990005',createdAt:Date.now()-345600000},
-    {id:'d6',title:'Kit Halteres 20kg + Barra',desc:'Completo: halteres, barra e 40kg de anilhas.',price:280,city:'Laurentino',category:'Esportes',images:['https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=450&fit=crop'],seller:'Lucas Alves',stars:4.7,whatsapp:'47999990006',createdAt:Date.now()-518400000},
+    {id:'d1',title:'iPhone 13 Pro 128GB Grafite',desc:'📱 Como novo, nota fiscal e caixa\n🔋 Saúde da bateria: 89%\n🎁 Brinde: capa + película\n💳 Parcelamento em até 12x no cartão\n🪙 À vista com desconto',price:3200,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1592286927505-038fc5c40e5e?w=600&h=450&fit=crop'],seller:'Marcos Silva',stars:4.8,whatsapp:'47999990001',createdAt:Date.now()-86400000},
+    {id:'d2',title:'Sofá 3 Lugares Retrátil Bege',desc:'🛋️ Confortável, pouco uso\n📏 2.10m de comprimento\n✨ Retrátil nos 3 lugares\n🚚 Entrego na região',price:850,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=450&fit=crop'],seller:'Ana Oliveira',stars:4.5,whatsapp:'47999990002',createdAt:Date.now()-172800000},
+    {id:'d3',title:'Honda CG 160 Titan 2023',desc:'🏍️ 8.000km rodados\n🔧 Todas revisões na concessionária\n🛞 Pneus novos\n📄 IPVA 2026 pago\n💳 Aceito troca',price:14500,city:'Ibirama',category:'Veículos',images:['https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=450&fit=crop'],seller:'João Santos',stars:4.9,whatsapp:'47999990003',createdAt:Date.now()-259200000},
+    {id:'d4',title:'Geladeira Brastemp 375L',desc:'❄️ Frost Free\n📏 375 litros\n⏱️ 2 anos de uso\n✅ Perfeito estado\n📦 Motivo: mudança',price:1800,city:'Rio do Sul',category:'Eletrônicos',images:['https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=450&fit=crop'],seller:'Carla Mendes',stars:4.6,whatsapp:'47999990004',createdAt:Date.now()-432000000},
+    {id:'d5',title:'Mesa de Jantar 6 Lugares',desc:'🪵 Madeira maciça\n🪑 6 cadeiras estofadas\n📏 1.60m x 0.90m\n⏱️ 3 anos de uso',price:650,city:'Presidente Getúlio',category:'Móveis',images:['https://images.unsplash.com/photo-1556909114-f6e7ad7d6ab6?w=600&h=450&fit=crop'],seller:'Pedro Costa',stars:4.3,whatsapp:'47999990005',createdAt:Date.now()-345600000},
+    {id:'d6',title:'Kit Halteres 20kg + Barra',desc:'💪 Halteres montáveis\n🏋️ Barra de 1.2m\n⚖️ 40kg de anilhas\n🆕 Pouquíssimo uso',price:280,city:'Laurentino',category:'Esportes',images:['https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=450&fit=crop'],seller:'Lucas Alves',stars:4.7,whatsapp:'47999990006',createdAt:Date.now()-518400000},
   ];
   products=[...local,...def];
-  try{fetch('https://acha-regiao-api.onrender.com/api/products').then(r=>r.json()).then(d=>{products=[...local,...d.map(x=>({...x,seller:x.sellerName||'Vendedor',stars:x.sellerStars||4.5,images:x.images||[x.imageUrl],whatsapp:x.whatsapp||''}))];renderFeed()}).catch(()=>{})}catch(e){}
+  try{fetch('https://acha-regiao-api.onrender.com/api/products').then(r=>r.json()).then(d=>{const apiP=d.map(x=>({...x,seller:x.sellerName||'Vendedor',stars:x.sellerStars||4.5,images:x.images||[x.imageUrl],whatsapp:x.whatsapp||'',createdAt:Date.now()-Math.random()*86400000*10}));products=[...local,...apiP];if(currentPage==='feed')renderFeed()}).catch(()=>{})}catch(e){}
   renderCategories();
 }
 
 // ═══════ HAVERSINE ═══════
 function haversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180,a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+function userCoords(){if(user&&CITIES[user.city])return CITIES[user.city];return CITIES['Presidente Getúlio']}
+function distanceTo(city){if(!CITIES[city])return 999;const[u1,u2]=userCoords();const[c1,c2]=CITIES[city];return haversine(u1,u2,c1,c2)}
 
-function userCoords(){
-  if(user&&CITIES[user.city])return CITIES[user.city];
-  return CITIES['Presidente Getúlio'];
-}
-
-function distanceTo(city){
-  if(!CITIES[city])return 999;
-  const[ulat,ulon]=userCoords();const[clat,clon]=CITIES[city];
-  return haversine(ulat,ulon,clat,clon);
-}
-
-// ═══════ NAVIGATION ═══════
+// ═══════ NAVIGATION (FIXED) ═══════
 let touchStartX=0,touchStartY=0;
 document.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY});
-document.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-touchStartX;
-  const dy=e.changedTouches[0].clientY-touchStartY;
-  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)&&dx>0&&currentPage==='detail'){goTab('feed')}
-});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX,dy=e.changedTouches[0].clientY-touchStartY;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)&&dx>0&&currentPage==='detail')goTab('feed')});
 
-function goTab(page,el){
-  if((page==='feed'||page==='create'||page==='profile')&&!user){goTab('auth');return}
+function syncTabs(activePage){
+  // Sync ALL tab bars across all pages to highlight the correct tab
+  const tabIds=['tabFeed','tabCreate','tabProfile','tabDetail'];
+  const tabMap={feed:0,create:1,profile:2};
+  tabIds.forEach(tabId=>{
+    const bar=document.getElementById(tabId);if(!bar)return;
+    const items=bar.querySelectorAll('.tab-item');
+    items.forEach((item,i)=>{item.classList.toggle('on',i===tabMap[activePage])});
+  });
+}
+
+function goTab(page){
+  if((page==='feed'||page==='create'||page==='profile')&&!user){page='auth'}
+  if(page===currentPage)return;
+  
   const prev=document.getElementById(currentPage);
   const next=document.getElementById(page);
+  
+  // Animate out
   if(prev)prev.classList.add(currentPage==='detail'&&page==='feed'?'pop':'right');
-  if(next){next.classList.remove('right','left','hide','pop');next.scrollTop=0}
-  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('on'));
-  const tabBtns=document.querySelectorAll('.tab-item');
-  const tabMap={feed:0,create:1,profile:2};
-  if(el&&tabMap[page]!==undefined){const allTabs=document.querySelectorAll('.tab-item');allTabs[tabMap[page]]?.classList.add('on')}
+  // Animate in
+  if(next){next.classList.remove('right','hide','pop');next.scrollTop=0}
+  
   currentPage=page;
   slideIdx=0;
+  syncTabs(page==='auth'||page==='detail'?'feed':page);
+  
   if(page==='feed')renderFeed();
   if(page==='profile')renderProfile();
 }
 
 // ═══════ AUTH ═══════
-function toggleAuth(){document.getElementById('regForm').style.display=document.getElementById('regForm').style.display==='none'?'block':'none';document.getElementById('loginForm').style.display=document.getElementById('loginForm').style.display==='none'?'block':'none'}
+function toggleAuth(){const r=document.getElementById('regForm'),l=document.getElementById('loginForm');r.style.display=r.style.display==='none'?'block':'none';l.style.display=l.style.display==='none'?'block':'none';document.getElementById('rErr').textContent='';document.getElementById('lErr').textContent=''}
 function doRegister(){
   const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value;
   if(!n||!e||!p){document.getElementById('rErr').textContent='Preencha todos os campos';return}
@@ -385,7 +327,7 @@ function doLogin(){
 }
 
 // ═══════ TUTORIAL ═══════
-const tuSteps=[{icon:'👤',title:'Seu <em>Perfil</em>',text:'Sua identidade no Acha Região. Suas estrelas representam sua reputação.',btn:'Próximo'},{icon:'⭐',title:'Suas <em>Estrelas</em>',text:'Ao vender produtos, os compradores te avaliam. Quanto mais ⭐, mais vendas!',btn:'Entendi'},{icon:'📦',title:'Seus <em>Anúncios</em>',text:'Liste tudo o que quer vender. Fotos, preço, descrição — completo vende mais rápido!',btn:'Começar!'}];
+const tuSteps=[{icon:'👤',title:'Seu <em>Perfil</em>',text:'Sua identidade no Acha Região. Suas estrelas representam sua reputação.',btn:'Próximo'},{icon:'⭐',title:'Suas <em>Estrelas</em>',text:'Ao vender produtos, os compradores te avaliam. Quanto mais ⭐, mais confiança!',btn:'Entendi'},{icon:'📦',title:'Seus <em>Anúncios</em>',text:'Liste tudo o que quer vender. Fotos, preço, descrição e localização — completo vende mais rápido!',btn:'Começar!'}];
 let tuIdx=0;
 function showTutorial(){tuIdx=0;document.getElementById('tutorial-overlay').style.display='flex';renderTuStep()}
 function renderTuStep(){const s=tuSteps[tuIdx];document.getElementById('tuInner').innerHTML=`<div class="tu-icon">${s.icon}</div><h2>${s.title}</h2><p>${s.text}</p><div class="tu-dots">${tuSteps.map((_,i)=>`<div class="tu-dot${i===tuIdx?' on':''}"></div>`).join('')}</div><button class="btn" onclick="nextTu()">${s.btn}</button>`}
@@ -401,58 +343,46 @@ function renderFeed(){
   const q=(document.getElementById('fSearch')?.value||'').toLowerCase();
   let f=activeCat==='Todos'?[...products]:products.filter(p=>p.category===activeCat);
   if(q)f=f.filter(p=>p.title.toLowerCase().includes(q)||(p.city||'').toLowerCase().includes(q));
-  // Radius filter
   if(radiusKm<100)f=f.filter(p=>distanceTo(p.city)<=radiusKm);
-  // Sort
-  if(sortNew)f.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  else f.sort((a,b)=>a.price-b.price);
-
-  document.getElementById('fGrid').innerHTML=f.map(p=>{
-    const dist=distanceTo(p.city);const isFav=favorites.includes(p.id);
-    return`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'"><button class="fav-btn${isFav?' on':''}" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button><div class="c-grad"></div></div><div class="c-body"><span class="c-title">${p.title}</span><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="c-loc"><span class="c-dot"></span>${p.city}${dist<100?`<span class="c-dist">· ${Math.round(dist)}km</span>`:''}</span></div></div>`;
-  }).join('');
+  if(sortNew)f.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));else f.sort((a,b)=>a.price-b.price);
+  document.getElementById('fGrid').innerHTML=f.map(p=>{const dist=distanceTo(p.city),isFav=favorites.includes(p.id);return`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'"><button class="fav-btn${isFav?' on':''}" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button><div class="c-grad"></div></div><div class="c-body"><span class="c-title">${p.title}</span><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="c-loc"><span class="c-dot"></span>${p.city}${dist<100?`<span class="c-dist">· ${Math.round(dist)}km</span>`:''}</span></div></div>`}).join('');
+  syncTabs('feed');
 }
 
-// ═══════ DETAIL ═══════
+// ═══════ DETAIL (FIXED CAROUSEL) ═══════
+let carouselCleanup=null;
 function openDetail(id){
   const p=products.find(x=>x.id===id);if(!p)return;
+  if(carouselCleanup)carouselCleanup();
   const imgs=p.images&&p.images.length?p.images:['https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop'];
   const rel=products.filter(x=>x.id!==id&&(x.category===p.category||x.city===p.city)).slice(0,4);
-  const dist=distanceTo(p.city);
-  const isFav=favorites.includes(p.id);
+  const dist=distanceTo(p.city),isFav=favorites.includes(p.id);
   slideIdx=0;
 
   document.getElementById('dContent').innerHTML=`
-    <div class="carousel" id="carousel">
-      <div class="slides" id="carouselSlides" style="transform:translateX(0)">${imgs.map(img=>`<img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop'">`).join('')}</div>
-      ${imgs.length>1?`<button class="c-nav c-prev" onclick="slideCarousel(-1)">‹</button><button class="c-nav c-next" onclick="slideCarousel(1)">›</button><div class="c-dots">${imgs.map((_,i)=>`<span class="c-dot${i===0?' on':''}"></span>`).join('')}</div><span class="c-counter">1/${imgs.length}</span>`:''}
-    </div>
-    <div class="d-info"><div class="d-price">R$ ${p.price.toLocaleString('pt-BR')}</div><div class="d-title">${p.title}</div><div class="d-desc">${p.desc||'Sem descrição.'}</div><div class="d-tags"><span>📦 ${p.category}</span><span>📍 ${p.city}</span>${dist<100?`<span>📏 ${Math.round(dist)} km</span>`:''}</div></div>
+    <div class="carousel" id="carousel"><div class="slides" id="carouselSlides" style="transform:translateX(0)">${imgs.map((img,i)=>`<img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=600&h=450&fit=crop'" data-idx="${i}">`).join('')}</div>${imgs.length>1?`<button class="c-nav c-prev" onclick="slideCarousel(-1)">‹</button><button class="c-nav c-next" onclick="slideCarousel(1)">›</button><div class="c-dots">${imgs.map((_,i)=>`<span class="c-dot${i===0?' on':''}"></span>`).join('')}</div><span class="c-counter">1/${imgs.length}</span>`:''}</div>
+    <div class="d-info"><div class="d-price">R$ ${p.price.toLocaleString('pt-BR')}</div><div class="d-title">${p.title}</div><div class="d-desc">${(p.desc||'Sem descrição.').replace(/\n/g,'<br>')}</div><div class="d-tags"><span>📦 ${p.category}</span><span>📍 ${p.city}</span>${dist<100?`<span>📏 ${Math.round(dist)} km</span>`:''}</div></div>
     <div class="d-seller"><div class="ds-av">${(p.seller||'V')[0]}</div><div><div class="ds-name">${p.seller||'Vendedor'}</div><div class="ds-sub">⭐ ${p.stars||'4.5'} · Membro desde 2026</div></div></div>
     ${rel.length?`<div class="d-related"><h4>Produtos relacionados</h4><div class="rel-grid">${rel.map(r=>`<div class="card" onclick="openDetail('${r.id}')"><div class="img-wrap"><img src="${(r.images&&r.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}"><div class="c-grad"></div></div><div class="c-body"><span class="c-title">${r.title}</span><span class="c-price">R$ ${r.price.toLocaleString('pt-BR')}</span></div></div>`).join('')}</div></div>`:''}
-    <div class="d-actions">
-      ${p.whatsapp?`<button class="wa-btn" onclick="openWhatsApp('${p.id}')">💬 Chamar no WhatsApp</button>`:'<button class="wa-btn" onclick="openWhatsApp('${p.id}')">💬 Contatar vendedor</button>'}
-      <button class="fav-lg${isFav?' on':''}" onclick="toggleFav('${p.id}',this)" title="Favoritar">${isFav?'❤️':'🤍'}</button>
-      <button class="sh-btn" onclick="shareProduct('${p.id}')" title="Compartilhar">📤</button>
-    </div>
-  `;
+    <div class="d-actions"><button class="wa-btn" onclick="openWhatsApp('${p.id}')">💬 Chamar no WhatsApp</button><button class="fav-lg${isFav?' on':''}" onclick="toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button><button class="sh-btn" onclick="shareProduct('${p.id}')">📤</button></div>`;
 
-  // Carousel touch support
-  setTimeout(()=>{
+  // Carousel touch — using single listener with cleanup
+  if(imgs.length>1){
     const slides=document.getElementById('carouselSlides');
-    if(!slides||imgs.length<2)return;
-    let startX=0,started=false;
-    slides.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;started=true});
-    slides.addEventListener('touchend',e=>{
-      if(!started)return;started=false;
-      const dx=e.changedTouches[0].clientX-startX;
-      if(Math.abs(dx)>40)slideCarousel(dx<0?1:-1);
-    });
-  },100);
+    if(slides){
+      let startX=0;
+      const onStart=e=>{startX=e.touches[0].clientX};
+      const onEnd=e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)slideCarousel(dx<0?1:-1)};
+      slides.addEventListener('touchstart',onStart,{passive:true});
+      slides.addEventListener('touchend',onEnd,{passive:true});
+      carouselCleanup=()=>{slides.removeEventListener('touchstart',onStart);slides.removeEventListener('touchend',onEnd)};
+    }
+  }else{carouselCleanup=null}
 
   document.querySelectorAll('.page').forEach(p=>p.classList.add('right'));
   document.getElementById('detail').classList.remove('right','pop');
   currentPage='detail';
+  syncTabs('feed');
 }
 
 function slideCarousel(dir){
@@ -460,23 +390,18 @@ function slideCarousel(dir){
   const imgs=slides.querySelectorAll('img');if(!imgs.length)return;
   slideIdx=Math.max(0,Math.min(imgs.length-1,slideIdx+dir));
   slides.style.transform=`translateX(-${slideIdx*100}%)`;
-  // Update dots
   document.querySelectorAll('.c-dot').forEach((d,i)=>d.classList.toggle('on',i===slideIdx));
-  const counter=document.querySelector('.c-counter');
-  if(counter)counter.textContent=`${slideIdx+1}/${imgs.length}`;
+  const c=document.querySelector('.c-counter');if(c)c.textContent=`${slideIdx+1}/${imgs.length}`;
 }
 
 function openWhatsApp(id){
   const p=products.find(x=>x.id===id);if(!p)return;
-  const phone=p.whatsapp||'47999990000';
-  const msg=encodeURIComponent(`Olá ${p.seller||''}! Vi o anúncio "${p.title}" no Acha Região e tenho interesse.`);
-  window.open(`https://wa.me/55${phone.replace(/\D/g,'')}?text=${msg}`,'_blank');
+  const phone=p.whatsapp||'';if(!phone){toast('⚠️ WhatsApp não informado');return}
+  window.open(`https://wa.me/55${phone.replace(/\D/g,'')}?text=${encodeURIComponent('Olá! Vi o anúncio "'+p.title+'" no Acha Região e tenho interesse.')}`,'_blank');
 }
-
 function shareProduct(id){
   const p=products.find(x=>x.id===id);if(!p)return;
-  const text=encodeURIComponent(`🟡 ${p.title}\n💰 R$ ${p.price.toLocaleString('pt-BR')}\n📍 ${p.city}\n\nVeja no Acha Região: acha-regiao-qp7x.vercel.app`);
-  window.open(`https://wa.me/?text=${text}`,'_blank');
+  window.open(`https://wa.me/?text=${encodeURIComponent('🟡 '+p.title+'\n💰 R$ '+p.price.toLocaleString('pt-BR')+'\n📍 '+p.city+'\n\nVeja no Acha Região: acha-regiao-qp7x.vercel.app')}`,'_blank');
 }
 
 // ═══════ FAVORITES ═══════
@@ -485,11 +410,13 @@ function toggleFav(id,el){
   if(idx>-1){favorites.splice(idx,1);if(el){el.classList.remove('on');el.textContent='🤍'}}
   else{favorites.push(id);if(el){el.classList.add('on');el.textContent='❤️'};toast('❤️ Adicionado aos favoritos!')}
   localStorage.setItem('acha_favs',JSON.stringify(favorites));
+  // Refresh favs in profile if visible
+  if(currentPage==='profile'){const activeProfTab=document.querySelector('.prof-tab.on');if(activeProfTab&&activeProfTab.textContent.includes('Favoritos'))renderProfGrid('favs')}
 }
 
 // ═══════ CREATE ═══════
 function addPhotos(e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{photos.push(ev.target.result);renderPhotos()};r.readAsDataURL(f)})}
-function renderPhotos(){const c=document.querySelector('.photo-row');c.innerHTML=photos.map((url,i)=>`<div class="photo-slot"><img src="${url}"><span class="del" onclick="removePhoto(${i})">✕</span></div>`).join('')+`<div class="photo-slot" onclick="document.getElementById('pInput').click()">+</div>`}
+function renderPhotos(){const c=document.querySelector('.photo-row');if(c)c.innerHTML=photos.map((url,i)=>`<div class="photo-slot"><img src="${url}"><span class="del" onclick="removePhoto(${i})">✕</span></div>`).join('')+`<div class="photo-slot" onclick="document.getElementById('pInput').click()">+</div>`}
 function removePhoto(i){photos.splice(i,1);renderPhotos()}
 function publish(){
   if(!user){goTab('auth');return}
@@ -499,22 +426,21 @@ function publish(){
   products.unshift(prod);
   const local=JSON.parse(localStorage.getItem('acha_products')||'[]');local.push(prod);localStorage.setItem('acha_products',JSON.stringify(local));
   document.getElementById('cTitle').value='';document.getElementById('cDesc').value='';document.getElementById('cPrice').value='';document.getElementById('cWhats').value='';photos=[];renderPhotos();
-  notifyNewListing(prod);
-  goTab('feed');toast('✅ Anúncio publicado!');
+  notifyNewListing(prod);goTab('feed');toast('✅ Anúncio publicado!');
 }
 
 // ═══════ PROFILE ═══════
 function renderProfile(){
   if(!user)return;
-  document.getElementById('profName').textContent=user.name;document.getElementById('profLoc').textContent='📍 '+(user.city||'Alto Vale');
+  document.getElementById('profName').textContent=user.name;
+  document.getElementById('profLoc').textContent='📍 '+(user.city||'Alto Vale');
+  const stars=user.stars||4.5;
+  document.getElementById('profStars').innerHTML=Array.from({length:5},(_,i)=>`<span>${i<Math.floor(stars)?'⭐':(i<stars?'⭐':'☆')}</span>`).join('');
   renderProfGrid('posts');
 }
-function profSwitch(tab,el){
-  document.querySelectorAll('.prof-tab').forEach(x=>x.classList.remove('on'));el.classList.add('on');
-  renderProfGrid(tab);
-}
+function profSwitch(tab,el){document.querySelectorAll('.prof-tab').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderProfGrid(tab)}
 function renderProfGrid(tab){
-  const grid=document.getElementById('profGrid');
+  const grid=document.getElementById('profGrid');if(!grid)return;
   if(tab==='posts'){
     const mine=products.filter(p=>p.sellerId===user.id);
     grid.innerHTML=mine.length?mine.map(p=>`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=225&fit=crop'}"><div class="c-grad"></div></div><div class="c-body"><span class="c-title">${p.title}</span><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span></div></div>`).join(''):'<div class="prof-empty"><div style="font-size:44px;margin-bottom:10px">📦</div><p style="font-size:13px;color:var(--t2)">Nenhum anúncio</p><p style="font-size:11px;color:var(--t3)">Vá em Anunciar para criar seu primeiro!</p></div>';
@@ -525,33 +451,18 @@ function renderProfGrid(tab){
 }
 
 // ═══════ NOTIFICATIONS ═══════
-let lastCheck=Date.now();
-function requestNotificationPermission(){
-  if('Notification' in window&&Notification.permission==='default'){
-    setTimeout(()=>Notification.requestPermission(),5000);
-  }
-}
 function checkNewListings(){
   const local=JSON.parse(localStorage.getItem('acha_products')||'[]');
   const news=local.filter(p=>new Date(p.createdAt).getTime()>lastCheck);
-  if(news.length>0&&user){
-    document.getElementById('notifBadge').style.display='inline-block';
-    document.getElementById('notifBadge').textContent=`🔔 ${news.length} novo${news.length>1?'s':''}`;
-    if(Notification.permission==='granted'){
-      news.forEach(p=>{new Notification('🟡 Novo anúncio no Acha Região',{body:`${p.title} — R$ ${p.price} em ${p.city}`,icon:'assets/logo-icon.png'})});
-    }
+  if(news.length>0&&user){document.getElementById('notifBadge').style.display='inline-block';document.getElementById('notifBadge').textContent=`🔔 ${news.length}`;
+    if('Notification' in window&&Notification.permission==='granted'){news.forEach(p=>{new Notification('🟡 Novo anúncio',{body:`${p.title} — R$ ${p.price} em ${p.city}`,icon:'assets/logo-icon.png'})})}
   }
   lastCheck=Date.now();
 }
 function notifyNewListing(p){
-  if(Notification.permission==='granted'){
-    new Notification('🟡 Produto publicado!',{body:`${p.title} — R$ ${p.price} em ${p.city}`,icon:'assets/logo-icon.png'});
-  }
+  if('Notification' in window&&Notification.permission==='granted'){new Notification('🟡 Produto publicado!',{body:`${p.title} — R$ ${p.price} em ${p.city}`,icon:'assets/logo-icon.png'})}
 }
-function showNewAlert(){
-  document.getElementById('notifBadge').style.display='none';
-  toast('🔔 Novos produtos na sua região!');
-}
+function showNewAlert(){document.getElementById('notifBadge').style.display='none';toast('🔔 Novos produtos na sua região!')}
 
 // ═══════ UTILS ═══════
 function install(){if(window._pwa){window._pwa.prompt();document.getElementById('installBar').classList.remove('show')}else toast('📲 iPhone: Safari → Compartilhar → Adicionar à Tela')}
