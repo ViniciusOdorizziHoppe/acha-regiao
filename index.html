@@ -2,245 +2,426 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acha Região — O marketplace do Alto Vale</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Acha Região</title>
+<meta name="description" content="Marketplace local do Alto Vale do Itajaí">
+<meta name="theme-color" content="#F5C518">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Acha Região">
 <link rel="icon" type="image/png" href="assets/logo-icon.png">
+<link rel="apple-touch-icon" href="assets/logo-icon.png">
+<link rel="manifest" href="data:application/json,{name:'Acha Região',short_name:'Acha',start_url:'.',display:'standalone',background_color:'%2309090B',theme_color:'%23F5C518',icons:[{src:'assets/logo-icon.png',sizes:'192x192',type:'image/png'},{src:'assets/logo-icon.png',sizes:'512x512',type:'image/png'}]}">
 <style>
 :root {
-  --yellow: #F5C518;
-  --yellow-glow: rgba(245,197,24,.15);
-  --bg: #09090B;
-  --surface: #131315;
-  --card: #1A1A1E;
-  --border: #27272C;
-  --text: #F5F5F7;
-  --text2: #A1A1AA;
-  --text3: #6B6B70;
-  --green: #25D366;
-  --radius: 14px;
-  --phone-w: 390px;
-  --phone-h: 780px;
+  --y: #F5C518; --yg: rgba(245,197,24,.15); --bg: #09090B;
+  --s: #131315; --c: #1A1A1E; --b: #27272C;
+  --t: #F5F5F7; --t2: #A1A1AA; --t3: #6B6B70;
+  --g: #25D366; --r: 14px; --safe: env(safe-area-inset-bottom,8px);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:Inter,-apple-system,sans-serif;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(245,197,24,.03) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(245,197,24,.04) 0%,transparent 50%);pointer-events:none;z-index:0}
-.container{max-width:1100px;margin:0 auto;padding:40px 24px;position:relative;z-index:1}
-.hero{text-align:center;margin-bottom:48px}
-.hero svg{margin-bottom:20px}
-.hero h1{font-size:clamp(32px,5vw,56px);font-weight:900;letter-spacing:-1.5px;margin-bottom:12px}
-.hero h1 span{color:var(--yellow)}
-.hero p{font-size:16px;color:var(--text2);max-width:500px;margin:0 auto 32px;line-height:1.6}
-.tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
-.tag{background:var(--surface);border:1px solid var(--border);padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;color:var(--text2);transition:all .2s}
-.tag:hover{border-color:var(--yellow);color:var(--yellow)}
-.tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
-.dot.green{background:#4ADE80}
-.dot.yellow{background:var(--yellow)}
-.dot.purple{background:#A78BFA}
-.phone-wrapper{display:flex;justify-content:center;align-items:flex-start;gap:48px;flex-wrap:wrap}
-.phone-frame{width:var(--phone-w);min-width:var(--phone-w);height:var(--phone-h);background:#0F0F11;border-radius:36px;padding:12px;position:relative;box-shadow:0 0 0 2px #222,0 0 0 4px #111,0 20px 60px rgba(0,0,0,.6),0 0 80px var(--yellow-glow);overflow:hidden}
-.phone-screen{width:100%;height:100%;background:var(--bg);border-radius:26px;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.status-bar{height:32px;display:flex;justify-content:space-between;align-items:center;padding:0 24px;font-size:11px;font-weight:600;color:#fff;flex-shrink:0}
-.app-content{flex:1;overflow-y:auto;overflow-x:hidden;-ms-overflow-style:none;scrollbar-width:none}
-.app-content::-webkit-scrollbar{display:none}
-.header-yellow{background:linear-gradient(135deg,var(--yellow),#FFD42A,var(--yellow));padding:16px 16px 20px;position:relative;overflow:hidden}
-.header-yellow::after{content:'';position:absolute;top:-10px;right:-10px;width:100px;height:100px;background:radial-gradient(circle,rgba(0,0,0,.06) 1px,transparent 1px);background-size:8px 8px;opacity:.4}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;position:relative;z-index:1}
-.header-top svg{flex-shrink:0}
-.loc-btn{background:rgba(0,0,0,.08);padding:5px 10px;border-radius:14px;font-size:10px;font-weight:700;color:#1A1800}
-.tagline{font-size:11px;color:rgba(26,24,0,.6);margin-bottom:12px;position:relative;z-index:1}
-.search-wrap{position:relative;z-index:1}
-.search-box{display:flex;align-items:center;background:#1E1E22;border:2px solid rgba(245,197,24,.3);border-radius:12px;height:44px;padding:0 14px;gap:8px;box-shadow:0 0 20px rgba(245,197,24,.1);transition:border-color .2s}
-.search-box:focus-within{border-color:var(--yellow)}
-.search-box input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:13px}
-.search-box input::placeholder{color:var(--text3)}
-.search-icon{font-size:16px;opacity:.8}
-.hero-card{margin:12px 16px 0;background:linear-gradient(135deg,#1E1E24,#18181C);border-radius:14px;padding:14px;border:1px solid rgba(245,197,24,.1);display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.hero-card .badge{background:rgba(245,197,24,.12);padding:3px 8px;border-radius:5px;font-size:9px;font-weight:800;color:var(--yellow);text-transform:uppercase;letter-spacing:.5px;display:inline-block;margin-bottom:4px}
-.hero-card h3{font-size:15px;font-weight:700;margin-bottom:2px}
-.hero-card p{font-size:10px;color:var(--text3);line-height:1.4}
-.hero-card .plus{width:40px;height:40px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#1A1800;box-shadow:0 4px 16px rgba(245,197,24,.3);flex-shrink:0;cursor:pointer;transition:transform .15s}
-.hero-card .plus:active{transform:scale(.92)}
-.cats{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+body{background:var(--bg);color:var(--t);font-family:Inter,-apple-system,sans-serif;min-height:100vh;min-height:100dvh;overflow-x:hidden}
+#app{max-width:500px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative}
+
+/* PWA Install Banner */
+#installBanner{display:none;background:linear-gradient(135deg,var(--y),#FFD42A);padding:12px 16px;align-items:center;gap:12px;position:fixed;bottom:0;left:0;right:0;z-index:100;animation:slideUp .3s ease}
+#installBanner.show{display:flex}
+#installBanner .txt{flex:1;font-size:13px;font-weight:700;color:#1A1800}
+#installBanner button{background:#1A1800;color:var(--y);border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap}
+#installBanner .close{background:none;border:none;color:#1A1800;font-size:18px;cursor:pointer;padding:4px}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* Header */
+.header{background:linear-gradient(135deg,var(--y),#FFD42A,var(--y));padding:12px 16px 14px;position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;top:-10px;right:-10px;width:80px;height:80px;background:radial-gradient(circle,rgba(0,0,0,.05) 1px,transparent 1px);background-size:7px 7px;opacity:.35}
+.h-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;margin-bottom:10px}
+.h-top img{height:26px}
+.h-loc{background:rgba(0,0,0,.07);padding:4px 8px;border-radius:10px;font-size:10px;font-weight:700;color:#1A1800;cursor:pointer}
+.search-box{display:flex;align-items:center;background:#1E1E22;border:2px solid rgba(245,197,24,.35);border-radius:11px;height:42px;padding:0 12px;gap:6px;position:relative;z-index:1;box-shadow:0 0 18px rgba(245,197,24,.08)}
+.search-box:focus-within{border-color:var(--y)}
+.search-box input{flex:1;background:none;border:none;outline:none;color:var(--t);font-size:13px;min-width:0}
+.search-box input::placeholder{color:var(--t3)}
+
+/* Content */
+.content{flex:1;overflow-y:auto;padding-bottom:70px}
+.cats{padding:10px 12px;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
-.cat{height:32px;padding:0 14px;border-radius:16px;font-size:12px;font-weight:700;border:1px solid var(--border);color:var(--text2);background:var(--card);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;display:flex;align-items:center}
-.cat.active,.cat:hover{background:var(--yellow);color:#1A1800;border-color:var(--yellow);box-shadow:0 4px 14px rgba(245,197,24,.25)}
-.section-header{padding:8px 16px 10px;display:flex;justify-content:space-between;align-items:center}
-.section-header h2{font-size:15px;font-weight:700}
-.count{font-size:12px;font-weight:700;color:var(--yellow)}
-.grid{padding:0 16px 80px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.product{background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:transform .15s,box-shadow .15s;animation:fadeUp .4s ease both}
-.product:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,197,24,.08)}
-.product:nth-child(1){animation-delay:0s}
-.product:nth-child(2){animation-delay:.05s}
-.product:nth-child(3){animation-delay:.1s}
-.product:nth-child(4){animation-delay:.15s}
-.product:nth-child(5){animation-delay:.2s}
-.product:nth-child(6){animation-delay:.25s}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.product .img-wrap{position:relative}
-.product img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.product .p-badge{position:absolute;top:8px;left:8px;background:var(--yellow);padding:2px 7px;border-radius:4px;font-size:9px;font-weight:800;color:#1A1800;text-transform:uppercase}
-.product .p-overlay{position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,rgba(26,26,30,.85))}
-.product .p-body{padding:10px;display:flex;flex-direction:column;gap:4px}
-.product .p-title{font-size:12px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.product .p-price{font-size:18px;font-weight:800;color:var(--yellow)}
-.product .p-city{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px}
-.product .p-dot{width:5px;height:5px;border-radius:50%;background:rgba(245,197,24,.4)}
-.tabbar{position:absolute;bottom:0;left:0;right:0;height:56px;background:#0F0F11;border-top:2px solid var(--yellow);display:flex;justify-content:space-around;align-items:center;padding-bottom:6px;z-index:10;box-shadow:0 -4px 16px rgba(245,197,24,.06)}
-.tab{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;font-weight:700;color:var(--text3);cursor:pointer;transition:color .15s}
-.tab.active{color:var(--yellow)}
-.tab span{font-size:18px}
-.loading{text-align:center;padding:40px;color:var(--text3);font-size:12px}
-.info-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:320px;position:sticky;top:24px}
-.info-panel h3{font-size:18px;font-weight:800;margin-bottom:8px}
-.info-panel h3 span{color:var(--yellow)}
-.info-panel .feat{margin-top:16px}
-.info-panel .feat-item{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px;color:var(--text2)}
-.info-panel .feat-icon{width:32px;height:32px;background:var(--card);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.powered{font-size:11px;color:var(--text3);margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-.powered a{color:var(--yellow);text-decoration:none;font-weight:600}
-@media(max-width:900px){.phone-wrapper{flex-direction:column;align-items:center}.info-panel{max-width:100%;position:static;text-align:center}}
+.cat{height:30px;padding:0 13px;border-radius:15px;font-size:11px;font-weight:700;border:1px solid var(--b);color:var(--t2);background:var(--c);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;display:flex;align-items:center}
+.cat.on{background:var(--y);color:#1A1800;border-color:var(--y);box-shadow:0 3px 12px rgba(245,197,24,.2)}
+.sec{padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.sec h2{font-size:15px;font-weight:700}
+.sec span{font-size:12px;font-weight:700;color:var(--y)}
+.grid{padding:0 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.prod{background:var(--c);border-radius:var(--r);overflow:hidden;border:1px solid var(--b);cursor:pointer;transition:transform .12s,box-shadow .12s;animation:in .3s ease both}
+.prod:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--yg)}
+.prod:nth-child(1){animation-delay:0s}.prod:nth-child(2){animation-delay:.04s}.prod:nth-child(3){animation-delay:.08s}.prod:nth-child(4){animation-delay:.12s}.prod:nth-child(5){animation-delay:.16s}.prod:nth-child(6){animation-delay:.2s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.prod .pw{position:relative}
+.prod img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.prod .badge{position:absolute;top:6px;left:6px;background:var(--y);padding:2px 6px;border-radius:4px;font-size:8px;font-weight:800;color:#1A1800;text-transform:uppercase}
+.prod .po{position:absolute;bottom:0;left:0;right:0;height:25px;background:linear-gradient(transparent,rgba(26,26,30,.8))}
+.prod .pb{padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+.prod .pt{font-size:11px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prod .pp{font-size:16px;font-weight:800;color:var(--y)}
+.prod .pc{font-size:9px;color:var(--t3);display:flex;align-items:center;gap:3px}
+.prod .pd{width:4px;height:4px;border-radius:50%;background:rgba(245,197,24,.35)}
+
+/* Tabs */
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;height:56px;background:#0F0F11;border-top:2px solid var(--y);display:flex;justify-content:space-around;align-items:center;padding-bottom:var(--safe);z-index:50;box-shadow:0 -4px 14px rgba(245,197,24,.05)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;font-weight:700;color:var(--t3);cursor:pointer;transition:color .15s;border:none;background:none;padding:4px 0}
+.tab.on{color:var(--y)}
+.tab .ti{font-size:18px}
+
+/* Fab */
+.fab{position:fixed;bottom:72px;right:calc(50% - 230px);width:48px;height:48px;background:var(--y);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#1A1800;box-shadow:0 4px 20px rgba(245,197,24,.35);cursor:pointer;z-index:40;border:none;transition:transform .15s}
+.fab:active{transform:scale(.9)}
+@media(max-width:500px){.fab{right:12px}}
+
+/* Modal */
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;align-items:flex-end;justify-content:center}
+.modal.show{display:flex}
+.modal .backdrop{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7)}
+.modal .sheet{position:relative;background:var(--s);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;padding:20px 16px;animation:su .25s ease}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet h3{font-size:17px;font-weight:800;margin-bottom:16px}
+.sheet h3 span{color:var(--y)}
+.sheet label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:4px;margin-top:12px}
+.sheet input,.sheet textarea,.sheet select{width:100%;padding:10px 12px;background:var(--c);border:1px solid var(--b);border-radius:10px;color:var(--t);font-size:13px;outline:none;font-family:inherit}
+.sheet input:focus,.sheet textarea:focus{border-color:var(--y)}
+.sheet textarea{height:80px;resize:none}
+.sheet .btn{width:100%;padding:12px;background:var(--y);color:#1A1800;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px}
+.sheet .btn:disabled{opacity:.5}
+.sheet .close-btn{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer}
+
+/* Detail modal */
+.detail-img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;margin-bottom:14px}
+.detail-price{font-size:24px;font-weight:900;color:var(--y);margin-bottom:4px}
+.detail-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.detail-desc{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px}
+.detail-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.detail-meta span{background:var(--c);padding:5px 10px;border-radius:6px;font-size:11px;color:var(--t2)}
+.wp-btn{width:100%;padding:14px;background:var(--g);color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+
+/* Toast */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--c);border:1px solid var(--b);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:td .3s ease;pointer-events:none}
+@keyframes td{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.toast.ok{border-color:#4ADE80;color:#4ADE80}
+
+/* Auth */
+.auth-btns{display:flex;gap:8px;position:relative;z-index:1}
+.auth-btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(0,0,0,.15);background:rgba(0,0,0,.06);color:#1A1800}
+
+/* Empty */
+.empty{text-align:center;padding:40px 20px}
+.empty .ei{font-size:48px;margin-bottom:12px}
+.empty h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.empty p{font-size:12px;color:var(--t3)}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="hero">
-    <img src="assets/logo-text.png" alt="Acha Região" style="height:60px;margin-bottom:20px" onerror="this.style.display='none'">
-    <h1>O marketplace do <span>Alto Vale</span></h1>
-    <p>Compre, venda, contrate profissionais e alugue imóveis — tudo em um só lugar, feito pra quem mora aqui.</p>
-    <div class="tags">
-      <span class="tag"><span class="dot green"></span>Produtos</span>
-      <span class="tag"><span class="dot yellow"></span>Profissionais</span>
-      <span class="tag"><span class="dot purple"></span>Aluguéis</span>
+<div id="app">
+  <!-- INSTALL BANNER -->
+  <div id="installBanner">
+    <span class="txt">📲 Adicione à tela inicial</span>
+    <button onclick="installPWA()">Instalar</button>
+    <button class="close" onclick="this.parentElement.classList.remove('show')">✕</button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="h-top">
+      <img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<b style=font-size:20px;color:#1A1800>acha <small style=font-size:9px>REGIÃO</small></b>'">
+      <div style="display:flex;gap:6px">
+        <span class="h-loc">📍 Alto Vale</span>
+        <div class="auth-btns" id="authBtns">
+          <button class="auth-btn" onclick="openModal('login')">Entrar</button>
+        </div>
+      </div>
+    </div>
+    <div class="search-box">
+      <span style="font-size:14px">🔍</span>
+      <input type="text" id="searchIpt" placeholder="O que você procura?" oninput="render()">
     </div>
   </div>
 
-  <div class="phone-wrapper">
-    <div class="phone-frame">
-      <div class="phone-screen">
-        <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
-        <div class="app-content">
-          <div class="header-yellow">
-            <div class="header-top">
-              <img src="assets/logo-text.png" alt="Acha Região" style="height:28px" onerror="this.style.display='none'">
-              <span class="loc-btn">📍 Alto Vale</span>
-            </div>
-            <div class="tagline">O marketplace da nossa região</div>
-            <div class="search-wrap">
-              <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="O que você procura?" oninput="filter()">
-              </div>
-            </div>
-          </div>
-          <div class="hero-card">
-            <div>
-              <span class="badge">Novo</span>
-              <h3>Anuncie grátis</h3>
-              <p>Venda o que está parado.<br>Milhares de pessoas na região.</p>
-            </div>
-            <div class="plus" onclick="document.getElementById('searchInput').focus()">+</div>
-          </div>
-          <div class="cats" id="categories"></div>
-          <div class="section-header"><h2 id="sectionTitle">Em destaque</h2><span class="count" id="count"></span></div>
-          <div class="grid" id="productGrid"></div>
-          <div class="loading" id="loading">Carregando produtos...</div>
-        </div>
-        <div class="tabbar">
-          <div class="tab active"><span>🏷️</span>Produtos</div>
-          <div class="tab"><span>👤</span>Serviços</div>
-          <div class="tab"><span>🏠</span>Aluguéis</div>
-          <div class="tab"><span>☰</span>Perfil</div>
-        </div>
-      </div>
-    </div>
+  <!-- CATEGORIES -->
+  <div class="cats" id="catRow"></div>
 
-    <div class="info-panel">
-      <h3>🟡 <span>Acha Região</span></h3>
-      <p style="font-size:13px;color:var(--text2);line-height:1.5">O marketplace local que o Facebook não consegue ser. Produtos, profissionais e aluguéis no mesmo app.</p>
-      <div class="feat">
-        <div class="feat-item"><span class="feat-icon">🏷️</span>Classificados locais</div>
-        <div class="feat-item"><span class="feat-icon">⭐</span>Profissionais com avaliações</div>
-        <div class="feat-item"><span class="feat-icon">🏠</span>Aluguéis na região</div>
-        <div class="feat-item"><span class="feat-icon">💬</span>WhatsApp direto</div>
-        <div class="feat-item"><span class="feat-icon">📍</span>Alto Vale do Itajaí</div>
-      </div>
-      <div class="powered">
-        API: <a href="https://acha-regiao-api.onrender.com/api/health" target="_blank">onrender.com</a> ✅ online<br>
-        GitHub: <a href="https://github.com/ViniciusOdorizziHoppe/acha-regiao" target="_blank">repo público</a>
-      </div>
-    </div>
+  <!-- SECTION -->
+  <div class="sec"><h2 id="secTitle">Em destaque</h2><span id="secCount"></span></div>
+
+  <!-- PRODUCT GRID -->
+  <div class="content"><div class="grid" id="grid"></div></div>
+
+  <!-- FAB -->
+  <button class="fab" onclick="openModal('create')" title="Anunciar">+</button>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab on" onclick="switchTab('home',this)"><span class="ti">🏷️</span>Produtos</button>
+    <button class="tab" onclick="switchTab('services',this)"><span class="ti">👤</span>Serviços</button>
+    <button class="tab" onclick="switchTab('rent',this)"><span class="ti">🏠</span>Aluguéis</button>
+    <button class="tab" onclick="switchTab('profile',this)"><span class="ti">☰</span>Perfil</button>
+  </div>
+</div>
+
+<!-- CREATE LISTING MODAL -->
+<div class="modal" id="modalCreate">
+  <div class="backdrop" onclick="closeModal('create')"></div>
+  <div class="sheet">
+    <button class="close-btn" onclick="closeModal('create')">✕</button>
+    <h3>📦 <span>Anunciar produto</span></h3>
+    <label>Título *</label>
+    <input type="text" id="newTitle" placeholder="Ex: Sofá 3 lugares retrátil" maxlength="100">
+    <label>Categoria</label>
+    <select id="newCat"><option>Móveis</option><option>Eletrônicos</option><option>Veículos</option><option>Roupas</option><option>Esportes</option><option>Casa</option><option>Ferramentas</option></select>
+    <label>Preço (R$) *</label>
+    <input type="number" id="newPrice" placeholder="Ex: 850" min="0">
+    <label>Cidade</label>
+    <select id="newCity"><option>Presidente Getúlio</option><option>Rio do Sul</option><option>Ibirama</option><option>Laurentino</option><option>Lontras</option><option>Aurora</option></select>
+    <label>URL da imagem</label>
+    <input type="url" id="newImg" placeholder="https://... (cole o link da foto)">
+    <label>WhatsApp para contato *</label>
+    <input type="tel" id="newWhats" placeholder="(47) 99999-9999">
+    <button class="btn" onclick="createListing()">📢 Publicar anúncio</button>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal" id="modalLogin">
+  <div class="backdrop" onclick="closeModal('login')"></div>
+  <div class="sheet">
+    <button class="close-btn" onclick="closeModal('login')">✕</button>
+    <h3>👤 <span>Entrar</span></h3>
+    <label>Seu nome *</label>
+    <input type="text" id="loginName" placeholder="Seu nome completo">
+    <label>WhatsApp *</label>
+    <input type="tel" id="loginWhats" placeholder="(47) 99999-9999">
+    <label>Cidade</label>
+    <select id="loginCity"><option>Presidente Getúlio</option><option>Rio do Sul</option><option>Ibirama</option><option>Laurentino</option><option>Lontras</option><option>Aurora</option></select>
+    <button class="btn" onclick="doLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal" id="modalDetail">
+  <div class="backdrop" onclick="closeModal('detail')"></div>
+  <div class="sheet">
+    <button class="close-btn" onclick="closeModal('detail')">✕</button>
+    <div id="detailContent"></div>
   </div>
 </div>
 
 <script>
+// ─── STATE ───
+const CATS = ['Todos','Eletrônicos','Móveis','Veículos','Roupas','Esportes','Casa','Ferramentas'];
 const API = 'https://acha-regiao-api.onrender.com/api';
-let allProducts = [];
-let activeCat = 'Todos';
-let searchTerm = '';
+let products = [], activeCat = 'Todos', user = null;
 
-async function load() {
-  const cats = ['Todos','Eletrônicos','Móveis','Veículos','Roupas','Esportes','Casa','Ferramentas'];
-  document.getElementById('categories').innerHTML = cats.map((c,i) => 
-    `<span class="cat ${i===0?'active':''}" onclick="selectCat('${c}',this)">${c}</span>`
-  ).join('');
-
-  try {
-    const res = await fetch(`${API}/products`);
-    allProducts = await res.json();
-    render();
-  } catch(e) {
-    document.getElementById('loading').innerHTML = '⚠️ API offline — usando dados mock';
-    allProducts = [
-      {id:'1',title:'iPhone 13 Pro 128GB',price:3200,city:'Rio do Sul',imageUrl:'https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=400&h=300&fit=crop',destaque:true,category:'Eletrônicos'},
-      {id:'2',title:'Sofá 3 Lugares Retrátil',price:850,city:'Presidente Getúlio',imageUrl:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop',destaque:false,category:'Móveis'},
-      {id:'3',title:'Honda CG 160 Titan 2023',price:14500,city:'Ibirama',imageUrl:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400&h=300&fit=crop',destaque:true,category:'Veículos'},
-      {id:'4',title:'Geladeira Frost Free 375L',price:1800,city:'Rio do Sul',imageUrl:'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400&h=300&fit=crop',destaque:false,category:'Eletrônicos'},
-      {id:'5',title:'Mesa de Jantar 6 Lugares',price:650,city:'Presidente Getúlio',imageUrl:'https://images.unsplash.com/photo-1556909114-f6e7ad7d6ab6?w=400&h=300&fit=crop',destaque:false,category:'Móveis'},
-      {id:'6',title:'Kit Halteres 20kg + Barra',price:280,city:'Laurentino',imageUrl:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop',destaque:false,category:'Esportes'}
-    ];
-    render();
+// ─── INIT ───
+function init() {
+  // Load user
+  const saved = localStorage.getItem('acha_user');
+  if (saved) { user = JSON.parse(saved); updateAuthUI(); }
+  
+  // PWA
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    document.getElementById('installBanner').classList.remove('show');
   }
+  
+  // Categories
+  document.getElementById('catRow').innerHTML = CATS.map((c,i) => 
+    `<span class="cat${i===0?' on':''}" onclick="selCat('${c}',this)">${c}</span>`
+  ).join('');
+  
+  // Load products
+  loadProducts();
+  
+  // Listen for install
+  window.addEventListener('beforeinstallprompt', (e) => {
+    window._pwaEvent = e;
+    document.getElementById('installBanner').classList.add('show');
+  });
 }
 
-function selectCat(cat, el) {
-  activeCat = cat;
-  document.querySelectorAll('.cat').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('sectionTitle').textContent = cat === 'Todos' ? 'Em destaque' : cat;
+async function loadProducts() {
+  try {
+    const r = await fetch(`${API}/products`);
+    const apiData = await r.json();
+    products = [...apiData, ...getLocalListings()];
+  } catch(e) {
+    products = [...getLocalListings(), ...getMockFallback()];
+  }
   render();
 }
 
-function filter() {
-  searchTerm = document.getElementById('searchInput').value.toLowerCase();
+function getLocalListings() {
+  try { return JSON.parse(localStorage.getItem('acha_listings')||'[]'); } catch(e) { return []; }
+}
+function saveLocalListings(arr) { localStorage.setItem('acha_listings', JSON.stringify(arr)); }
+
+function getMockFallback() {
+  return [
+    {id:'m1',title:'iPhone 13 Pro 128GB',price:3200,city:'Rio do Sul',category:'Eletrônicos',destaque:true,imageUrl:'https://images.unsplash.com/photo-1632661675695-15c8e3e8e7b4?w=400&h=300&fit=crop'},
+    {id:'m2',title:'Sofá 3 Lugares Retrátil',price:850,city:'Presidente Getúlio',category:'Móveis',destaque:false,imageUrl:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop'},
+    {id:'m3',title:'Honda CG 160 Titan 2023',price:14500,city:'Ibirama',category:'Veículos',destaque:true,imageUrl:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400&h=300&fit=crop'},
+    {id:'m4',title:'Geladeira Frost Free 375L',price:1800,city:'Rio do Sul',category:'Eletrônicos',destaque:false,imageUrl:'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400&h=300&fit=crop'},
+  ];
+}
+
+// ─── RENDER ───
+function selCat(cat, el) {
+  activeCat = cat;
+  document.querySelectorAll('.cat').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('secTitle').textContent = cat === 'Todos' ? 'Em destaque' : cat;
   render();
 }
 
 function render() {
-  let filtered = activeCat === 'Todos' ? allProducts : allProducts.filter(p => p.category === activeCat);
-  if (searchTerm) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchTerm) || p.city.toLowerCase().includes(searchTerm));
+  let f = activeCat === 'Todos' ? products : products.filter(p => p.category === activeCat);
+  const q = document.getElementById('searchIpt').value.toLowerCase();
+  if (q) f = f.filter(p => p.title.toLowerCase().includes(q) || (p.city||'').toLowerCase().includes(q));
   
-  document.getElementById('count').textContent = `${filtered.length} itens`;
-  document.getElementById('loading').style.display = 'none';
-  
-  document.getElementById('productGrid').innerHTML = filtered.map(p => `
-    <div class="product">
-      <div class="img-wrap">
-        <img src="${p.imageUrl}" alt="${p.title}" loading="lazy">
-        ${p.destaque ? '<span class="p-badge">Destaque</span>' : ''}
-        <div class="p-overlay"></div>
+  document.getElementById('secCount').textContent = `${f.length} itens`;
+  document.getElementById('grid').innerHTML = f.map(p => `
+    <div class="prod" onclick="openDetail('${p.id}')">
+      <div class="pw">
+        <img src="${p.imageUrl||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop'">
+        ${p.destaque?'<span class="badge">Destaque</span>':''}
+        <div class="po"></div>
       </div>
-      <div class="p-body">
-        <span class="p-title">${p.title}</span>
-        <span class="p-price">R$ ${p.price.toLocaleString('pt-BR')}</span>
-        <span class="p-city"><span class="p-dot"></span>${p.city}</span>
+      <div class="pb">
+        <span class="pt">${p.title}</span>
+        <span class="pp">R$ ${p.price.toLocaleString('pt-BR')}</span>
+        <span class="pc"><span class="pd"></span>${p.city||'Alto Vale'}</span>
       </div>
     </div>
   `).join('');
 }
 
-load();
+// ─── CREATE LISTING ───
+function createListing() {
+  if (!user) { openModal('login'); return; }
+  
+  const title = document.getElementById('newTitle').value.trim();
+  const price = parseInt(document.getElementById('newPrice').value);
+  const whats = document.getElementById('newWhats').value.trim();
+  
+  if (!title || !price || !whats) { toast('Preencha título, preço e WhatsApp'); return; }
+  
+  const listing = {
+    id: 'local_'+Date.now(),
+    title,
+    price,
+    city: document.getElementById('newCity').value,
+    category: document.getElementById('newCat').value,
+    imageUrl: document.getElementById('newImg').value || 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop',
+    destaque: false,
+    whatsapp: whats,
+    sellerId: user.id,
+    sellerName: user.name,
+    createdAt: new Date().toISOString()
+  };
+  
+  const local = getLocalListings();
+  local.unshift(listing);
+  saveLocalListings(local);
+  products.unshift(listing);
+  
+  // Clear form
+  ['newTitle','newPrice','newImg','newWhats'].forEach(id => document.getElementById(id).value = '');
+  
+  closeModal('create');
+  render();
+  toast('✅ Anúncio publicado!');
+}
+
+// ─── AUTH ───
+function doLogin() {
+  const name = document.getElementById('loginName').value.trim();
+  const whats = document.getElementById('loginWhats').value.trim();
+  if (!name || !whats) { toast('Preencha nome e WhatsApp'); return; }
+  
+  user = {
+    id: 'u_'+Date.now(),
+    name,
+    whatsapp: whats,
+    city: document.getElementById('loginCity').value,
+    createdAt: new Date().toISOString()
+  };
+  localStorage.setItem('acha_user', JSON.stringify(user));
+  updateAuthUI();
+  closeModal('login');
+  toast(`👋 Bem-vindo, ${name.split(' ')[0]}!`);
+}
+
+function updateAuthUI() {
+  if (user) {
+    document.getElementById('authBtns').innerHTML = `<span style="font-size:11px;font-weight:700;color:#1A1800;display:flex;align-items:center">👤 ${user.name.split(' ')[0]}</span>`;
+  }
+}
+
+// ─── DETAIL ───
+function openDetail(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  
+  document.getElementById('detailContent').innerHTML = `
+    <img src="${p.imageUrl}" class="detail-img" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop'">
+    <div class="detail-price">R$ ${p.price.toLocaleString('pt-BR')}</div>
+    <div class="detail-title">${p.title}</div>
+    <div class="detail-meta">
+      <span>📦 ${p.category||'Produto'}</span><span>📍 ${p.city||'Alto Vale'}</span>
+      ${p.sellerName?`<span>👤 ${p.sellerName}</span>`:''}
+    </div>
+    ${p.whatsapp?`
+    <a href="https://wa.me/55${p.whatsapp.replace(/\D/g,'')}?text=Olá! Vi o anúncio "${p.title}" no Acha Região" target="_blank" style="text-decoration:none">
+      <button class="wp-btn">💬 Chamar no WhatsApp</button>
+    </a>`:''}
+  `;
+  openModal('detail');
+}
+
+// ─── MODAL ───
+function openModal(id) { document.getElementById('modal'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('show'); }
+function closeModal(id) { document.getElementById('modal'+id.charAt(0).toUpperCase()+id.slice(1)).classList.remove('show'); }
+
+// ─── TABS ───
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  if (tab === 'services') toast('👤 Serviços em breve');
+  if (tab === 'rent') toast('🏠 Aluguéis em breve');
+  if (tab === 'profile') {
+    if (!user) openModal('login');
+    else toast(`👤 ${user.name} • ${user.city}`);
+  }
+}
+
+// ─── PWA ───
+function installPWA() {
+  if (window._pwaEvent) {
+    window._pwaEvent.prompt();
+    window._pwaEvent.userChoice.then(() => {
+      document.getElementById('installBanner').classList.remove('show');
+    });
+  } else {
+    toast('📲 No iPhone: Abra no Safari → Compartilhar → Adicionar à Tela');
+  }
+}
+
+// ─── TOAST ───
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ─── START ───
+init();
 </script>
 </body>
 </html>
