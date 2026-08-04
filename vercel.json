@@ -2,5 +2,9 @@
   "buildCommand": null,
   "outputDirectory": ".",
   "framework": null,
-  "rewrites": [{ "source": "/(.*)", "destination": "/preview.html" }]
+  "installCommand": null,
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
