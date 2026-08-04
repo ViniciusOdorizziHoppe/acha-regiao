@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F5C518"/>
+      <stop offset="100%" stop-color="#E5A800"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#0C0C0E"/>
+  <circle cx="100" cy="100" r="95" fill="none" stroke="url(#bg)" stroke-width="4"/>
+  
+  <!-- Magnifying Glass -->
+  <g transform="translate(35, 35)">
+    <!-- Glass circle -->
+    <circle cx="55" cy="55" r="42" fill="none" stroke="url(#bg)" stroke-width="9" stroke-linecap="round"/>
+    <!-- Inside dot (location pin concept) -->
+    <circle cx="55" cy="50" r="8" fill="#F5C518"/>
+    <!-- Glass highlight -->
+    <path d="M32 38 Q48 22 68 38" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Handle -->
+    <line x1="87" y1="87" x2="112" y2="115" stroke="url(#bg)" stroke-width="9" stroke-linecap="round"/>
+  </g>
+</svg>

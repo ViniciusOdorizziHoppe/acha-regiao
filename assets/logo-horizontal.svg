@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F5C518"/>
+      <stop offset="100%" stop-color="#E5A800"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Magnifying Glass -->
+  <g transform="translate(25, 10)">
+    <!-- Glass circle -->
+    <circle cx="40" cy="40" r="34" fill="none" stroke="url(#glassGrad)" stroke-width="8" stroke-linecap="round"/>
+    <!-- Glass highlight -->
+    <path d="M22 28 Q35 15 52 28" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3" stroke-linecap="round"/>
+    <!-- Handle -->
+    <line x1="65" y1="65" x2="85" y2="88" stroke="url(#glassGrad)" stroke-width="8" stroke-linecap="round"/>
+  </g>
+
+  <!-- Text -->
+  <text x="130" y="58" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="900" fill="#FFFFFF" letter-spacing="-1.5">acha</text>
+  <text x="133" y="82" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="#A1A1AA" letter-spacing="4" text-transform="uppercase">REGIÃO</text>
+</svg>
