@@ -92,17 +92,17 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
 .sticky-header.scrolled{box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .sh-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.sh-top img{height:22px}
 .sh-loc{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer}
-.search-bar{display:flex;align-items:center;background:var(--bg2);border:1.5px solid transparent;border-radius:var(--r);height:44px;padding:0 14px;gap:8px;transition:.2s}
+.search-bar{display:flex;align-items:center;background:var(--s);border:1px solid var(--b);border-radius:var(--r);height:44px;padding:0 14px;gap:8px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .search-bar:focus-within{background:var(--s);border-color:var(--y);box-shadow:0 0 0 4px var(--yg)}
 .search-bar input{flex:1;background:none;border:none;outline:none;color:var(--t);font-size:13px;font-family:inherit}
 .search-bar input::placeholder{color:var(--t3)}
 
 /* CATEGORIES */
-.cat-row{padding:8px 14px 12px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.cat-row{padding:8px 14px 12px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;position:relative}.cat-row::after{content:'';position:sticky;right:0;top:0;bottom:0;width:32px;background:linear-gradient(90deg,transparent,var(--bg));flex-shrink:0;pointer-events:none}
 .cat-row::-webkit-scrollbar{display:none}
 .cat-chip{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;border-radius:var(--r);font-size:10px;font-weight:600;color:var(--t2);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.15s;border:none;min-width:56px}
-.cat-chip .ci{font-size:22px;transition:.15s}.cat-chip.on{color:var(--t)}.cat-chip.on .ci{transform:scale(1.15)}
-.cat-chip .underline{height:2px;width:0;background:var(--t);border-radius:1px;transition:.2s}.cat-chip.on .underline{width:100%}
+.cat-chip .ci{font-size:22px;transition:.15s}.cat-chip.on{color:var(--y)}.cat-chip.on .ci{transform:scale(1.15)}
+.cat-chip .underline{height:2px;width:0;background:var(--y);border-radius:1px;transition:.2s}.cat-chip.on .underline{width:100%}
 
 /* SECTION HEADER */
 .sec-hd{padding:20px 14px 8px;display:flex;justify-content:space-between;align-items:center}
@@ -110,7 +110,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
 .sec-hd .see-all{font-size:12px;font-weight:600;color:var(--t2);cursor:pointer}
 
 /* FEATURED */
-.feat-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 14px 8px;scrollbar-width:none}
+.feat-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 14px 8px;scrollbar-width:none;position:relative}.feat-row::after{content:'';position:sticky;right:0;top:0;bottom:0;width:32px;background:linear-gradient(90deg,transparent,var(--bg));flex-shrink:0;pointer-events:none}
 .feat-row::-webkit-scrollbar{display:none}
 .feat-card{flex-shrink:0;width:260px;scroll-snap-align:start;border-radius:var(--r);overflow:hidden;cursor:pointer;box-shadow:var(--shadow-card);transition:all .2s;background:var(--s)}
 .feat-card:active{transform:scale(.97);box-shadow:var(--shadow-hover)}
@@ -122,14 +122,14 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
 /* FILTER BAR */
 .filter-bar{padding:8px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .filter-bar .sort-btn{font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;padding:8px 14px;border-radius:20px;border:1px solid var(--b);display:flex;align-items:center;gap:4px;white-space:nowrap;transition:.15s;background:var(--s)}
-.filter-bar .sort-btn:active{background:var(--bg2)}.filter-bar .sort-btn.on{background:var(--t);color:#FFF;border-color:var(--t)}
+.filter-bar .sort-btn:active{background:var(--bg2)}.filter-bar .sort-btn.on{background:var(--y);color:#1A1800;border-color:var(--y)}
 .radius-tag{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--t2);background:var(--bg2);padding:8px 12px;border-radius:20px;cursor:pointer;white-space:nowrap}
 
 /* SOCIAL STATS */
-.social-stats{display:flex;gap:12px;padding:0 14px 16px;flex-shrink:0}
-.social-stat{flex:1;background:var(--bg2);border-radius:var(--r);padding:12px;text-align:center}
-.social-stat .ss-num{font-size:22px;font-weight:800;color:var(--t);display:block}
-.social-stat .ss-lbl{font-size:10px;color:var(--t3);font-weight:600;margin-top:2px}
+.social-stats{display:flex;gap:8px;padding:0 14px 12px;flex-shrink:0}
+.social-stat{flex:1;background:var(--bg2);border-radius:10px;padding:8px 6px;text-align:center}
+.social-stat .ss-num{font-size:14px;font-weight:700;color:var(--t2);display:block}
+.social-stat .ss-lbl{font-size:10px;color:var(--t3);font-weight:500;margin-top:1px}
 .social-stat .ss-dot{display:inline-block;width:6px;height:6px;background:var(--g);border-radius:50%;margin-right:4px;animation:pulse-dot 2s ease infinite}
 @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
 
@@ -154,7 +154,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
 .c-urge.hot{background:#FF385C;color:#FFF;animation:urgePulse 2s ease infinite}.c-urge.drop{background:#0A72EF;color:#FFF}.c-urge.top{background:linear-gradient(135deg,#F5C518,#FFD42A);color:#1A1800}
 @keyframes urgePulse{0%,100%{opacity:1}50%{opacity:.75}}
 .card .c-body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px}
-.card .c-price{font-size:16px;font-weight:700;color:var(--t);letter-spacing:-0.2px}
+.card .c-price{font-size:16px;font-weight:700;color:#B8860B;letter-spacing:-0.2px}
 .card .c-title{font-size:12px;font-weight:500;color:var(--t2);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card .c-loc{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:4px;margin-top:2px}
 .card .c-dist{font-size:9px;color:var(--t2);font-weight:600}
@@ -230,7 +230,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
 #installBar.show{display:block}
 
 /* FLOATING WHATSAPP */
-.float-wa{position:fixed;bottom:76px;right:calc(50% - 230px);z-index:45;width:48px;height:48px;background:var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.35);cursor:pointer;transition:.2s;text-decoration:none}
+.float-wa{position:fixed;bottom:76px;right:16px;z-index:45;width:48px;height:48px;background:var(--g);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.35);cursor:pointer;transition:.2s;text-decoration:none}
 .float-wa:active{transform:scale(.9)}
 .float-wa .fr{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(37,211,102,.3);animation:frPulse 2s ease infinite}
 @keyframes frPulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.5);opacity:0}}
@@ -291,7 +291,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
 <!-- FEED -->
 <div class="page right" id="feed">
   <div class="sticky-header" id="stickyHeader">
-    <div class="sh-top"><img src="assets/logo-text.png" alt="Acha Região" onerror="this.outerHTML='<b style=font-size:16px;font-weight:800>acha REGIÃO</b>'"><span class="sh-loc" onclick="cycleCity()"><span class="pin">📍</span><span id="headerCity">Alto Vale</span></span></div>
+    <div class="sh-top"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:20px">📍</span><b style="font-size:16px;font-weight:800">acha <span style="color:#F5C518">REGIÃO</span></b></div><span class="sh-loc" onclick="cycleCity()"><span class="pin">📍</span><span id="headerCity">Alto Vale</span></span></div>
     <div class="search-bar"><span style="font-size:15px">🔍</span><input type="text" id="fSearch" placeholder="O que você procura?" oninput="renderFeed()"></div>
   </div>
   <div class="cat-row" id="catBar"></div>
@@ -439,7 +439,7 @@ function toggleSort(mode){sortMode=mode;document.getElementById('sortNew').class
 function renderSocialStats(){const sellers=new Set(products.map(p=>p.seller_name||p.seller||'Vendedor')).size,cities=new Set(products.map(p=>p.city).filter(Boolean)).size;document.getElementById('socialStats').innerHTML=`<div class="social-stat"><span class="ss-num">${products.length}</span><span class="ss-lbl">Produtos</span></div><div class="social-stat"><span class="ss-num">${cities}</span><span class="ss-lbl">Cidades</span></div><div class="social-stat"><span class="ss-num"><span class="ss-dot"></span>${sellers}</span><span class="ss-lbl">Vendedores</span></div>`}
 function getUrgeBadge(p){const now=Date.now();if(p.createdAt&&(now-p.createdAt)<86400000)return'<span class="c-urge hot">🆕 Hoje</span>';const catProds=products.filter(x=>x.category===p.category&&x.id!==p.id);if(catProds.length>0){const avg=catProds.reduce((a,b)=>a+b.price,0)/catProds.length;if(p.price<avg*0.7)return'<span class="c-urge drop">⬇ Abaixo da média</span>'}return''}
 
-function renderFeed(){renderSocialStats();const q=(document.getElementById('fSearch')?.value||'').toLowerCase();let f=activeCat==='Todos'?[...products]:products.filter(p=>p.category===activeCat);if(q)f=f.filter(p=>p.title.toLowerCase().includes(q)||(p.city||'').toLowerCase().includes(q));if(radiusKm<100)f=f.filter(p=>distanceTo(p.city)<=radiusKm);if(sortMode==='new')f.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));else f.sort((a,b)=>a.price-b.price);const featured=f.slice(0,4);document.getElementById('featuredSection').innerHTML=featured.length?`<div class="sec-hd"><h3>⭐ Destaques</h3></div><div class="feat-row">${featured.map(p=>`<div class="feat-card" onclick="openDetail('${p.id}')"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=500&h=340&fit=crop'}" alt="${p.title}" loading="lazy"><div class="fc-body"><div class="fc-price">R$ ${p.price.toLocaleString('pt-BR')}</div><div class="fc-title">${p.title}</div><div class="fc-loc">📍 ${p.city} · ${timeAgo(p.createdAt)}</div></div></div>`).join('')}</div>`:'';document.getElementById('resultCount').textContent=`${f.length} produto${f.length!==1?'s':''}`;document.getElementById('fGrid').innerHTML=f.length?f.map(p=>{const dist=distanceTo(p.city),isFav=favorites.includes(p.id),cond=p.condition||'Usado',urge=getUrgeBadge(p);return`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'"><span class="c-badge ${cond==='Novo'?'new':'used'}">${cond}</span>${p.images&&p.images.length>1?`<span class="c-badge-imgs">📷 ${p.images.length}</span>`:''}${urge}<button class="fav-btn${isFav?' on':''}" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button></div><div class="c-body"><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="c-title">${p.title}</span><span class="c-loc">${p.city}${dist<100?`<span class="c-dist">· ${Math.round(dist)}km</span>`:''}<span style="margin-left:auto;color:var(--t3);font-size:9px">${timeAgo(p.createdAt)}</span></span></div></div>`}).join(''):`<div class="prof-empty"><div style="font-size:56px;margin-bottom:16px">🔍</div><p style="font-size:15px;font-weight:600;color:var(--t2);margin-bottom:4px">Nenhum produto encontrado</p><p style="font-size:12px;color:var(--t3)">Tente mudar os filtros ou aumentar o raio</p></div>`;syncTabs('feed')}
+function renderFeed(){renderSocialStats();const q=(document.getElementById('fSearch')?.value||'').toLowerCase();let f=activeCat==='Todos'?[...products]:products.filter(p=>p.category===activeCat);if(q)f=f.filter(p=>p.title.toLowerCase().includes(q)||(p.city||'').toLowerCase().includes(q));if(radiusKm<100)f=f.filter(p=>distanceTo(p.city)<=radiusKm);if(sortMode==='new')f.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));else f.sort((a,b)=>a.price-b.price);const featured=f.slice(0,4);document.getElementById('featuredSection').innerHTML=featured.length?`<div class="sec-hd"><h3>⭐ Destaques</h3></div><div class="feat-row">${featured.map(p=>`<div class="feat-card" onclick="openDetail('${p.id}')"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=500&h=340&fit=crop'}" alt="${p.title}" loading="lazy"><div class="fc-body"><div class="fc-price">R$ ${p.price.toLocaleString('pt-BR')}</div><div class="fc-title">${p.title}</div><div class="fc-loc">📍 ${p.city} · ${timeAgo(p.createdAt)}</div></div></div>`).join('')}</div>${featured.length?`<div style="display:flex;gap:5px;justify-content:center;padding:4px 0 12px">${featured.map((_,i)=>`<span style="width:6px;height:6px;border-radius:3px;background:${i===0?'var(--y)':'var(--b)'}"></span>`).join('')}</div>`:''}`:'';document.getElementById('resultCount').textContent=`${f.length} produto${f.length!==1?'s':''}`;document.getElementById('fGrid').innerHTML=f.length?f.map(p=>{const dist=distanceTo(p.city),isFav=favorites.includes(p.id),cond=p.condition||'Usado',urge=getUrgeBadge(p);return`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'"><span class="c-badge ${cond==='Novo'?'new':'used'}">${cond}</span>${p.images&&p.images.length>1?`<span class="c-badge-imgs">📷 ${p.images.length}</span>`:''}${urge}<button class="fav-btn${isFav?' on':''}" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button></div><div class="c-body"><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="c-title">${p.title}</span><span class="c-loc">${p.city}${dist<100?`<span class="c-dist">· ${Math.round(dist)}km</span>`:''}<span style="margin-left:auto;color:var(--t3);font-size:9px">${timeAgo(p.createdAt)}</span></span></div></div>`}).join(''):`<div class="prof-empty"><div style="font-size:56px;margin-bottom:16px">🔍</div><p style="font-size:15px;font-weight:600;color:var(--t2);margin-bottom:4px">Nenhum produto encontrado</p><p style="font-size:12px;color:var(--t3)">Tente mudar os filtros ou aumentar o raio</p></div>`;syncTabs('feed')}
 
 // ═══════ DETAIL ═══════
 let carouselCleanup=null;
