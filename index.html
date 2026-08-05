@@ -146,7 +146,7 @@ body{
 .cat-chip.on .underline{width:100%}
 
 /* ═══ SECTION HEADER ═══ */
-.sec-hd{padding:16px 14px 8px;display:flex;justify-content:space-between;align-items:center}
+.sec-hd{padding:20px 14px 8px;display:flex;justify-content:space-between;align-items:center}
 .sec-hd h3{font-size:18px;font-weight:700;letter-spacing:-0.3px}
 .sec-hd .see-all{font-size:12px;font-weight:600;color:var(--t2);cursor:pointer}
 
@@ -179,18 +179,26 @@ body{
 .radius-tag{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--t2);background:var(--bg2);padding:8px 12px;border-radius:20px;cursor:pointer;white-space:nowrap}
 
 /* ═══ GRID ═══ */
-.grid-scroll{flex:1;overflow-y:auto;padding:0 12px 90px}
+.grid-scroll{flex:1;overflow-y:auto;padding:0 16px 90px}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid-scroll .sec-hd{padding:16px 2px 8px}
+.grid-scroll .sec-hd{padding:20px 0 8px}
 
 .card{
   background:var(--s);border-radius:var(--r);overflow:hidden;
-  cursor:pointer;transition:all .2s;position:relative;
-  animation:fadeUp .35s ease both;
+  cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);position:relative;
+  animation:fadeUp .4s ease both;
   box-shadow:var(--shadow-card);
 }
+.card:nth-child(1){animation-delay:0s}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.1s}
+.card:nth-child(4){animation-delay:.15s}
+.card:nth-child(5){animation-delay:.2s}
+.card:nth-child(6){animation-delay:.25s}
+.card:nth-child(7){animation-delay:.3s}
+.card:nth-child(8){animation-delay:.35s}
 .card:active{transform:scale(.97);box-shadow:var(--shadow-hover)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .card .img-wrap{position:relative;background:var(--bg2);overflow:hidden}
 .card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .3s}
 .card:active img{transform:scale(1.05)}
@@ -690,7 +698,7 @@ function renderFeed(){
 
   document.getElementById('resultCount').textContent=`${f.length} produto${f.length!==1?'s':''}`;
 
-  document.getElementById('fGrid').innerHTML=f.length?f.map(p=>{const dist=distanceTo(p.city),isFav=favorites.includes(p.id),cond=p.condition||'Usado',urge=getUrgeBadge(p);return`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'"><span class="c-badge ${cond==='Novo'?'new':'used'}">${cond}</span>${p.images&&p.images.length>1?`<span class="c-badge-imgs">📷 ${p.images.length}</span>`:''}${urge}<button class="fav-btn${isFav?' on':''}" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button></div><div class="c-body"><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="c-title">${p.title}</span><span class="c-loc">${p.city}${dist<100?`<span class="c-dist">· ${Math.round(dist)}km</span>`:''}<span style="margin-left:auto;color:var(--t3);font-size:9px">${timeAgo(p.createdAt)}</span></span></div></div>`}).join(''):'<div class="prof-empty"><div style="font-size:48px;margin-bottom:12px">🔍</div><p style="font-size:14px;font-weight:600;color:var(--t2)">Nenhum produto encontrado</p><p style="font-size:12px;color:var(--t3);margin-top:4px">Tente mudar os filtros ou aumentar o raio</p></div>';
+  document.getElementById('fGrid').innerHTML=f.length?f.map(p=>{const dist=distanceTo(p.city),isFav=favorites.includes(p.id),cond=p.condition||'Usado',urge=getUrgeBadge(p);return`<div class="card" onclick="openDetail('${p.id}')"><div class="img-wrap"><img src="${(p.images&&p.images[0])||'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop'"><span class="c-badge ${cond==='Novo'?'new':'used'}">${cond}</span>${p.images&&p.images.length>1?`<span class="c-badge-imgs">📷 ${p.images.length}</span>`:''}${urge}<button class="fav-btn${isFav?' on':''}" onclick="event.stopPropagation();toggleFav('${p.id}',this)">${isFav?'❤️':'🤍'}</button></div><div class="c-body"><span class="c-price">R$ ${p.price.toLocaleString('pt-BR')}</span><span class="c-title">${p.title}</span><span class="c-loc">${p.city}${dist<100?`<span class="c-dist">· ${Math.round(dist)}km</span>`:''}<span style="margin-left:auto;color:var(--t3);font-size:9px">${timeAgo(p.createdAt)}</span></span></div></div>`}).join(''):`<div class="prof-empty"><div style="font-size:56px;margin-bottom:16px">🔍</div><p style="font-size:15px;font-weight:600;color:var(--t2);margin-bottom:4px">Nenhum produto encontrado</p><p style="font-size:12px;color:var(--t3)">Tente mudar os filtros ou aumentar o raio de busca</p></div>`;
   syncTabs('feed');
 }
 
