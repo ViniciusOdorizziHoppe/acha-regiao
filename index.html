@@ -6,7 +6,7 @@
 <title>Acha Região — Marketplace do Alto Vale</title>
 <meta name="description" content="Compre e venda na sua região. Marketplace local do Alto Vale do Itajaí.">
 <meta name="theme-color" content="#F5C518">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="assets/logo-icon.png">
 <link rel="apple-touch-icon" href="assets/logo-icon.png">
@@ -458,8 +458,13 @@ window.addEventListener('beforeinstallprompt',e=>{window._pwa=e;document.getElem
 if(window.matchMedia('(display-mode: standalone)').matches)document.getElementById('installBar').classList.remove('show');
 
 (async function init(){
-  if(token){
-    try{const d=await api('/auth/me');if(d.user){user=d.user;localStorage.setItem('acha_user',JSON.stringify(user))}}catch(e){token=null;localStorage.removeItem('acha_token')}
+  // Restaura sessão do localStorage (offline-first)
+  const savedUser=localStorage.getItem('acha_user');
+  const savedToken=localStorage.getItem('acha_token');
+  if(savedUser&&savedToken){
+    try{user=JSON.parse(savedUser);token=savedToken}catch(e){}
+    // Tenta atualizar da API em paralelo (não bloqueia)
+    try{const d=await api('/auth/me');if(d.user){user=d.user;token=d.token||savedToken;localStorage.setItem('acha_user',JSON.stringify(user))}}catch(e){}
   }
   await loadProducts();
   setTimeout(()=>{
@@ -556,28 +561,53 @@ let cityIdx=0;
 function cycleCity(){cityIdx=(cityIdx+1)%(CITY_NAMES.length+1);const name=cityIdx===0?'Alto Vale':CITY_NAMES[cityIdx-1];document.getElementById('headerCity').textContent=name;radiusKm=cityIdx===0?100:10;renderFeed()}
 function cycleRadius(){radiusIdx=(radiusIdx+1)%RADIUS_OPTIONS.length;radiusKm=RADIUS_OPTIONS[radiusIdx];document.getElementById('radiusLabel').textContent=radiusKm===100?'Toda região':radiusKm+' km';renderFeed()}
 
-// ═══════ AUTH ═══════
+// ═══════ AUTH (offline-first: localStorage, API opcional) ═══════
+function persistUser(u,t){
+  user=u;token=t;
+  localStorage.setItem('acha_user',JSON.stringify(user));
+  if(t)localStorage.setItem('acha_token',t);
+  // Salva no banco local de usuários
+  const users=JSON.parse(localStorage.getItem('acha_users')||'[]');
+  const idx=users.findIndex(x=>x.email===u.email);
+  if(idx>-1)users[idx]={...users[idx],...u};
+  else users.push(u);
+  localStorage.setItem('acha_users',JSON.stringify(users));
+}
 function toggleAuth(){const r=document.getElementById('regForm'),l=document.getElementById('loginForm');r.style.display=r.style.display==='none'?'block':'none';l.style.display=l.style.display==='none'?'block':'none';document.getElementById('rErr').textContent='';document.getElementById('lErr').textContent=''}
 async function doRegister(){
   const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value;
+  document.getElementById('rErr').textContent='';
   if(!n||!e||!p){document.getElementById('rErr').textContent='Preencha todos os campos';return}
   if(p.length<6){document.getElementById('rErr').textContent='Senha: mínimo 6 caracteres';return}
   if(!e.includes('@')){document.getElementById('rErr').textContent='Email inválido';return}
-  try{
-    const res=await fetch(API_BASE+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:n,email:e,senha:p})});
-    const d=await res.json();
-    if(res.ok){user=d.user;token=d.token;localStorage.setItem('acha_token',token);localStorage.setItem('acha_user',JSON.stringify(user));showTutorial()}
-    else{document.getElementById('rErr').textContent=d.error||'Erro ao cadastrar'}
-  }catch(ex){document.getElementById('rErr').textContent='Sem conexão com servidor'}
+  // Verifica se já existe
+  const users=JSON.parse(localStorage.getItem('acha_users')||'[]');
+  if(users.find(x=>x.email===e)){document.getElementById('rErr').textContent='Email já cadastrado';return}
+  // Cria usuário local
+  const newUser={id:'u_'+Date.now(),nome:n,email:e,senha:p,cidade:'Presidente Getúlio',estrelas:5,createdAt:new Date().toISOString()};
+  persistUser(newUser,'tok_'+Date.now());
+  // Tenta API em paralelo (não bloqueia)
+  try{const res=await fetch(API_BASE+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:n,email:e,senha:p})});if(res.ok){const d=await res.json();if(d.user&&d.token)persistUser(d.user,d.token)}}catch(ex){}
+  showTutorial();
 }
 async function doLogin(){
   const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;
+  document.getElementById('lErr').textContent='';
+  if(!e||!p){document.getElementById('lErr').textContent='Preencha todos os campos';return}
+  // Busca local primeiro
+  const users=JSON.parse(localStorage.getItem('acha_users')||'[]');
+  const found=users.find(x=>x.email===e);
+  if(found&&found.senha===p){
+    persistUser(found,'tok_'+Date.now());
+    goTab('feed');toast('👋 Bem-vindo, '+found.nome.split(' ')[0]+'!');return;
+  }
+  // Tenta API
   try{
     const res=await fetch(API_BASE+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,senha:p})});
     const d=await res.json();
-    if(res.ok){user=d.user;token=d.token;localStorage.setItem('acha_token',token);localStorage.setItem('acha_user',JSON.stringify(user));goTab('feed');toast('👋 Bem-vindo, '+user.nome.split(' ')[0]+'!')}
-    else{document.getElementById('lErr').textContent=d.error||'Email ou senha incorretos'}
-  }catch(ex){document.getElementById('lErr').textContent='Sem conexão com servidor'}
+    if(res.ok){persistUser(d.user,d.token);goTab('feed');toast('👋 Bem-vindo, '+d.user.nome.split(' ')[0]+'!');return}
+    document.getElementById('lErr').textContent=d.error||'Email ou senha incorretos';
+  }catch(ex){document.getElementById('lErr').textContent=found?'Senha incorreta':'Email não encontrado'}
 }
 
 // ═══════ TUTORIAL ═══════
