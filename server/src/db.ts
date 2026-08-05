@@ -12,12 +12,12 @@ const pool = new Pool({
   idleTimeoutMillis: 30000,
 });
 
-// Test connection
+// Test connection (graceful - não crasha sem DB)
 pool.query("SELECT NOW()").then(() => {
   console.log("✅ PostgreSQL conectado");
 }).catch((err) => {
-  console.error("❌ Erro ao conectar no PostgreSQL:", err.message);
-  process.exit(1);
+  console.error("⚠️ PostgreSQL indisponível:", err.message);
+  console.error("   API rodando em modo degrade (auth/produtos usam fallback)");
 });
 
 // Run migrations on startup
