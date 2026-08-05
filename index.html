@@ -287,7 +287,7 @@ body{background:var(--bg);color:var(--t);font-family:'DM Sans',-apple-system,san
       <div class="rl"><span class="ico">✅</span> Serviços da região</div>
       <div class="rl"><span class="ico">🚫</span> Spam, política, ofensas</div>
     </div>
-    <div class="w-btns"><button class="btn btn-y" onclick="goTab('auth')">Criar conta</button><button class="btn btn-ghost" onclick="quickGuest()">Ver anúncios</button></div>
+    <div class="w-btns"><button class="btn btn-y" onclick="goTab('auth')">Criar conta</button><button class="btn btn-ghost" onclick="goTab('auth')">Já tenho conta</button></div>
   </div>
 </div>
 
@@ -401,10 +401,14 @@ window.addEventListener('beforeinstallprompt',e=>{window._pwa=e;document.getElem
 if(window.matchMedia('(display-mode: standalone)').matches)document.getElementById('installBar').classList.remove('show');
 
 (async function init(){
+  // Deep link: salva produto da URL pra abrir depois do login
+  const urlParams=new URLSearchParams(window.location.search);
+  const deepProduct=urlParams.get('p');
+  if(deepProduct)localStorage.setItem('acha_deep_product',deepProduct);
   const savedUser=localStorage.getItem('acha_user'),savedToken=localStorage.getItem('acha_token');
   if(savedUser&&savedToken){try{user=JSON.parse(savedUser);token=savedToken}catch(e){};try{const d=await api('/auth/me');if(d.user){user=d.user;token=d.token||savedToken;localStorage.setItem('acha_user',JSON.stringify(user))}}catch(e){}}
   await loadProducts();
-  setTimeout(()=>{document.getElementById('splash').classList.add('hide');if(!seenWelcome)goTab('welcome');else if(user)goTab('feed');else goTab('auth')},2000);
+  setTimeout(()=>{document.getElementById('splash').classList.add('hide');if(user)goTab('feed');else goTab('auth')},2000);
   setInterval(checkNewListings,60000);
   if('Notification' in window&&Notification.permission==='default')setTimeout(()=>Notification.requestPermission(),5000);
 })();
@@ -412,7 +416,7 @@ if(window.matchMedia('(display-mode: standalone)').matches)document.getElementBy
 async function loadProducts(){try{const d=await api('/products');if(Array.isArray(d)&&d.length)products=d.map(p=>({...p,createdAt:p.createdAt||Date.now()-Math.random()*86400000*7,condition:p.condition||'Usado',images:p.images||[]}));else products=getFallback()}catch(e){products=getFallback()}renderCategories();if(currentPage==='feed')renderFeed()}
 
 function getFallback(){return[]}// ═══════ GUEST ═══════
-function quickGuest(){user={nome:'Visitante',cidade:'Presidente Getúlio',estrelas:4.5,id:'guest',whatsapp:''};localStorage.setItem('acha_welcome','1');goTab('feed');toast('👋 Explorando como visitante')}
+function quickGuest(){goTab('auth')}
 
 // ═══════ HAVERSINE ═══════
 function haversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180,a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
@@ -422,7 +426,7 @@ function timeAgo(ts){const s=(Date.now()-(ts||0))/1000;if(s<60)return 'agora';if
 
 // ═══════ NAVIGATION ═══════
 function syncTabs(activePage){const tabIds=['tabFeed','tabCreate','tabProfile','tabDetail'],tabMap={feed:0,create:1,profile:2};tabIds.forEach(tabId=>{const bar=document.getElementById(tabId);if(!bar)return;const items=bar.querySelectorAll('.tab-item');items.forEach((item,i)=>item.classList.toggle('on',i===tabMap[activePage]))});const fb=document.getElementById('favBadge');if(fb){fb.textContent=favorites.length;fb.style.display=favorites.length?'flex':'none'}}
-function goTab(page){if(!seenWelcome&&page!=='welcome'){localStorage.setItem('acha_welcome','1');seenWelcome=true}if((page==='feed'||page==='create'||page==='profile'||page==='detail')&&!user){goTab('auth');return}if(page===currentPage)return;const prev=document.getElementById(currentPage),next=document.getElementById(page);if(prev)prev.classList.add(currentPage==='detail'&&page==='feed'?'pop':'right');if(next){next.classList.remove('right','hide','pop');next.scrollTop=0}currentPage=page;slideIdx=0;syncTabs(page==='auth'||page==='detail'||page==='welcome'?'feed':page);if(page==='feed')renderFeed();if(page==='profile')renderProfile()}
+function goTab(page){if((page==='feed'||page==='create'||page==='profile'||page==='detail')&&!user){goTab('auth');return}if(page===currentPage)return;const prev=document.getElementById(currentPage),next=document.getElementById(page);if(prev)prev.classList.add(currentPage==='detail'&&page==='feed'?'pop':'right');if(next){next.classList.remove('right','hide','pop');next.scrollTop=0}currentPage=page;slideIdx=0;syncTabs(page==='auth'||page==='detail'||page==='welcome'?'feed':page);if(page==='feed')renderFeed();if(page==='profile')renderProfile()}
 
 // ═══════ STICKY HEADER ═══════
 document.addEventListener('scroll',()=>{const h=document.getElementById('stickyHeader');if(h)h.classList.toggle('scrolled',window.scrollY>5)},{passive:true});
@@ -442,7 +446,7 @@ function cycleRadius(){radiusIdx=(radiusIdx+1)%RADIUS_OPTIONS.length;radiusKm=RA
 function persistUser(u,t){user=u;token=t;localStorage.setItem('acha_user',JSON.stringify(user));if(t)localStorage.setItem('acha_token',t);const users=JSON.parse(localStorage.getItem('acha_users')||'[]');const idx=users.findIndex(x=>x.email===u.email);if(idx>-1)users[idx]={...users[idx],...u};else users.push(u);localStorage.setItem('acha_users',JSON.stringify(users))}
 function toggleAuth(){const r=document.getElementById('regForm'),l=document.getElementById('loginForm');r.style.display=r.style.display==='none'?'block':'none';l.style.display=l.style.display==='none'?'block':'none';document.getElementById('rErr').textContent='';document.getElementById('lErr').textContent=''}
 async function doRegister(){const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value,w=document.getElementById('rWhats').value.trim();document.getElementById('rErr').textContent='';if(!n||!e||!p){document.getElementById('rErr').textContent='Preencha todos os campos';return}if(p.length<6){document.getElementById('rErr').textContent='Senha: mínimo 6 caracteres';return}if(!e.includes('@')){document.getElementById('rErr').textContent='Email inválido';return}const users=JSON.parse(localStorage.getItem('acha_users')||'[]');if(users.find(x=>x.email===e)){document.getElementById('rErr').textContent='Email já cadastrado';return}const newUser={id:'u_'+Date.now(),nome:n,email:e,senha:p,whatsapp:w,cidade:'Presidente Getúlio',estrelas:5,avatar:'',cover:'',createdAt:new Date().toISOString()};persistUser(newUser,'tok_'+Date.now());try{const res=await fetch(API_BASE+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome:n,email:e,senha:p,whatsapp:w})});if(res.ok){const d=await res.json();if(d.user&&d.token)persistUser({...newUser,...d.user},d.token)}}catch(ex){}showTutorial()}
-async function doLogin(){const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;document.getElementById('lErr').textContent='';if(!e||!p){document.getElementById('lErr').textContent='Preencha todos os campos';return}const users=JSON.parse(localStorage.getItem('acha_users')||'[]');const found=users.find(x=>x.email===e);if(found&&found.senha===p){persistUser(found,'tok_'+Date.now());goTab('feed');toast('👋 Bem-vindo, '+found.nome.split(' ')[0]+'!');return}try{const res=await fetch(API_BASE+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,senha:p})});const d=await res.json();if(res.ok){persistUser(d.user,d.token);goTab('feed');toast('👋 Bem-vindo, '+d.user.nome.split(' ')[0]+'!');return}document.getElementById('lErr').textContent=d.error||'Email ou senha incorretos'}catch(ex){document.getElementById('lErr').textContent=found?'Senha incorreta':'Email não encontrado'}}
+async function doLogin(){const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;document.getElementById('lErr').textContent='';if(!e||!p){document.getElementById('lErr').textContent='Preencha todos os campos';return}const users=JSON.parse(localStorage.getItem('acha_users')||'[]');const found=users.find(x=>x.email===e);if(found&&found.senha===p){persistUser(found,'tok_'+Date.now());goTab('feed');toast('👋 Bem-vindo, '+found.nome.split(' ')[0]+'!');openDeepLink();return}try{const res=await fetch(API_BASE+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,senha:p})});const d=await res.json();if(res.ok){persistUser(d.user,d.token);goTab('feed');toast('👋 Bem-vindo, '+d.user.nome.split(' ')[0]+'!');openDeepLink();return}document.getElementById('lErr').textContent=d.error||'Email ou senha incorretos'}catch(ex){document.getElementById('lErr').textContent=found?'Senha incorreta':'Email não encontrado'}}
 
 // ═══════ TUTORIAL ═══════
 const tuSteps=[{icon:'📍',title:'Sua <em>Região</em>',text:'Compre e venda no Alto Vale. Presidente Getúlio, Rio do Sul, Ibirama e mais.',btn:'Próximo'},{icon:'📦',title:'Seus <em>Anúncios</em>',text:'Liste tudo o que quer vender. Fotos, preço, descrição — completo vende mais rápido!',btn:'Próximo'},{icon:'💬',title:'<em>WhatsApp</em> direto',text:'Converse direto com o vendedor pelo WhatsApp. Negocie com transparência.',btn:'Começar!'}];let tuIdx=0;
@@ -497,6 +501,7 @@ function renderChatMsgs(){const msgs=JSON.parse(localStorage.getItem(getChatKey(
 function sendChat(){const input=document.getElementById('chatInput');const text=input.value.trim();if(!text||!chatProduct)return;const msgs=JSON.parse(localStorage.getItem(getChatKey())||'[]');msgs.push({from:user.id,text,time:Date.now()});localStorage.setItem(getChatKey(),JSON.stringify(msgs));input.value='';renderChatMsgs()}
 function install(){function install(){if(window._pwa){window._pwa.prompt();document.getElementById('installBar').classList.remove('show')}else toast('📲 iPhone: Compartilhar → Adicionar à Tela')}
 function shareApp(){if(products.length===0){toast('⚠️ Nenhum produto para compartilhar');return}const best=products.sort((a,b)=>a.price-b.price).slice(0,3);const lines=best.map(p=>`🟡 ${p.title} — R$ ${p.price}\n📍 ${p.city}`).join('\n\n');const msg=encodeURIComponent(`🔥 *Ofertas do Acha Região:*\n\n${lines}\n\n📲 *Veja mais ofertas:*\n👉 ${window.location.origin}${window.location.pathname}\n\n_Quer vender também? É grátis!_`);window.open(`https://wa.me/?text=${msg}`,'_blank')}
+function openDeepLink(){const pid=localStorage.getItem('acha_deep_product');if(pid){localStorage.removeItem('acha_deep_product');setTimeout(()=>openDetail(pid),500)}}
 function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.getElementById('toasts').appendChild(d);setTimeout(()=>d.remove(),2600)}
 </script>
 </body>
