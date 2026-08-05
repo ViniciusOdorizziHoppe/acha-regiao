@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="assets/logo-icon.png">
 <link rel="apple-touch-icon" href="assets/logo-icon.png">
-<link rel="manifest" href="data:application/json,{name:'Acha Região',short_name:'Acha',start_url:'.',display:'standalone',background_color:'%23FFFFFF',theme_color:'%23F5C518',icons:[{src:'assets/logo-icon.png',sizes:'192x192'},{src:'assets/logo-icon.png',sizes:'512x512'}]}">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Acha+Regi%C3%A3o%22%2C%22short_name%22%3A%22Acha%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23FFFFFF%22%2C%22theme_color%22%3A%22%23F5C518%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22assets%2Flogo-icon.png%22%2C%22sizes%22%3A%22192x192%22%7D%2C%7B%22src%22%3A%22assets%2Flogo-icon.png%22%2C%22sizes%22%3A%22512x512%22%7D%5D%7D">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -316,25 +316,25 @@ body{
 <div class="page" id="welcome">
   <div class="w-card">
     <img src="assets/logo-text.png" alt="Acha Região" class="w-logo" onerror="this.outerHTML='<div style=font-size:24px;font-weight:800;text-align:center;margin-bottom:20px><span style=color:#F5C518>acha</span> REGIÃO</div>'">
-    <h1>Bem-vindo ao <em>Acha</em></h1>
-    <p class="w-sub">Marketplace local do Alto Vale do Itajaí</p>
+    <h1>Compre e venda <em>na sua região</em></h1>
+    <p class="w-sub">Presidente Getúlio · Rio do Sul · Ibirama · Alto Vale</p>
 
-    <div class="w-rules">
-      <h3>📋 Regras da comunidade</h3>
-      <div class="rl"><span class="ico">✅</span> Vendas, trocas, locação e divulgações locais</div>
-      <div class="rl"><span class="ico">✅</span> Serviços da região</div>
-      <div class="rl"><span class="ico">✅</span> Dicas, oportunidades e boas ofertas</div>
-      <div class="rl"><span class="ico">🚫</span> Links de afiliados, sorteios ou spam</div>
-      <div class="rl"><span class="ico">🚫</span> Conteúdos impróprios, políticos ou religiosos</div>
-    </div>
-
+    <!-- WhatsApp Group — MAIN ACTION -->
     <a href="https://chat.whatsapp.com/BnAmI64xECIG0Dq4nu2SLT" target="_blank" class="w-group">
       <span class="wg-icon">💬</span>
-      <div class="wg-info"><div class="wg-title">Comunidade no WhatsApp</div><div class="wg-sub">Participe do grupo oficial de compra e venda</div></div>
+      <div class="wg-info"><div class="wg-title">Entrar no Grupo</div><div class="wg-sub">Comunidade oficial de compra e venda</div></div>
+      <span style="font-size:20px;color:#1A1800;opacity:.5">→</span>
     </a>
 
+    <div class="w-rules">
+      <h3>📋 Regras</h3>
+      <div class="rl"><span class="ico">✅</span> Vendas, trocas, locação</div>
+      <div class="rl"><span class="ico">✅</span> Serviços da região</div>
+      <div class="rl"><span class="ico">🚫</span> Spam, política, ofensas</div>
+    </div>
+
     <div class="w-btns">
-      <button class="btn btn-y" onclick="goTab('auth')">Entrar no app</button>
+      <button class="btn btn-y" onclick="goTab('auth')">Criar conta</button>
       <button class="btn btn-ghost" onclick="quickGuest()">Ver anúncios</button>
     </div>
   </div>
