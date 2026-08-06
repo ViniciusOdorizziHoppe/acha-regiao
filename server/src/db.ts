@@ -16,7 +16,7 @@ const pool = new Pool({
 pool.query("SELECT NOW()").then(() => {
   console.log("✅ PostgreSQL conectado");
 }).catch((err) => {
-  console.error("⚠️ PostgreSQL indisponível:", err.message);
+  console.error("⚠️ PostgreSQL indisponível:", err.message || JSON.stringify(err));
   console.error("   API rodando em modo degrade (auth/produtos usam fallback)");
 });
 
